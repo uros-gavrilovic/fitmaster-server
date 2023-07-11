@@ -1,7 +1,6 @@
 package com.mastercode.fitmaster.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +11,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "exercises")
 public class Exercise {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     private Long exerciseID;
+
     private String name;
 }
