@@ -14,9 +14,9 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
-
     private Long exerciseID;
 
     private String name;
+
+    private String instructions;
 }
