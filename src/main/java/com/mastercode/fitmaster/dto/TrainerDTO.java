@@ -1,4 +1,4 @@
-package com.mastercode.fitmaster.trainer.model.dto;
+package com.mastercode.fitmaster.dto;
 
 import com.mastercode.fitmaster.model.Gender;
 import lombok.AllArgsConstructor;

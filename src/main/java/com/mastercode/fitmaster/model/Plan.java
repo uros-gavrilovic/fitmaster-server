@@ -1,6 +1,5 @@
 package com.mastercode.fitmaster.model;
 
-import com.mastercode.fitmaster.trainer.model.entity.TrainerEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,7 @@ public class Plan {
 
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
-    private TrainerEntity trainerEntity;
+    private Trainer trainer;
 
     private LocalDateTime dateTime;
 
