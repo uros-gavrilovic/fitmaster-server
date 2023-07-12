@@ -1,21 +1,19 @@
 package com.mastercode.fitmaster.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "trainers")
 public class Trainer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long trainerID;
 
@@ -23,6 +21,7 @@ public class Trainer {
 
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String username;
