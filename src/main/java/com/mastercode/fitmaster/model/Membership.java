@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "memberships")
 public class Membership {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long membershipID;
 

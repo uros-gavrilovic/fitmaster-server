@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Table(name = "packages")
 public class Package {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long packageID;
 

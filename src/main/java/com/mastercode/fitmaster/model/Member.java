@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "members")
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long memberID;
 
@@ -21,6 +21,7 @@ public class Member {
 
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String address;

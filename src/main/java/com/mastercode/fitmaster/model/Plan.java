@@ -14,7 +14,7 @@ import java.util.HashSet;
 @Table(name = "plans")
 public class Plan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;
 
