@@ -2,7 +2,11 @@ package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
+import com.mastercode.fitmaster.model.Membership;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MemberAdapter {
@@ -35,8 +39,16 @@ public class MemberAdapter {
         dto.setAddress(entity.getAddress());
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setBirthDate(entity.getBirthDate());
+        dto.setActive(entity.getMemberships().stream().anyMatch(Membership::isActive));
 
         return dto;
+    }
+
+    public List<MemberDTO> entitiesToDTOs(final List<Member> entities) {
+        if(entities == null)
+            return null;
+
+        return entities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
 }
