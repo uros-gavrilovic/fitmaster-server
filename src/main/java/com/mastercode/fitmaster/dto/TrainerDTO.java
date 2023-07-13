@@ -1,6 +1,6 @@
 package com.mastercode.fitmaster.dto;
 
-import com.mastercode.fitmaster.model.Gender;
+import com.mastercode.fitmaster.model.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

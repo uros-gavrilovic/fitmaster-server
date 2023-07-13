@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.dataloader;
 
 import com.github.javafaker.Faker;
-import com.mastercode.fitmaster.model.Gender;
+import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.Trainer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

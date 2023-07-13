@@ -4,7 +4,7 @@ CREATE TABLE plans
     member_id  BIGINT,
     trainer_id BIGINT,
     dateTime   DATE,
-    comment    VARCHAR(255),
+    comment    VARCHAR(512),
 
     CONSTRAINT pk_plans PRIMARY KEY (id),
     CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES members (id),
