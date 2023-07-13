@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 
@@ -18,7 +19,8 @@ public class Membership {
     @Column(name = "id")
     private Long membershipID;
 
-    @OneToOne
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
@@ -29,4 +31,6 @@ public class Membership {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private boolean active; // TODO: Implement
 }

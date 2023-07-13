@@ -1,7 +1,9 @@
 package com.mastercode.fitmaster.model;
 
+import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 
 @Getter
