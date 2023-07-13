@@ -5,13 +5,13 @@ import com.mastercode.fitmaster.model.Activity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ActivityAdapter {
+public class ActivityAdapter implements AbstractAdapter<Activity, ActivityDTO> {
 
+    @Override
     public Activity dtoToEntity(ActivityDTO dto) {
-        if (dto == null)
-            return null;
-
+        if (dto == null) return null;
         final Activity entity = new Activity();
+
         entity.setOrdinalNumber(dto.getOrdinalNumber());
         entity.setReps(dto.getReps());
         entity.setSets(dto.getSets());
@@ -20,11 +20,11 @@ public class ActivityAdapter {
         return entity;
     }
 
+    @Override
     public ActivityDTO entityToDTO(Activity entity) {
-        if (entity == null)
-            return null;
-
+        if (entity == null) return null;
         final ActivityDTO dto = new ActivityDTO();
+
         dto.setOrdinalNumber(entity.getOrdinalNumber());
         dto.setReps(entity.getReps());
         dto.setSets(entity.getSets());

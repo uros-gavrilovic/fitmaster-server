@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class MemberAdapter {
+public class MemberAdapter implements AbstractAdapter<Member, MemberDTO> {
 
+    @Override
     public Member dtoToEntity(MemberDTO dto) {
-        if (dto == null)
-            return null;
-
+        if (dto == null) return null;
         final Member entity = new Member();
+
         entity.setMemberID(dto.getMemberID());
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
@@ -27,11 +27,11 @@ public class MemberAdapter {
         return entity;
     }
 
+    @Override
     public MemberDTO entityToDTO(Member entity) {
-        if (entity == null)
-            return null;
-
+        if (entity == null) return null;
         final MemberDTO dto = new MemberDTO();
+
         dto.setMemberID(entity.getMemberID());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -45,8 +45,7 @@ public class MemberAdapter {
     }
 
     public List<MemberDTO> entitiesToDTOs(final List<Member> entities) {
-        if(entities == null)
-            return null;
+        if (entities == null) return null;
 
         return entities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
