@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.model.Membership;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MembershipAdapter implements AbstractAdapter<Membership, MembershipDTO> {
+public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO> {
 
     @Override
     public Membership dtoToEntity(MembershipDTO dto) {

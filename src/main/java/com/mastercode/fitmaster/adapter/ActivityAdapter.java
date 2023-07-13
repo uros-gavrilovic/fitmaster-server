@@ -4,8 +4,10 @@ import com.mastercode.fitmaster.dto.ActivityDTO;
 import com.mastercode.fitmaster.model.Activity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class ActivityAdapter implements AbstractAdapter<Activity, ActivityDTO> {
+public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
 
     @Override
     public Activity dtoToEntity(ActivityDTO dto) {
@@ -32,5 +34,4 @@ public class ActivityAdapter implements AbstractAdapter<Activity, ActivityDTO> {
 
         return dto;
     }
-
 }

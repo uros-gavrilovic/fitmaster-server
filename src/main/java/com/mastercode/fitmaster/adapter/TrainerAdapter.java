@@ -5,10 +5,10 @@ import com.mastercode.fitmaster.model.Trainer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TrainerAdapter implements AbstractAdapter<Trainer, TrainerDTO> {
+public class TrainerAdapter extends AbstractAdapter<Trainer, TrainerDTO> {
 
     @Override
-    public Trainer dtoToEntity(final TrainerDTO dto) {
+    public Trainer dtoToEntity(TrainerDTO dto) {
         if (dto == null) return null;
         final Trainer entity = new Trainer();
 
@@ -26,7 +26,7 @@ public class TrainerAdapter implements AbstractAdapter<Trainer, TrainerDTO> {
     }
 
     @Override
-    public TrainerDTO entityToDTO(final Trainer entity) {
+    public TrainerDTO entityToDTO(Trainer entity) {
         if (entity == null) return null;
         final TrainerDTO dto = new TrainerDTO();
 

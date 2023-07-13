@@ -1,7 +1,16 @@
 package com.mastercode.fitmaster.adapter;
 
-public interface AbstractAdapter<T, TDTO> {
-    T dtoToEntity(TDTO dto);
+import java.util.List;
+import java.util.stream.Collectors;
 
-    TDTO entityToDTO(T entity);
+public abstract class AbstractAdapter<T, TDTO> {
+    public abstract T dtoToEntity(TDTO dto);
+
+    public abstract TDTO entityToDTO(T entity);
+
+    public List<TDTO> entitiesToDTOs(List<T> entities) {
+        if (entities == null) return null;
+
+        return entities.stream().map(this::entityToDTO).collect(Collectors.toList());
+    }
 }

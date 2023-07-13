@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.model.Package;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PackageAdapter implements AbstractAdapter<Package, PackageDTO> {
+public class PackageAdapter extends AbstractAdapter<Package, PackageDTO> {
 
     @Override
     public Package dtoToEntity(PackageDTO dto) {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class MemberAdapter implements AbstractAdapter<Member, MemberDTO> {
+public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
 
     @Override
     public Member dtoToEntity(MemberDTO dto) {
@@ -42,12 +42,6 @@ public class MemberAdapter implements AbstractAdapter<Member, MemberDTO> {
         dto.setActive(entity.getMemberships().stream().anyMatch(Membership::isActive));
 
         return dto;
-    }
-
-    public List<MemberDTO> entitiesToDTOs(final List<Member> entities) {
-        if (entities == null) return null;
-
-        return entities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
 }
