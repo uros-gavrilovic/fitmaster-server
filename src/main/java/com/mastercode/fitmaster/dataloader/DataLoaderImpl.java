@@ -39,7 +39,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
     @Override
     void loadTestData() {
         loadPackages(0);
-        loadMembers(10);
+        loadMembers(0);
         loadTrainers(0);
     }
 
@@ -67,7 +67,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
             Membership ms = new Membership();
             ms.setMember(m);
-            m.setMembership(ms);
+            m.getMemberships().add(ms);
             ms.setMembershipPackage(packageRepository.findAll().get((int) new Random().nextLong(packageRepository.count())));
             ms.setStartDate(LocalDate.ofInstant(faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
             ms.setEndDate(LocalDate.ofInstant(faker.date().future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));

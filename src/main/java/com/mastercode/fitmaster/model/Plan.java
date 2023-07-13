@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,5 +33,5 @@ public class Plan {
     private String comment;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HashSet<Activity> activities;
+    private Set<Activity> activities = new HashSet<>();
 }
