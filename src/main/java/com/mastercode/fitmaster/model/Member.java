@@ -1,15 +1,10 @@
 package com.mastercode.fitmaster.model;
 
-import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
-
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +13,7 @@ import java.util.Set;
 @Table(name = "members")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     private Long memberID;
 
@@ -26,7 +21,6 @@ public class Member {
 
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String address;
@@ -35,7 +29,6 @@ public class Member {
 
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "member")
-    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
-    private Set<Membership> memberships = new HashSet<>();
+    @OneToOne(mappedBy = "member")
+    private Membership membership;
 }

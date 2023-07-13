@@ -1,20 +1,21 @@
-package com.mastercode.fitmaster.dto;
+package com.mastercode.fitmaster.trainer.model.dto;
 
-import com.mastercode.fitmaster.model.enums.Gender;
+import com.mastercode.fitmaster.model.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO {
+public class TrainerDTO implements Serializable {
 
-    private Long memberID;
+    private Long trainerID;
 
     private String firstName;
 
@@ -22,10 +23,14 @@ public class MemberDTO {
 
     private Gender gender;
 
-    private String address;
+    private String username;
+
+    private String password;
 
     private String phoneNumber;
 
-    private LocalDate birthDate;
+    private String address;
+
+    private LocalDate hireDate;
 
 }

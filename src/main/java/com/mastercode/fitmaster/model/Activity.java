@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "activities")
 public class Activity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer ordinalNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)

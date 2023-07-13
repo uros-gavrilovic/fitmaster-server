@@ -1,7 +1,5 @@
 package com.mastercode.fitmaster.model;
 
-import com.mastercode.fitmaster.model.enums.BodyPart;
-import com.mastercode.fitmaster.model.enums.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +17,6 @@ public class Exercise {
     private Long exerciseID;
 
     private String name;
-
-    private BodyPart bodyPart;
-
-    private Category category;
 
     private String instructions;
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 
@@ -15,12 +14,11 @@ import java.time.LocalDate;
 @Table(name = "memberships")
 public class Membership {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     private Long membershipID;
 
-    @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
@@ -31,6 +29,4 @@ public class Membership {
     private LocalDate startDate;
 
     private LocalDate endDate;
-
-    private boolean active; // TODO: Implement
 }
