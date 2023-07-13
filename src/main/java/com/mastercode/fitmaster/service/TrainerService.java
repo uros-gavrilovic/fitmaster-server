@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
+    
     @Autowired
     private TrainerRepository trainerRepository;
 
@@ -30,5 +31,20 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     @Override
     public List<TrainerDTO> getAllDTOs() {
         return trainerAdapter.entitiesToDTOs(trainerRepository.findAll());
+    }
+
+    @Override
+    public Trainer create(Trainer entity) {
+        return trainerRepository.saveAndFlush(entity);
+    }
+
+    @Override
+    public Trainer update(Trainer entity) {
+        return null; // TODO
+    }
+
+    @Override
+    public void delete(Long id) {
+        trainerRepository.deleteById(id);
     }
 }

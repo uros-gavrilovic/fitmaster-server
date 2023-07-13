@@ -3,21 +3,24 @@ package com.mastercode.fitmaster.service;
 import com.mastercode.fitmaster.adapter.ActivityAdapter;
 import com.mastercode.fitmaster.dto.ActivityDTO;
 import com.mastercode.fitmaster.model.Activity;
-import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.repository.ActivityRepository;
+import com.mastercode.fitmaster.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ActivityService implements AbstractService<Activity, ActivityDTO> {
+
     @Autowired
     private ActivityRepository activityRepository;
 
     @Autowired
     private ActivityAdapter activityAdapter;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Override
     public List<Activity> getAll() {
@@ -36,7 +39,7 @@ public class ActivityService implements AbstractService<Activity, ActivityDTO> {
 
     @Override
     public Activity create(Activity entity) {
-        return null;
+        return activityRepository.saveAndFlush(entity);
     }
 
     @Override
@@ -46,7 +49,6 @@ public class ActivityService implements AbstractService<Activity, ActivityDTO> {
 
     @Override
     public void delete(Long id) {
-        Optional<Activity> optionalActivity = activityRepository.findById(Math.toIntExact(id));
-        if (optionalActivity.isPresent()) activityRepository.delete(optionalActivity.get());
+        memberRepository.deleteById(id);
     }
 }

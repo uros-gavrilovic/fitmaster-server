@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
+
     @Autowired
     private ExerciseRepository exerciseRepository;
 
@@ -29,6 +30,21 @@ public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
 
     @Override
     public List<ExerciseDTO> getAllDTOs() {
-        return exerciseAdapter.entitiesToDTOs(e)
+        return exerciseAdapter.entitiesToDTOs(exerciseRepository.findAll());
+    }
+
+    @Override
+    public Exercise create(Exercise entity) {
+        return exerciseRepository.saveAndFlush(entity);
+    }
+
+    @Override
+    public Exercise update(Exercise entity) {
+        return null; // TODO
+    }
+
+    @Override
+    public void delete(Long id) {
+        exerciseRepository.deleteById(id);
     }
 }

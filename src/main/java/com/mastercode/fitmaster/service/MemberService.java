@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberService implements AbstractService<Member, MemberDTO> {
+
     @Autowired
     MemberRepository memberRepository;
 
@@ -45,7 +45,6 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
 
     @Override
     public void delete(Long id) {
-        Optional<Member> optionalMember = memberRepository.findById(id);
-        if (optionalMember.isPresent()) memberRepository.delete(optionalMember.get());
+        memberRepository.deleteById(id);
     }
 }

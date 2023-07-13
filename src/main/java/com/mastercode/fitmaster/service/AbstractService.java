@@ -2,17 +2,17 @@ package com.mastercode.fitmaster.service;
 
 import java.util.List;
 
-public abstract class AbstractService<T, TDTO, TRepository, TAdapter> {
+public interface AbstractService<T, TDTO> {
 
-    public List<T> getAll();
+    List<T> getAll();
 
-    public T findByID(final Long id);
+    T findByID(final Long id);
 
-    public List<TDTO> getAllDTOs();
+    List<TDTO> getAllDTOs();
 
-    public T create(final T entity);
+    T create(final T entity);
 
-    public T update(final T entity);
+    T update(final T entity);
 
-    public void delete(final Long id);
+    void delete(final Long id);
 }
