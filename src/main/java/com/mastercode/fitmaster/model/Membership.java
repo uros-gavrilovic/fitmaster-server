@@ -32,5 +32,11 @@ public class Membership {
 
     private LocalDate endDate;
 
-    private boolean active; // TODO: Implement
+    @Transient
+    private boolean active;
+
+    @PostLoad
+    private void calculate() {
+        this.active = endDate.isAfter(LocalDate.now());
+    }
 }
