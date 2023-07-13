@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.model.Exercise;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExerciseAdapter implements AbstractAdapter<Exercise, ExerciseDTO> {
+public class ExerciseAdapter extends AbstractAdapter<Exercise, ExerciseDTO> {
 
     @Override
     public Exercise dtoToEntity(ExerciseDTO dto) {

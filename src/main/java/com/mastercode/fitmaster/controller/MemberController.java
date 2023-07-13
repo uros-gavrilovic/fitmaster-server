@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
@@ -18,12 +20,17 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping
-    public List<Member> getAll() {
-        return memberService.getAll();
+    public ResponseEntity<List<Member>> getAll() {
+        return new ResponseEntity<>(memberService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<MemberDTO>> getAllMembers() {
-        return new ResponseEntity<>(memberService.getAllMembers(), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Member> getByID(@PathVariable Long id) {
+        return new ResponseEntity<>(memberService.findByID(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/dto")
+    public ResponseEntity<List<MemberDTO>> getAllDTOs() {
+        return new ResponseEntity<>(memberService.getAllDTOs(), HttpStatus.OK);
     }
 }

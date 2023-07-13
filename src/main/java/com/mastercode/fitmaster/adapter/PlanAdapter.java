@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.model.Plan;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlanAdapter implements AbstractAdapter<Plan, PlanDTO> {
+public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
 
     @Override
     public Plan dtoToEntity(final PlanDTO dto) {
