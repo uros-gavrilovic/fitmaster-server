@@ -22,13 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
-    @Autowired
-    private PackageRepository packageRepository;
-    @Autowired
-    private MembershipRepository membershipRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-
     Faker faker = new Faker();
 
     @Override
