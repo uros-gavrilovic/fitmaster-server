@@ -1,12 +1,13 @@
 package com.mastercode.fitmaster.model;
 
-import com.mastercode.fitmaster.trainer.model.entity.TrainerEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.util.HashSet;
 @Table(name = "plans")
 public class Plan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;
 
@@ -25,12 +26,12 @@ public class Plan {
 
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
-    private TrainerEntity trainerEntity;
+    private Trainer trainer;
 
     private LocalDateTime dateTime;
 
     private String comment;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HashSet<Activity> activities;
+    private Set<Activity> activities = new HashSet<>();
 }

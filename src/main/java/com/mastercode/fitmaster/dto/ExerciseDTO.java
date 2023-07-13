@@ -1,21 +1,18 @@
-package com.mastercode.fitmaster.model;
+package com.mastercode.fitmaster.dto;
 
 import com.mastercode.fitmaster.model.enums.BodyPart;
 import com.mastercode.fitmaster.model.enums.Category;
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "exercises")
-public class Exercise {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+public class ExerciseDTO {
+
     private Long exerciseID;
 
     private String name;
@@ -25,4 +22,5 @@ public class Exercise {
     private Category category;
 
     private String instructions;
+
 }

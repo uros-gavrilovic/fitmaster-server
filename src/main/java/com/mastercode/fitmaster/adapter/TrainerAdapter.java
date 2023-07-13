@@ -1,17 +1,17 @@
-package com.mastercode.fitmaster.trainer.adapter;
+package com.mastercode.fitmaster.adapter;
 
-import com.mastercode.fitmaster.trainer.model.dto.TrainerDTO;
-import com.mastercode.fitmaster.trainer.model.entity.TrainerEntity;
+import com.mastercode.fitmaster.dto.TrainerDTO;
+import com.mastercode.fitmaster.model.Trainer;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TrainerAdapter {
 
-    public TrainerEntity dtoToEntity(final TrainerDTO dto) {
+    public Trainer dtoToEntity(final TrainerDTO dto) {
         if(dto == null)
             return null;
 
-        final TrainerEntity entity = new TrainerEntity();
+        final Trainer entity = new Trainer();
         entity.setTrainerID(dto.getTrainerID());
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
@@ -25,7 +25,7 @@ public class TrainerAdapter {
         return entity;
     }
 
-    public TrainerDTO entityToDTO(final TrainerEntity entity) {
+    public TrainerDTO entityToDTO(final Trainer entity) {
         if(entity == null)
             return null;
 

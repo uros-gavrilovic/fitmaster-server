@@ -1,23 +1,20 @@
-package com.mastercode.fitmaster.trainer.model.entity;
+package com.mastercode.fitmaster.dto;
 
-import com.mastercode.fitmaster.model.Gender;
-import jakarta.persistence.*;
+import com.mastercode.fitmaster.model.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "trainers")
-public class TrainerEntity {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+@NoArgsConstructor
+public class TrainerDTO implements Serializable {
+
     private Long trainerID;
 
     private String firstName;
@@ -35,4 +32,5 @@ public class TrainerEntity {
     private String address;
 
     private LocalDate hireDate;
+
 }
