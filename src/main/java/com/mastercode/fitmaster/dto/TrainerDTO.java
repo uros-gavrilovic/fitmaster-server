@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainerDTO implements Serializable {
+public class TrainerDTO extends UserDTO implements Serializable {
 
     private Long trainerID;
 
@@ -22,10 +22,6 @@ public class TrainerDTO implements Serializable {
     private String lastName;
 
     private Gender gender;
-
-    private String username;
-
-    private String password;
 
     private String phoneNumber;
 
