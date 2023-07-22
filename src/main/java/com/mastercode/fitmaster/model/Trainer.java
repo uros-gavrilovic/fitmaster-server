@@ -24,6 +24,7 @@ public class Trainer {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Gender gender;
 
     private String username;

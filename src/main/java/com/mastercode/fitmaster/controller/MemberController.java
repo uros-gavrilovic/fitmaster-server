@@ -3,17 +3,15 @@ package com.mastercode.fitmaster.controller;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.service.MemberService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
 @RequestMapping("/api/member")
 public class MemberController {
     @Autowired
@@ -32,5 +30,11 @@ public class MemberController {
     @GetMapping("/dto")
     public ResponseEntity<List<MemberDTO>> getAllDTOs() {
         return new ResponseEntity<>(memberService.getAllDTOs(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Member> createMember(@RequestBody Member member) {
+        Member createdMember = memberService.create(member);
+        return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
     }
 }

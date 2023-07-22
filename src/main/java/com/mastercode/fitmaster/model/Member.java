@@ -27,6 +27,7 @@ public class Member {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Gender gender;
 
     private String address;

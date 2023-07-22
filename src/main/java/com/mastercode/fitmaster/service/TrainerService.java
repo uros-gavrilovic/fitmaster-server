@@ -70,8 +70,7 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     public TrainerDTO register(TrainerDTO dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(dto.getUsername());
 
-        if(!optionalTrainer.isEmpty())
-            throw new LoginException("Login already exists");
+        if(optionalTrainer.isPresent()) throw new LoginException("Login already exists");
 
         Trainer trainer = trainerAdapter.dtoToEntity(dto);
         trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
