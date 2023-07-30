@@ -20,6 +20,7 @@ public class PackageController {
     @Autowired
     private PackageService packageService;
 
+    @GetMapping
     public List<Package> getAll() {
         return packageService.getAll();
     }
