@@ -29,9 +29,9 @@ public class AuthenticationController {
         return new ResponseEntity<>(trainerDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<TrainerDTO> register(@RequestBody TrainerDTO dto) {
-        TrainerDTO createdTrainer = trainerService.register(dto);
+    @PostMapping("/register-trainer")
+    public ResponseEntity<TrainerDTO> registerTrainer(@RequestBody TrainerDTO dto) {
+        TrainerDTO createdTrainer = trainerService.registerTrainer(dto);
         createdTrainer.setToken(userAuthenticationProvider.createToken(dto.getUsername()));
         return new ResponseEntity<>(createdTrainer, HttpStatus.OK);
     }

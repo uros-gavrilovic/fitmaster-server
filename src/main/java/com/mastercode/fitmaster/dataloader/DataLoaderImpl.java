@@ -31,9 +31,9 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     @Override
     void loadTestData() {
-        loadPackages(0);
-        loadMembers(0);
-        loadTrainers(0);
+//        loadPackages(5);
+//        loadMembers(4);
+//        loadTrainers(5);
     }
 
     private void loadPackages(int counter) {
@@ -41,7 +41,8 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Package p = new Package();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
-            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100))));
+            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100).replace(',', '.'))));
+            // Localization of PostgreSQL might cause issues with number formatting (eg. ',' and '.' characters).
 
             packageRepository.saveAndFlush(p);
         }

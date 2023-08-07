@@ -60,17 +60,17 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
 
     public TrainerDTO login(TrainerDTO dto) {
         Trainer trainer = trainerRepository.findByUsername(dto.getUsername()).
-                orElseThrow(() -> new LoginException("Unknown trainer"));
+                orElseThrow(() -> new LoginException("Invalid username or password.", HttpStatus.UNAUTHORIZED));
 
         if(passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword()))
             return trainerAdapter.entityToDTO(trainer);
-        throw new LoginException("Invalid password");
+        throw new LoginException("Invalid username or password.", HttpStatus.UNAUTHORIZED);
     }
 
-    public TrainerDTO register(TrainerDTO dto) {
+    public TrainerDTO registerTrainer(TrainerDTO dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(dto.getUsername());
 
-        if(optionalTrainer.isPresent()) throw new LoginException("Login already exists");
+        if(optionalTrainer.isPresent()) throw new LoginException("This username is already taken.", HttpStatus.CONFLICT);
 
         Trainer trainer = trainerAdapter.dtoToEntity(dto);
         trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
@@ -82,7 +82,7 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
 
     public UserDTO findByUsername(String username) {
         Trainer trainer = trainerRepository.findByUsername(username).
-                orElseThrow(() -> new LoginException("Unknown trainer"));
+                orElseThrow(() -> new LoginException("Unknown trainer", HttpStatus.NOT_FOUND));
         return trainerAdapter.entityToDTO(trainer);
     }
 }

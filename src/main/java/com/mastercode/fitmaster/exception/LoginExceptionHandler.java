@@ -11,13 +11,18 @@ import java.util.Map;
 
 @ControllerAdvice
 public class LoginExceptionHandler {
-
     @ResponseBody
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<Object> exceptionHandler(LoginException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", exception.getMessage());
-        return new ResponseEntity<>(errorMap, HttpStatus.UNAUTHORIZED);
-    }
 
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR; // Default status
+
+        if (exception.getHttpStatus() != null) {
+            httpStatus = exception.getHttpStatus();
+        }
+
+        return new ResponseEntity<>(errorMap, httpStatus);
+    }
 }

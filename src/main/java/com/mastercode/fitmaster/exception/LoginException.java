@@ -1,9 +1,17 @@
 package com.mastercode.fitmaster.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class LoginException extends RuntimeException {
 
-    public LoginException(String message) {
+    private final HttpStatus httpStatus;
+
+    public LoginException(String message, HttpStatus httpStatus) {
         super(message);
+        this.httpStatus = httpStatus;
     }
 
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 }

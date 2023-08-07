@@ -28,9 +28,9 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/login-trainer", "/login-member", "/register").permitAll()
-                        .anyRequest().authenticated())
-        ;
+                        .requestMatchers(HttpMethod.POST, "/login-trainer", "/login-member", "/register-trainer").permitAll()
+                        .anyRequest().authenticated());
+                // TODO: Create a file that contains each permitted API endpoint instead of listing them here.
         return http.build();
     }
 }
