@@ -20,8 +20,10 @@ public class Exercise {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private BodyPart bodyPart;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private String instructions;

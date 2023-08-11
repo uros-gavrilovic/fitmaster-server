@@ -1,0 +1,2 @@
+INSERT INTO Trainers(id, firstName, lastName, gender, username, password, phoneNumber, address, hireDate)
+VALUES(0, 'Admin', 'Admin', null, 'a', '$2a$10$J.9pXUqatn9refoM3GefnuH2bfGuJyAdz2qF3CaHNBlhW3wvvTXHf2', null, null, null)

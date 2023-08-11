@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService implements AbstractService<Member, MemberDTO> {
@@ -46,5 +47,9 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     @Override
     public void delete(Long id) {
         memberRepository.deleteById(id);
+    }
+
+    public Map<String, Object> getMemberStatistics() {
+        return memberRepository.getMemberStatistics();
     }
 }

@@ -26,6 +26,10 @@ public class Member {
 
     private String lastName;
 
+    private String username;
+
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Gender gender;

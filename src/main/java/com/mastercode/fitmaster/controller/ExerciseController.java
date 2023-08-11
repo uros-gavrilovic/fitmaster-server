@@ -1,5 +1,6 @@
 package com.mastercode.fitmaster.controller;
 
+import com.mastercode.fitmaster.dto.ExerciseDTO;
 import com.mastercode.fitmaster.model.Exercise;
 import com.mastercode.fitmaster.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class ExerciseController {
     @Autowired
     private ExerciseService exerciseService;
 
-    @GetMapping
-    public List<Exercise> getAll() {
-        return exerciseService.getAll();
+    @GetMapping("/dto")
+    public List<ExerciseDTO> getAllDTOs() {
+        return exerciseService.getAllDTOs();
     }
 }

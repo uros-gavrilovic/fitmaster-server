@@ -11,6 +11,7 @@ import com.mastercode.fitmaster.repository.MembershipRepository;
 import com.mastercode.fitmaster.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,14 +27,14 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadTestData();
+//        loadTestData();
     }
 
     @Override
     void loadTestData() {
-//        loadPackages(5);
-//        loadMembers(4);
-//        loadTrainers(5);
+        loadPackages(5);
+        loadMembers(5);
+        loadTrainers(5);
     }
 
     private void loadPackages(int counter) {
@@ -54,6 +55,8 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
+            m.setUsername(faker.name().username());
+            m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             m.setAddress(faker.address().streetAddress());
             m.setPhoneNumber(faker.phoneNumber().cellPhone());
@@ -80,7 +83,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             t.setAddress(faker.address().streetAddress());
             t.setUsername(faker.name().username());
-            t.setPassword(faker.internet().password(8, 32));
+            t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.phoneNumber().cellPhone());
             t.setHireDate(LocalDate.ofInstant(faker.date().between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
 

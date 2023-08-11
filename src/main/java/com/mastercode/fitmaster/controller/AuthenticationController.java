@@ -36,4 +36,5 @@ public class AuthenticationController {
         return new ResponseEntity<>(createdTrainer, HttpStatus.OK);
     }
 
+    // TODO: Create a log-out method that invalidates token.
 }
