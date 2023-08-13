@@ -29,8 +29,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, "/login-trainer", "/login-member", "/register-trainer").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/app-info").permitAll()
                         .anyRequest().authenticated());
-                // TODO: Create a file that contains each permitted API endpoint instead of listing them here.
+        // TODO: Create a file that contains each permitted API endpoint instead of listing them here.
         return http.build();
     }
 }

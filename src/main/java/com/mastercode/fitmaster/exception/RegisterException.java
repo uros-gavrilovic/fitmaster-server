@@ -7,13 +7,14 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-public class LoginException extends RuntimeException {
+public class RegisterException extends RuntimeException {
     private final String title;
     private final HttpStatus httpStatus;
 
-    public LoginException(String message, HttpStatus httpStatus) {
+    public RegisterException(String message, HttpStatus httpStatus) {
         super(message);
-        this.title = DescriptionUtils.getErrorDescription("LOGIN_ERROR");
+        this.title = DescriptionUtils.getErrorDescription("REGISTRATION_ERROR");
         this.httpStatus = httpStatus;
     }
+
 }
