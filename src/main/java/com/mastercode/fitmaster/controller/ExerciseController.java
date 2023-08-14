@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mastercode.fitmaster.dto.ExerciseDTO;
-import com.mastercode.fitmaster.model.Exercise;
 import com.mastercode.fitmaster.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,5 +20,10 @@ public class ExerciseController {
     @GetMapping("/dto")
     public List<ExerciseDTO> getAllDTOs() {
         return exerciseService.getAllDTOs();
+    }
+
+    @GetMapping("/filters")
+    public ObjectNode getAllFilters() {
+        return exerciseService.getAllFilters();
     }
 }
