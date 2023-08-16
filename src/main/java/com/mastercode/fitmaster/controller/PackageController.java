@@ -6,10 +6,7 @@ import com.mastercode.fitmaster.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +30,17 @@ public class PackageController {
     @GetMapping("/{id}")
     public ResponseEntity<Package> getPackageById(@PathVariable Long id) {
         return new ResponseEntity<>(packageService.findByID(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Package> deletePackage(@PathVariable Long id) {
+        packageService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<Package> savePackage(@RequestBody Package entity) {
+        return new ResponseEntity<>(packageService.create(entity), HttpStatus.CREATED);
     }
 
 }
