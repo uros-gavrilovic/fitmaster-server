@@ -1,18 +1,22 @@
 package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "memberships")
 public class Membership {
     @Id

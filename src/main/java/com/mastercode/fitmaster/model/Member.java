@@ -1,10 +1,12 @@
 package com.mastercode.fitmaster.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
@@ -13,9 +15,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "members")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
