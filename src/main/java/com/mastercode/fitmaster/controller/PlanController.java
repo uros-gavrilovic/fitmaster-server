@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/plan")
@@ -28,6 +29,7 @@ public class PlanController {
 
     @PostMapping
     public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException {
+        // TODO: Move to service.
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);
@@ -56,5 +58,11 @@ public class PlanController {
 
         Plan createdPlan = planService.create(plan);
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/trainer/{id}")
+    public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
+        Set<Plan> plans = planService.findByTrainerId(id);
+        return new ResponseEntity<>(plans, HttpStatus.OK);
     }
 }
