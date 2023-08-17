@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "members")

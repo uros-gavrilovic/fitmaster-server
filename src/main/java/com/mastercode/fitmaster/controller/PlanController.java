@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -33,45 +33,26 @@ public class PlanController {
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 
         Plan plan = new Plan();
-
         plan.setTrainer(objectMapper.treeToValue(jsonNode.get("trainer"), Trainer.class));
         plan.setMember(objectMapper.treeToValue(jsonNode.get("member"), Member.class));
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-        plan.setDateTime(LocalDateTime.parse(jsonNode.get("dateTime").asText(), formatter));
-        plan.setComment(jsonNode.get("comment").asText());
+        plan.setDateTime(Instant.parse(jsonNode.get("dateTime").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
 
-//        int index = 0;
-        int[] index = {0}; // Wrap index in an array to make it effectively final
-        jsonNode.get("exercises").forEach((exerciseObject) -> {
-                    try {
-                        Activity activity = new Activity();
+        JsonNode exercisesNode = jsonNode.get("exercises");
+        for (JsonNode exerciseNode : exercisesNode) {
+            try {
+                Exercise exercise = objectMapper.treeToValue(exerciseNode, Exercise.class);
 
-                        activity.setPlan(plan);
-                        activity.setExercise(objectMapper.treeToValue(jsonNode.get("exercises"), Exercise[].class)[index[0]++]);
-                        activity.setReps(exerciseObject.get("reps").asInt());
-                        activity.setSets(exerciseObject.get("sets").asInt());
+                Activity activity = new Activity();
+                activity.setPlan(plan);
+                activity.setExercise(exercise);
+                activity.setReps(exerciseNode.get("reps").asInt());
+                activity.setSets(exerciseNode.get("sets").asInt());
 
-                        plan.getActivities().add(activity);
-
-// ---------------------------------
-
-//                        Activity activity = new Activity();
-//
-//                        activity.setPlan(plan);
-//
-//                        // Convert exerciseNode to Exercise object
-//                        Exercise exercise = objectMapper.treeToValue(exerciseNode, Exercise.class);
-//                        activity.setExercise(exercise);
-//
-//                        activity.setReps(exerciseNode.get("reps").asInt());
-//                        activity.setSets(exerciseNode.get("sets").asInt());
-//
-//                        plan.getActivities().add(activity);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
+                plan.getActivities().add(activity);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         Plan createdPlan = planService.create(plan);
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);

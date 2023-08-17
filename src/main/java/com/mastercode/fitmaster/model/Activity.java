@@ -4,17 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "activities")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ordinalNumber")
     private Integer ordinalNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,4 +29,5 @@ public class Activity {
     private Integer sets;
 
     private String comment;
+
 }
