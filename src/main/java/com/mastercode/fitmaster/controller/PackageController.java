@@ -32,15 +32,15 @@ public class PackageController {
         return new ResponseEntity<>(packageService.findByID(id), HttpStatus.OK);
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<Package> savePackage(@RequestBody Package entity) {
+        return new ResponseEntity<>(packageService.create(entity), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Package> deletePackage(@PathVariable Long id) {
         packageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<Package> savePackage(@RequestBody Package entity) {
-        return new ResponseEntity<>(packageService.create(entity), HttpStatus.CREATED);
     }
 
 }

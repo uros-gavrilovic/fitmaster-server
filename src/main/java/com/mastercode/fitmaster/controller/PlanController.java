@@ -29,7 +29,6 @@ public class PlanController {
 
     @PostMapping
     public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException {
-        // TODO: Move to service.
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);
@@ -37,7 +36,9 @@ public class PlanController {
         Plan plan = new Plan();
         plan.setTrainer(objectMapper.treeToValue(jsonNode.get("trainer"), Trainer.class));
         plan.setMember(objectMapper.treeToValue(jsonNode.get("member"), Member.class));
-        plan.setDateTime(Instant.parse(jsonNode.get("dateTime").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
+        // TODO: Localization issues causes wrong time to be saved in DB.
+        plan.setStartsAt(Instant.parse(jsonNode.get("startsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
+        plan.setEndsAt(Instant.parse(jsonNode.get("endsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
 
         JsonNode exercisesNode = jsonNode.get("exercises");
         for (JsonNode exerciseNode : exercisesNode) {
@@ -64,5 +65,11 @@ public class PlanController {
     public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
         Set<Plan> plans = planService.findByTrainerId(id);
         return new ResponseEntity<>(plans, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Plan> deletePlan(@PathVariable Long id) {
+        planService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

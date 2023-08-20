@@ -22,14 +22,15 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Member> getByID(@PathVariable Long id) {
-        return new ResponseEntity<>(memberService.findByID(id), HttpStatus.OK);
-    }
 
     @GetMapping("/dto")
     public ResponseEntity<List<MemberDTO>> getAllDTOs() {
         return new ResponseEntity<>(memberService.getAllDTOs(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Member> getByID(@PathVariable Long id) {
+        return new ResponseEntity<>(memberService.findByID(id), HttpStatus.OK);
     }
 
     @PostMapping

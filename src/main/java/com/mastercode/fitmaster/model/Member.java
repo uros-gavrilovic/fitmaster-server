@@ -1,5 +1,6 @@
 package com.mastercode.fitmaster.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
@@ -28,20 +29,27 @@ public class Member {
 
     private String lastName;
 
+    @JsonIgnore
     private String username;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Gender gender;
 
+    @JsonIgnore
     private String address;
 
+    @JsonIgnore
     private String phoneNumber;
 
+    @JsonIgnore
     private LocalDate birthDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private Set<Membership> memberships = new HashSet<>();

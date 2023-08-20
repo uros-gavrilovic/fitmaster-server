@@ -13,7 +13,8 @@ public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
         final Plan entity = new Plan();
 
         entity.setPlanID(dto.getPlanID());
-        entity.setDateTime(dto.getDateTime());
+        entity.setStartsAt(dto.getStartsAt());
+        entity.setEndsAt(dto.getEndsAt());
         entity.setComment(dto.getComment());
 
         return entity;
@@ -25,7 +26,8 @@ public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
         final PlanDTO dto = new PlanDTO();
 
         dto.setPlanID(entity.getPlanID());
-        dto.setDateTime(entity.getDateTime());
+        dto.setStartsAt(entity.getStartsAt());
+        dto.setEndsAt(entity.getEndsAt());
         dto.setComment(entity.getComment());
 
         return dto;
