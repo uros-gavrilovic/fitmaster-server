@@ -2,6 +2,8 @@ package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "members")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder({ "memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships" })
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,22 +38,18 @@ public class Member {
     @JsonIgnore
     private String password;
 
-    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Gender gender;
 
-    @JsonIgnore
     private String address;
 
-    @JsonIgnore
     private String phoneNumber;
 
-    @JsonIgnore
     private LocalDate birthDate;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "member")
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    @JsonManagedReference
     private Set<Membership> memberships = new HashSet<>();
 }
