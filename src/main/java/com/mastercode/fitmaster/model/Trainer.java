@@ -26,23 +26,17 @@ public class Trainer {
 
     private String lastName;
 
-    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Gender gender;
 
-    @JsonIgnore
     private String username;
 
-    @JsonIgnore
     private String password;
 
-    @JsonIgnore
     private String phoneNumber;
 
-    @JsonIgnore
     private String address;
 
-    @JsonIgnore
     private LocalDate hireDate;
 }

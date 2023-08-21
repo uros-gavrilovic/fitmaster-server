@@ -52,7 +52,7 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
 
     @Override
     public Trainer update(Trainer entity) {
-        return null; // TODO
+        return trainerRepository.saveAndFlush(entity);
     }
 
     @Override
@@ -61,11 +61,12 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     }
 
     public TrainerDTO login(TrainerDTO dto) {
-        Trainer trainer = trainerRepository.findByUsername(dto.getUsername()).
-                orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
+        Trainer trainer = trainerRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
 
         if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword()))
             return trainerAdapter.entityToDTO(trainer);
+
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
@@ -77,15 +78,25 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
 
         Trainer trainer = trainerAdapter.dtoToEntity(dto);
         trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        Trainer createdTrainer = trainerRepository.save(trainer);
 
-        Trainer saved = trainerRepository.save(trainer);
-
-        return trainerAdapter.entityToDTO(saved);
+        return trainerAdapter.entityToDTO(createdTrainer);
     }
 
     public UserDTO findByUsername(String username) {
-        Trainer trainer = trainerRepository.findByUsername(username).
-                orElseThrow(() -> new LoginException("Unknown trainer", HttpStatus.NOT_FOUND));
+        Trainer trainer = trainerRepository.findByUsername(username)
+                .orElseThrow(() -> new LoginException("Unknown trainer", HttpStatus.NOT_FOUND));
         return trainerAdapter.entityToDTO(trainer);
+    }
+
+    public Trainer changePassword(Long trainerID, String oldPassword, String newPassword) {
+        Trainer trainer = trainerRepository.getByTrainerID(trainerID);
+
+        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), trainer.getPassword())) {
+            trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
+            return trainerRepository.saveAndFlush(trainer);
+        }
+
+        throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 }
