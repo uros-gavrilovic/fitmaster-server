@@ -41,7 +41,7 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
 
     @Override
     public Member update(Member entity) {
-        return null; // TODO
+        return memberRepository.saveAndFlush(entity);
     }
 
     @Override
