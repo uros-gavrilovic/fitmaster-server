@@ -16,7 +16,9 @@ public class PlanDTO implements Serializable {
 
     private Long planID;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime startsAt;
+
+    private LocalDateTime endsAt;
 
     private String comment;
 

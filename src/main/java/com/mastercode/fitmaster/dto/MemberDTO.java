@@ -28,4 +28,5 @@ public class MemberDTO {
 
     private LocalDate birthDate;
 
+    private Boolean active;
 }

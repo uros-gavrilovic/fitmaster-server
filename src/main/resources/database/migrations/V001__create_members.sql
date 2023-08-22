@@ -6,6 +6,8 @@ CREATE TABLE members
     gender      VARCHAR(32),
     address     VARCHAR(255),
     phoneNumber VARCHAR(255),
+    username    VARCHAR(255),
+    password    VARCHAR(255),
     birthDate   DATE,
 
     CONSTRAINT pk_members PRIMARY KEY (id)

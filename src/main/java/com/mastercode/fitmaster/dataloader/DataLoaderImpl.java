@@ -4,13 +4,10 @@ import com.github.javafaker.Faker;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.model.Membership;
 import com.mastercode.fitmaster.model.Package;
-import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.Trainer;
-import com.mastercode.fitmaster.repository.MemberRepository;
-import com.mastercode.fitmaster.repository.MembershipRepository;
-import com.mastercode.fitmaster.repository.PackageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mastercode.fitmaster.model.enums.Gender;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -22,25 +19,18 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
-    @Autowired
-    private PackageRepository packageRepository;
-    @Autowired
-    private MembershipRepository membershipRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-
     Faker faker = new Faker();
 
     @Override
     public void run(String... args) throws Exception {
-        loadTestData();
+//        loadTestData();
     }
 
     @Override
     void loadTestData() {
-        loadPackages(0);
-        loadMembers(0);
-        loadTrainers(0);
+        loadPackages(5);
+        loadMembers(10);
+        loadTrainers(5);
     }
 
     private void loadPackages(int counter) {
@@ -48,7 +38,8 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Package p = new Package();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
-            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100))));
+            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100).replace(',', '.'))));
+            // Localization of PostgreSQL might cause issues with number formatting (eg. ',' and '.' characters).
 
             packageRepository.saveAndFlush(p);
         }
@@ -60,6 +51,8 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
+            m.setUsername(faker.name().username());
+            m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             m.setAddress(faker.address().streetAddress());
             m.setPhoneNumber(faker.phoneNumber().cellPhone());
@@ -86,7 +79,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             t.setAddress(faker.address().streetAddress());
             t.setUsername(faker.name().username());
-            t.setPassword(faker.internet().password(8, 32));
+            t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.phoneNumber().cellPhone());
             t.setHireDate(LocalDate.ofInstant(faker.date().between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
 

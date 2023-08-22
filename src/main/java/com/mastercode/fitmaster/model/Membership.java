@@ -1,5 +1,9 @@
 package com.mastercode.fitmaster.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "memberships")
 public class Membership {
     @Id
@@ -19,6 +24,7 @@ public class Membership {
     @Column(name = "id")
     private Long membershipID;
 
+    @JsonBackReference
     @ManyToOne
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "member_id", referencedColumnName = "id")

@@ -1,14 +1,17 @@
 package com.mastercode.fitmaster.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -24,6 +27,7 @@ public class Trainer {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private Gender gender;
 
     private String username;
