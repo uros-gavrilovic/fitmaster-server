@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The ActivityController class handles HTTP requests related to fitness activities.
+ */
 @RestController
 @RequestMapping(value = "/api/activity")
 public class ActivityController {
@@ -16,9 +19,13 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    /**
+     * Retrieves a list of all fitness activities.
+     *
+     * @return A list of Activity objects representing fitness activities.
+     */
     @GetMapping
     public List<Activity> getAll() {
         return activityService.getAll();
     }
-
 }

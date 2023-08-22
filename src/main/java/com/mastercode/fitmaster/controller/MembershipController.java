@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The MembershipController class handles HTTP requests related to fitness memberships.
+ */
 @RestController
 @RequestMapping(value = "/api/membership")
 public class MembershipController {
@@ -16,6 +19,11 @@ public class MembershipController {
     @Autowired
     private MembershipService membershipService;
 
+    /**
+     * Retrieves a list of all fitness memberships.
+     *
+     * @return A list of Membership objects representing fitness memberships.
+     */
     @GetMapping
     public List<Membership> getAll() {
         return membershipService.getAll();

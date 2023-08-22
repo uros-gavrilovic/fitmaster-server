@@ -16,17 +16,34 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The PlanController class handles HTTP requests related to fitness plans.
+ */
 @RestController
 @RequestMapping("/api/plan")
 public class PlanController {
     @Autowired
     private PlanService planService;
 
+    /**
+     * Retrieves a list of all fitness plans.
+     *
+     * @return A list of Plan objects representing fitness plans.
+     */
     @GetMapping
     public List<Plan> getAll() {
         return planService.getAll();
     }
 
+    /**
+     * Creates a new fitness plan based on the provided JSON request.
+     *
+     * @param jsonResponse The JSON request containing plan information.
+     *
+     * @return A ResponseEntity containing the created Plan object and a status code of CREATED (201).
+     *
+     * @throws JsonProcessingException If there's an issue processing the JSON request.
+     */
     @PostMapping
     public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -61,12 +78,27 @@ public class PlanController {
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves a list of fitness plans by trainer ID.
+     *
+     * @param id The unique ID of the trainer.
+     *
+     * @return A ResponseEntity containing a set of Plan objects associated with the trainer
+     * and a status code of OK (200).
+     */
     @GetMapping("/trainer/{id}")
     public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
         Set<Plan> plans = planService.findByTrainerId(id);
         return new ResponseEntity<>(plans, HttpStatus.OK);
     }
 
+    /**
+     * Deletes a fitness plan by its unique ID.
+     *
+     * @param id The unique ID of the plan to delete.
+     *
+     * @return A ResponseEntity with a status code of NO_CONTENT (204) if the plan was successfully deleted.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Plan> deletePlan(@PathVariable Long id) {
         planService.delete(id);
