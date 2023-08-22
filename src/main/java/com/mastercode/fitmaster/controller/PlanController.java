@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mastercode.fitmaster.model.*;
 import com.mastercode.fitmaster.service.PlanService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Set;
 /**
  * The PlanController class handles HTTP requests related to fitness plans.
  */
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/plan")
 public class PlanController {

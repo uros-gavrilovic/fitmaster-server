@@ -3,6 +3,7 @@ package com.mastercode.fitmaster.controller;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.service.MemberService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * The MemberController class handles HTTP requests related to members of a fitness club.
  */
+@AllArgsConstructor
 @RestController()
 @RequestMapping("/api/member")
 public class MemberController {
@@ -93,8 +95,7 @@ public class MemberController {
      *
      * @param id The unique ID of the member to delete.
      *
-     * @return A ResponseEntity with a status code of NO_CONTENT (204) if the member was successfully deleted,
-     * or a 404 status code if the member is not found.
+     * @return A ResponseEntity with a status code of NO_CONTENT (204) if the member was successfully deleted.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Member> deleteMember(@PathVariable Long id) {
