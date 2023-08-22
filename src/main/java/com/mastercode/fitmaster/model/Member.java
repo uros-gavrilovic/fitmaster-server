@@ -15,21 +15,26 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The Member class represents a fitness club member.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "members")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({ "memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships" })
+@JsonPropertyOrder({"memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships"})
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long memberID;
 
+    /** The first name of the member. */
     private String firstName;
 
+    /** The last name of the member. */
     private String lastName;
 
     @JsonIgnore
@@ -38,16 +43,25 @@ public class Member {
     @JsonIgnore
     private String password;
 
+    /** The gender of the member. */
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Gender gender;
 
+    /** The address of the member. */
     private String address;
 
+    /** The phone number of the member. */
     private String phoneNumber;
 
+    /** The birth date of the member. */
     private LocalDate birthDate;
 
+    /**
+     * A set of memberships associated with the member.
+     *
+     * @see Membership
+     */
     @OneToMany(mappedBy = "member")
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JsonManagedReference

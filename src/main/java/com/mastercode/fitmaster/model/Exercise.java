@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Exercise class represents a fitness exercise.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,14 +23,17 @@ public class Exercise {
     @Column(name = "id", nullable = false)
     private Long exerciseID;
 
+    /** The name of the exercise. */
     private String name;
 
+    /** The body part targeted by the exercise. */
     @Enumerated(EnumType.STRING)
     private BodyPart bodyPart;
 
+    /** The category to which the exercise belongs. */
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    /** Instructions for performing the exercise. */
     private String instructions;
-
 }
