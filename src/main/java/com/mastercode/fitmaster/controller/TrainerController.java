@@ -3,10 +3,10 @@ package com.mastercode.fitmaster.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mastercode.fitmaster.adapter.TrainerAdapter;
 import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.TrainerService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,13 @@ import java.util.List;
 /**
  * The TrainerController class handles HTTP requests related to fitness trainers.
  */
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/api/trainer")
 public class TrainerController {
 
     @Autowired
     private TrainerService trainerService;
-    @Autowired
-    private TrainerAdapter trainerAdapter;
 
     /**
      * Retrieves a list of all fitness trainers.
