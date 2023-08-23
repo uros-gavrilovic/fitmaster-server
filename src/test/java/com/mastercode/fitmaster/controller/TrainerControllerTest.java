@@ -5,7 +5,9 @@ import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.TrainerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,14 +19,16 @@ import static org.mockito.Mockito.when;
 
 public class TrainerControllerTest {
 
+    @InjectMocks
     private TrainerController trainerController;
+    @Mock
     private TrainerService trainerService;
+    @Mock
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
-        trainerService = Mockito.mock(TrainerService.class);
-        trainerController = new TrainerController(trainerService);
+        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(trainerController).build();
     }
 

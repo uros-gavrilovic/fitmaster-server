@@ -10,8 +10,9 @@ import com.mastercode.fitmaster.service.UserService;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,32 +21,31 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    @MockBean
-    private TrainerService trainerService;
-
-    @MockBean
-    private UserService userService;
-
-    @MockBean
-    private MemberService memberService;
-
+    @InjectMocks
     private UserController userController;
 
+
+    @Mock
+    private TrainerService trainerService;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private MemberService memberService;
+
+    @Mock
     private TrainerDTO trainerDTO;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        trainerDTO = new TrainerDTO();
-        trainerService = mock(TrainerService.class);
-        userController = new UserController(userService, trainerService, memberService);
+        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 

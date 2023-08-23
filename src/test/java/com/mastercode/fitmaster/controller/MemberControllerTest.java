@@ -5,6 +5,9 @@ import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -13,21 +16,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class MemberControllerTest {
 
+    @InjectMocks
     private MemberController memberController;
+    @Mock
     private MemberService memberService;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
-        memberService = mock(MemberService.class);
-        memberController = new MemberController(memberService);
+        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
     }
 
@@ -69,20 +72,20 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.lastName").value(member.getLastName()));
     }
 
-    //    @Test
-    //    public void testCreateMember() throws Exception {
-    //        Member newMember = new Member();
-    //        newMember.setFirstName("John");
-    //        newMember.setLastName("Doe");
-    //
-    //        when(memberService.create(any(Member.class))).thenReturn(newMember);
-    //
-    //        mockMvc.perform(post("/api/member").contentType(MediaType.APPLICATION_JSON).content(asJsonString(newMember)))
-    //                .andExpect(status().isCreated())
-    //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-    //                .andExpect(jsonPath("$.firstName").value(newMember.getFirstName()))
-    //                .andExpect(jsonPath("$.lastName").value(newMember.getLastName()));
-    //    }
+    @Test
+    public void testCreateMember() throws Exception {
+        Member newMember = new Member();
+        newMember.setFirstName("TEST_FIRSTNAME");
+        newMember.setLastName("TEST_LASTNAME");
+
+        when(memberService.create(any(Member.class))).thenReturn(newMember);
+
+        mockMvc.perform(post("/api/member").contentType(MediaType.APPLICATION_JSON).content(asJsonString(newMember)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.firstName").value(newMember.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(newMember.getLastName()));
+    }
 
     @Test
     public void testUpdateMember() throws Exception {
