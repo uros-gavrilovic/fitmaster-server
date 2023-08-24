@@ -1,6 +1,5 @@
 package com.mastercode.fitmaster.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -21,8 +20,8 @@ import java.util.Set;
 @Entity
 @Table(name = "members")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({ "memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships" })
-public class Member {
+@JsonPropertyOrder({"memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships"})
+public class Member extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,12 +30,6 @@ public class Member {
     private String firstName;
 
     private String lastName;
-
-    @JsonIgnore
-    private String username;
-
-    @JsonIgnore
-    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)

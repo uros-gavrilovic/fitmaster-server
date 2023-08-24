@@ -1,6 +1,5 @@
 package com.mastercode.fitmaster.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mastercode.fitmaster.model.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "trainers")
-public class Trainer {
+public class Trainer extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,13 +29,10 @@ public class Trainer {
     @Column(nullable = true)
     private Gender gender;
 
-    private String username;
-
-    private String password;
-
     private String phoneNumber;
 
     private String address;
 
     private LocalDate hireDate;
+
 }
