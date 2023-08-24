@@ -5,9 +5,6 @@ import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.model.Membership;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
 
@@ -17,6 +14,8 @@ public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
         final Member entity = new Member();
 
         entity.setMemberID(dto.getMemberID());
+        entity.setUsername(dto.getUsername());
+        entity.setPassword(dto.getPassword());
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setGender(dto.getGender());
@@ -33,6 +32,8 @@ public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
         final MemberDTO dto = new MemberDTO();
 
         dto.setMemberID(entity.getMemberID());
+        dto.setUsername(entity.getUsername());
+        dto.setPassword(entity.getPassword());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setGender(entity.getGender());
