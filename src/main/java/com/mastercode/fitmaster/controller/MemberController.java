@@ -1,9 +1,9 @@
 package com.mastercode.fitmaster.controller;
 
+import com.mastercode.fitmaster.adapter.MemberAdapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.service.MemberService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,8 @@ import java.util.List;
 public class MemberController {
     @Autowired
     private MemberService memberService;
-
+    @Autowired
+    private MemberAdapter memberAdapter;
     @GetMapping
     public ResponseEntity<List<Member>> getAll() {
         return new ResponseEntity<>(memberService.getAll(), HttpStatus.OK);
@@ -40,9 +41,9 @@ public class MemberController {
     }
 
     @PutMapping
-    public ResponseEntity<Member> updateMember(@RequestBody Member member) {
-        Member updatedMember = memberService.update(member);
-        return new ResponseEntity<>(updatedMember, HttpStatus.OK);
+    public ResponseEntity<MemberDTO> updateMember(@RequestBody MemberDTO dto) {
+        Member member = memberAdapter.dtoToEntity(dto);
+        return new ResponseEntity<>(memberAdapter.entityToDTO(memberService.update(member)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
