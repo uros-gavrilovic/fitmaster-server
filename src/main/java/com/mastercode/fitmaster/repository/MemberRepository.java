@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -24,4 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             + "    GROUP BY mb.id\n"
             + ") AS latest_memberships;")
     Map<String, Object> getMemberStatistics();
+
+    @Query("select m from Member m where m.username = ?1")
+    Optional<Member> findByUsername(String username);
 }

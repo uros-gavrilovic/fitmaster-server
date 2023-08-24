@@ -1,6 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.config.UserAuthenticationProvider;
+import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
@@ -50,5 +51,18 @@ public class UserController {
         return new ResponseEntity<>(createdTrainer, HttpStatus.OK);
     }
 
-    // TODO: Create a log-out method that invalidates token.
+    @PostMapping("/login-member")
+    public ResponseEntity<MemberDTO> loginMember(@RequestBody MemberDTO dto) {
+        MemberDTO memberDTO = memberService.login(dto);
+        memberDTO.setToken(userAuthenticationProvider.createToken(memberDTO.getUsername()));
+        return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/register-member")
+    public ResponseEntity<MemberDTO> registerMember(@RequestBody MemberDTO dto) {
+        MemberDTO createdMember = memberService.registerMember(dto);
+        createdMember.setToken(userAuthenticationProvider.createToken(dto.getUsername()));
+        return new ResponseEntity<>(createdMember, HttpStatus.OK);
+    }
+
 }
