@@ -4,6 +4,7 @@ import com.mastercode.fitmaster.adapter.MemberAdapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
+import com.mastercode.fitmaster.exception.UserException;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.repository.MemberRepository;
 import com.mastercode.fitmaster.util.DescriptionUtils;
@@ -51,6 +52,11 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
 
     @Override
     public Member update(Member entity) {
+        Member member = memberRepository.findById(entity.getMemberID()).
+                orElseThrow(() ->
+                        new UserException("Member with id " + entity.getMemberID() + " does not exist", HttpStatus.NOT_FOUND));
+        entity.setPassword(member.getPassword());
+        entity.setUsername(member.getUsername());
         return memberRepository.saveAndFlush(entity);
     }
 
