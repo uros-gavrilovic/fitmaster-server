@@ -41,7 +41,7 @@ public class Member extends User {
 
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JsonManagedReference
     private Set<Membership> memberships = new HashSet<>();

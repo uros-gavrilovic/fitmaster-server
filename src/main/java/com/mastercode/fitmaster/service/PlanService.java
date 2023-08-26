@@ -52,4 +52,8 @@ public class PlanService implements AbstractService<Plan, PlanDTO> {
     public Set<Plan> findByTrainerId(Long trainerId) {
         return planRepository.findByTrainerId(trainerId);
     }
+
+    public Set<Plan> findByMemberId(Long memberId) {
+        return planRepository.findByMemberId(memberId);
+    }
 }

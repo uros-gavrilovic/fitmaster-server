@@ -2,11 +2,13 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.MemberAdapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
+import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.repository.MemberRepository;
 import com.mastercode.fitmaster.util.DescriptionUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,10 +66,10 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     }
 
     public MemberDTO login(MemberDTO dto) {
-        Member member = memberRepository.findByUsername(dto.getUsername()).
-                orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
+        Member member = memberRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
 
-        if(passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), member.getPassword()))
+        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), member.getPassword()))
             return memberAdapter.entityToDTO(member);
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
@@ -76,7 +78,7 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     public MemberDTO registerMember(MemberDTO dto) {
         Optional<Member> optionalMember = memberRepository.findByUsername(dto.getUsername());
 
-        if(optionalMember.isPresent())
+        if (optionalMember.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
         Member member = memberAdapter.dtoToEntity(dto);
@@ -84,5 +86,12 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
         Member createdMember = memberRepository.save(member);
 
         return memberAdapter.entityToDTO(createdMember);
+    }
+
+    @Transactional
+    public UserDTO findByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("Unknown member"), HttpStatus.NOT_FOUND));
+        return memberAdapter.entityToDTO(member);
     }
 }

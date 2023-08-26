@@ -67,6 +67,12 @@ public class PlanController {
         return new ResponseEntity<>(plans, HttpStatus.OK);
     }
 
+    @GetMapping("/member/{id}")
+    public ResponseEntity<Set<Plan>> getAllByMember(@PathVariable Long id) {
+        Set<Plan> plans = planService.findByMemberId(id);
+        return new ResponseEntity<>(plans, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Plan> deletePlan(@PathVariable Long id) {
         planService.delete(id);
