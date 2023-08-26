@@ -3,11 +3,17 @@ package com.mastercode.fitmaster.adapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.model.Membership;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.nio.CharBuffer;
 
 @Component
 public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public Member dtoToEntity(MemberDTO dto) {
         if (dto == null) return null;
@@ -15,7 +21,8 @@ public class MemberAdapter extends AbstractAdapter<Member, MemberDTO> {
 
         entity.setMemberID(dto.getMemberID());
         entity.setUsername(dto.getUsername());
-        entity.setPassword(dto.getPassword());
+        if(dto.getPassword() != null)
+            entity.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setGender(dto.getGender());
