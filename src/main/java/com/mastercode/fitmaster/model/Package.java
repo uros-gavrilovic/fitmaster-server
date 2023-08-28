@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 /**
+ * @author Uroš Gavrilović
  * The Package class represents a fitness package available for purchase.
  */
 @Getter
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "packages")
 public class Package {
+    /** The ID of the fitness package. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

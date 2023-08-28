@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * @author Uroš Gavrilović
  * The Exercise class represents a fitness exercise.
  */
 @Getter
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Table(name = "exercises")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Exercise {
+    /** The ID of the exercise. Represents primary key in the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

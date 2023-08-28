@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * @author Uroš Gavrilović
  * The User abstract class represents a generic user in the fitness application.
  */
 @Getter

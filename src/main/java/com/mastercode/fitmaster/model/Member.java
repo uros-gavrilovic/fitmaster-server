@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * @author Uroš Gavrilović
  * The Member class represents a fitness club member.
  */
 @Getter
@@ -26,6 +27,7 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"memberID", "firstName", "lastName", "gender", "phoneNumber", "birthDate", "memberships"})
 public class Member {
+    /** The ID of the member. Represents primary key in the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

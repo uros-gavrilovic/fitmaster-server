@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The Plan class represents a fitness training plan created for a member by a trainer.
+ * @author Uroš Gavrilović
+ * Represents a fitness plan associated with a member and potentially a trainer.
  */
 @Getter
 @Setter
@@ -19,35 +20,47 @@ import java.util.Set;
 @Entity
 @Table(name = "plans")
 public class Plan {
+
+    /**
+     * The unique identifier for the fitness plan.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;
 
-    /** The member for whom this training plan is created. */
+    /**
+     * The member associated with this fitness plan.
+     */
     @OneToOne(optional = false)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    /** The trainer who created this training plan. */
+    /**
+     * The trainer associated with this fitness plan (if any).
+     */
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
     private Trainer trainer;
 
-    /** The start date and time of the training plan. */
+    /**
+     * The start date and time of the fitness plan.
+     */
     private LocalDateTime startsAt;
 
-    /** The end date and time of the training plan. */
+    /**
+     * The end date and time of the fitness plan.
+     */
     private LocalDateTime endsAt;
 
-    /** Additional comments or notes about the training plan. */
+    /**
+     * Any additional comments or notes related to the fitness plan.
+     */
     private String comment;
 
     /**
-     * A set of activities associated with the training plan.
-     *
-     * @see Activity
+     * The set of activities associated with this fitness plan.
      */
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities = new HashSet<>();

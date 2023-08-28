@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 /**
+ * @author Uroš Gavrilović
  * The Trainer class represents a fitness trainer.
  */
 @Getter
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "trainers")
 public class Trainer {
+    /** Unique identifier of the trainer. Represents a primary key in the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
