@@ -8,7 +8,6 @@ import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,15 +25,11 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    @Autowired
     private final UserService userService;
-    @Autowired
     private final TrainerService trainerService;
-    @Autowired
     private final MemberService memberService;
 
-    @Autowired
-    private UserAuthenticationProvider userAuthenticationProvider;
+    private final UserAuthenticationProvider userAuthenticationProvider;
 
     /**
      * Retrieves information about the fitness application.

@@ -14,9 +14,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 public class TrainerControllerTest {
 
     @InjectMocks
@@ -26,27 +23,37 @@ public class TrainerControllerTest {
     @Mock
     private MockMvc mockMvc;
 
+    private Trainer trainer;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(trainerController).build();
+
+        this.trainer = new Trainer();
+        this.trainer.setTrainerID(1L);
+        this.trainer.setFirstName("testFirstname");
+        this.trainer.setLastName("testLastname");
+        this.trainer.setUsername("testUsername");
+        this.trainer.setPassword("testPassword");
     }
 
     @Test
-    public void testUpdateTrainer() throws Exception {
-        Trainer trainer = new Trainer();
-        trainer.setTrainerID(1L);
-        trainer.setFirstName("TEST_UPDATED_FIRSTNAME");
-        trainer.setLastName("TEST_UPDATED_LASTNAME");
-
-        when(trainerService.update(any(Trainer.class))).thenReturn(trainer);
+    public void testUpdateTrainerMissingRequiredField() throws Exception {
+        trainer.setFirstName(null);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/trainer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(trainer)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("TEST_UPDATED_FIRSTNAME"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("TEST_UPDATED_LASTNAME"));
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateTrainerWithNonExistingID() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/trainer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(trainer)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

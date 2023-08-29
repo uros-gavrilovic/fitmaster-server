@@ -35,30 +35,37 @@ public class TrainerServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    private Trainer trainer;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+
+        trainer = new Trainer();
+        trainer.setTrainerID(1L);
+        trainer.setUsername("testUsername");
+        trainer.setPassword("testPassword");
+        trainer.setFirstName("testFirstname");
+        trainer.setLastName("testLastname");
     }
 
     @Test
     public void testRegisterTrainer() {
-        Trainer trainer = new Trainer(); // Trainer received as a request body
-        trainer.setUsername("TEST_USERNAME");
-        trainer.setPassword("TEST_PASSWORD");
+        Trainer createdTrainer = new Trainer();
+        createdTrainer.setUsername("testUsername");
+        createdTrainer.setPassword("testEncodedPassword");
 
-        Trainer trainerEntity = new Trainer();
-        trainerEntity.setUsername("TEST_USERNAME");
+        when(trainerRepository.findByUsername(trainer.getUsername())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(trainer.getPassword())).thenReturn("testEncodedPassword");
+        when(trainerRepository.save(any(Trainer.class))).thenReturn(createdTrainer);
 
-        when(trainerRepository.findByUsername(trainer.getUsername())).thenReturn(Optional.empty()); // Username is not taken
-        when(passwordEncoder.encode(any(CharSequence.class))).thenReturn("TEST_ENCODED_PASSWORD");
-        when(trainerRepository.save(any(Trainer.class))).thenReturn(trainerEntity);
+        Trainer result = trainerService.registerTrainer(trainer);
 
-        Trainer createdTrainer = trainerService.registerTrainer(trainer);
-
-        assertEquals(trainer, createdTrainer);
+        assertEquals(createdTrainer, result);
         verify(trainerRepository, times(1)).findByUsername(trainer.getUsername());
         verify(trainerRepository, times(1)).save(any(Trainer.class));
     }
+
 
     @Test
     public void testRegisterTrainer_DuplicateUsername() {

@@ -56,9 +56,10 @@ public class PlanController {
      *
      * @throws JsonProcessingException If there's an issue processing the JSON request.
      * @throws ValidatorException      If there's an issue validating the Plan object.
+     * @throws NullPointerException    If the provided JSON request is not valid, or a field is missing.
      */
     @PostMapping
-    public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException {
+    public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException, ValidatorException, NullPointerException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);

@@ -42,7 +42,6 @@ public class Trainer extends User {
     @Column(nullable = true)
     private Gender gender;
 
-
     /** The phone number of the trainer. */
     @NotRequiredPhoneNumber
     private String phoneNumber;

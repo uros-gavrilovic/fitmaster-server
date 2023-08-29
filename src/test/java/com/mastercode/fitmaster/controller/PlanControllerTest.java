@@ -1,7 +1,9 @@
 package com.mastercode.fitmaster.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastercode.fitmaster.model.Plan;
 import com.mastercode.fitmaster.service.PlanService;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +19,7 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PlanControllerTest {
 
@@ -24,12 +27,17 @@ public class PlanControllerTest {
     private PlanController planController;
     @Mock
     private PlanService planService;
+    @Mock
+    private Validator validator;
     private MockMvc mockMvc;
+
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(planController).build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -43,7 +51,7 @@ public class PlanControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/plan")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonTestData)).andExpect(MockMvcResultMatchers.status().isCreated());
+                .content(jsonTestData)).andExpect(status().isCreated());
 
     }
 
@@ -56,7 +64,7 @@ public class PlanControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/plan/trainer/{id}", trainerId)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(plans.size()));
     }
 
@@ -65,6 +73,6 @@ public class PlanControllerTest {
         Long planID = 1L;
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/plan/{id}", planID).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 }
