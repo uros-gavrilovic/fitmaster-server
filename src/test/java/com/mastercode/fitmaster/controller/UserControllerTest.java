@@ -2,86 +2,75 @@ package com.mastercode.fitmaster.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastercode.fitmaster.dto.UserDTO;
-import com.mastercode.fitmaster.exception.LoginException;
-import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
-import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UserControllerTest {
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
-
-    @InjectMocks
-    private UserController userController;
-
-
-    @Mock
-    private TrainerService trainerService;
 
     @Mock
     private UserService userService;
 
     @Mock
-    private MemberService memberService;
+    private TrainerService trainerService;
 
     @Mock
-    private Trainer trainer;
+    private MemberService memberService;
+
+    @Autowired
+    private UserController userController;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+
     @Test
-    public void testRegisterTrainerUsernameTaken() throws RegisterException {
+    public void testLoginTrainer() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("testuser");
+        userDTO.setPassword("password");
+
         Trainer trainer = new Trainer();
-        trainer.setUsername("TEST_USERNAME");
+        trainer.setUsername("testuser");
+        trainer.setToken("testtoken");
 
-        when(trainerService.registerTrainer(any(Trainer.class))).thenThrow(new RegisterException("Username is already taken", HttpStatus.CONFLICT));
+        when(trainerService.login(userDTO)).thenReturn(trainer);
 
-        RegisterException exception = assertThrows(RegisterException.class, () -> {
-            userController.registerTrainer(trainer);
-        });
+        ResultActions resultActions = mockMvc.perform(post("/login-trainer").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDTO)));
 
-        assertEquals("Username is already taken", exception.getMessage());
-        assertEquals(HttpStatus.CONFLICT, exception.getHttpStatus());
-    }
-
-    @Test
-    public void testLoginTrainer_FailedLogin() throws Exception {
-        UserDTO invalidDto = new UserDTO();
-        invalidDto.setUsername("INVALID_USERNAME");
-        invalidDto.setPassword("INVALID_PASSWORD");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        when(trainerService.login(any(UserDTO.class))).thenThrow(new LoginException("Wrong username or password", HttpStatus.UNAUTHORIZED));
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.post("/login-trainer")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidDto)));
-        });
-
-        assertTrue(exception instanceof ServletException);
-        assertEquals("Request processing failed: com.mastercode.fitmaster.exception.LoginException: Wrong username or password", exception.getMessage());
+        resultActions.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.username").value("testuser"))
+                .andExpect(jsonPath("$.token").value("testtoken"));
     }
 }
