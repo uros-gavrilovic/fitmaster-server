@@ -1,9 +1,10 @@
 package com.mastercode.fitmaster.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mastercode.fitmaster.dto.TrainerDTO;
+import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
+import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
@@ -41,7 +42,7 @@ public class UserControllerTest {
     private MemberService memberService;
 
     @Mock
-    private TrainerDTO trainerDTO;
+    private Trainer trainer;
 
     @BeforeEach
     public void setUp() {
@@ -51,13 +52,13 @@ public class UserControllerTest {
 
     @Test
     public void testRegisterTrainerUsernameTaken() throws RegisterException {
-        TrainerDTO trainerDTO = new TrainerDTO();
-        trainerDTO.setUsername("TEST_USERNAME");
+        Trainer trainer = new Trainer();
+        trainer.setUsername("TEST_USERNAME");
 
-        when(trainerService.registerTrainer(any(TrainerDTO.class))).thenThrow(new RegisterException("Username is already taken", HttpStatus.CONFLICT));
+        when(trainerService.registerTrainer(any(Trainer.class))).thenThrow(new RegisterException("Username is already taken", HttpStatus.CONFLICT));
 
         RegisterException exception = assertThrows(RegisterException.class, () -> {
-            userController.registerTrainer(trainerDTO);
+            userController.registerTrainer(trainer);
         });
 
         assertEquals("Username is already taken", exception.getMessage());
@@ -66,13 +67,13 @@ public class UserControllerTest {
 
     @Test
     public void testLoginTrainer_FailedLogin() throws Exception {
-        TrainerDTO invalidDto = new TrainerDTO();
+        UserDTO invalidDto = new UserDTO();
         invalidDto.setUsername("INVALID_USERNAME");
         invalidDto.setPassword("INVALID_PASSWORD");
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        when(trainerService.login(any(TrainerDTO.class))).thenThrow(new LoginException("Wrong username or password", HttpStatus.UNAUTHORIZED));
+        when(trainerService.login(any(UserDTO.class))).thenThrow(new LoginException("Wrong username or password", HttpStatus.UNAUTHORIZED));
 
         Exception exception = assertThrows(Exception.class, () -> {
             mockMvc.perform(MockMvcRequestBuilders.post("/login-trainer")

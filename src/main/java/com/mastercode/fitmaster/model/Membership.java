@@ -3,6 +3,7 @@ package com.mastercode.fitmaster.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +24,14 @@ import java.time.LocalDate;
 public class Membership {
     /** The ID of the membership. */
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long membershipID;
 
     /** The member associated with this membership. */
     @JsonBackReference
+    @NotNull
     @ManyToOne
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
@@ -36,6 +39,7 @@ public class Membership {
 
     /** The fitness package associated with this membership. */
     @OneToOne
+    @NotNull
     @JoinColumn(name = "package_id", referencedColumnName = "id")
     private Package membershipPackage;
 

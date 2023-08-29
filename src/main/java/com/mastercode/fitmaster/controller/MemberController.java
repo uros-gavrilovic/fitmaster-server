@@ -3,10 +3,13 @@ package com.mastercode.fitmaster.controller;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.Member;
 import com.mastercode.fitmaster.service.MemberService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,9 +68,11 @@ public class MemberController {
      * @param member The Member object representing the member to be created.
      *
      * @return A ResponseEntity containing the created Member object and a status code of CREATED (201).
+     *
+     * @throws MethodArgumentNotValidException if the member object is not valid.
      */
     @PostMapping
-    public ResponseEntity<Member> createMember(@RequestBody Member member) {
+    public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
         Member createdMember = memberService.create(member);
         return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
     }
@@ -79,9 +84,11 @@ public class MemberController {
      *
      * @return A ResponseEntity containing the updated Member object and a status code of OK (200),
      * or a 404 status code if the member is not found.
+     *
+     * @throws MethodArgumentNotValidException if the member object is not valid.
      */
     @PutMapping
-    public ResponseEntity<Member> updateMember(@RequestBody Member member) {
+    public ResponseEntity<Member> updateMember(@Valid @RequestBody Member member) {
         Member updatedMember = memberService.update(member);
         if (updatedMember != null) {
             return new ResponseEntity<>(updatedMember, HttpStatus.OK);
@@ -96,9 +103,11 @@ public class MemberController {
      * @param id The unique ID of the member to delete.
      *
      * @return A ResponseEntity with a status code of NO_CONTENT (204) if the member was successfully deleted.
+     *
+     * @throws MethodArgumentNotValidException if the member ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Member> deleteMember(@PathVariable Long id) {
+    public ResponseEntity<Member> deleteMember(@NotEmpty @PathVariable Long id) {
         memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

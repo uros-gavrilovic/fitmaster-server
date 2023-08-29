@@ -6,10 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.TrainerService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,7 +57,7 @@ public class TrainerController {
      * or a 404 status code if the trainer is not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Trainer> getByID(@PathVariable Long id) {
+    public ResponseEntity<Trainer> getByID(@NotEmpty @PathVariable Long id) {
         Trainer foundTrainer = trainerService.findByID(id);
         if (foundTrainer != null) {
             return new ResponseEntity<>(foundTrainer, HttpStatus.OK);
@@ -70,9 +73,11 @@ public class TrainerController {
      *
      * @return A ResponseEntity containing the updated Trainer object and a status code of OK (200),
      * or a 404 status code if the trainer is not found.
+     *
+     * @throws MethodArgumentNotValidException If there's an issue validating the Trainer object.
      */
     @PutMapping
-    public ResponseEntity<Trainer> updateTrainer(@RequestBody Trainer trainer) {
+    public ResponseEntity<Trainer> updateTrainer(@Valid @RequestBody Trainer trainer) {
         Trainer updatedTrainer = trainerService.update(trainer);
         if (updatedTrainer != null) {
             return new ResponseEntity<>(updatedTrainer, HttpStatus.OK);
@@ -88,9 +93,11 @@ public class TrainerController {
      *
      * @return A ResponseEntity with a status code of NO_CONTENT (204) if the trainer was successfully deleted,
      * or a 404 status code if the trainer is not found.
+     *
+     * @throws MethodArgumentNotValidException If trainer's ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Trainer> deleteTrainer(@PathVariable Long id) {
+    public ResponseEntity<Trainer> deleteTrainer(@NotEmpty @PathVariable Long id) {
         trainerService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

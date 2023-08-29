@@ -1,7 +1,6 @@
 package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.TrainerAdapter;
-import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.repository.TrainerRepository;
@@ -43,39 +42,37 @@ public class TrainerServiceTest {
 
     @Test
     public void testRegisterTrainer() {
-        TrainerDTO trainerDTO = new TrainerDTO(); // TrainerDTO received as a request body
-        trainerDTO.setUsername("TEST_USERNAME");
-        trainerDTO.setPassword("TEST_PASSWORD");
+        Trainer trainer = new Trainer(); // Trainer received as a request body
+        trainer.setUsername("TEST_USERNAME");
+        trainer.setPassword("TEST_PASSWORD");
 
         Trainer trainerEntity = new Trainer();
         trainerEntity.setUsername("TEST_USERNAME");
 
-        when(trainerRepository.findByUsername(trainerDTO.getUsername())).thenReturn(Optional.empty()); // Username is not taken
-        when(trainerAdapter.dtoToEntity(trainerDTO)).thenReturn(trainerEntity);
+        when(trainerRepository.findByUsername(trainer.getUsername())).thenReturn(Optional.empty()); // Username is not taken
         when(passwordEncoder.encode(any(CharSequence.class))).thenReturn("TEST_ENCODED_PASSWORD");
         when(trainerRepository.save(any(Trainer.class))).thenReturn(trainerEntity);
-        when(trainerAdapter.entityToDTO(trainerEntity)).thenReturn(trainerDTO);
 
-        TrainerDTO createdTrainer = trainerService.registerTrainer(trainerDTO);
+        Trainer createdTrainer = trainerService.registerTrainer(trainer);
 
-        assertEquals(trainerDTO, createdTrainer);
-        verify(trainerRepository, times(1)).findByUsername(trainerDTO.getUsername());
+        assertEquals(trainer, createdTrainer);
+        verify(trainerRepository, times(1)).findByUsername(trainer.getUsername());
         verify(trainerRepository, times(1)).save(any(Trainer.class));
     }
 
     @Test
     public void testRegisterTrainer_DuplicateUsername() {
-        TrainerDTO trainerDTO = new TrainerDTO(); // TrainerDTO received as a request body
-        trainerDTO.setUsername("TEST_USERNAME");
-        trainerDTO.setPassword("TEST_PASSWORD");
+        Trainer trainer = new Trainer(); // Trainer object received as a request body
+        trainer.setUsername("TEST_USERNAME");
+        trainer.setPassword("TEST_PASSWORD");
 
         Trainer existingTrainer = new Trainer();
         existingTrainer.setUsername("TEST_USERNAME");
 
-        when(trainerRepository.findByUsername(trainerDTO.getUsername())).thenReturn(Optional.of(existingTrainer));
+        when(trainerRepository.findByUsername(trainer.getUsername())).thenReturn(Optional.of(existingTrainer));
 
         RegisterException exception = assertThrows(RegisterException.class, () -> {
-            trainerService.registerTrainer(trainerDTO);
+            trainerService.registerTrainer(trainer);
         });
 
         assertEquals("Registration Error", exception.getTitle());

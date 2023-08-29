@@ -1,14 +1,17 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.config.UserAuthenticationProvider;
-import com.mastercode.fitmaster.dto.TrainerDTO;
+import com.mastercode.fitmaster.dto.UserDTO;
+import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,28 +50,30 @@ public class UserController {
     /**
      * Logs in a fitness trainer and generates an authentication token.
      *
-     * @param dto The TrainerDTO containing login credentials.
+     * @param dto The UserDTO containing login credentials.
      *
-     * @return A ResponseEntity containing the logged-in TrainerDTO with an authentication token and a status code of OK (200).
+     * @return A ResponseEntity containing the logged-in Trainer with an authentication token and a status code of OK (200).
      */
     @PostMapping("/login-trainer")
-    public ResponseEntity<TrainerDTO> loginTrainer(@RequestBody TrainerDTO dto) {
-        TrainerDTO trainerDTO = trainerService.login(dto);
-        trainerDTO.setToken(userAuthenticationProvider.createToken(trainerDTO.getUsername()));
-        return new ResponseEntity<>(trainerDTO, HttpStatus.OK);
+    public ResponseEntity<Trainer> loginTrainer(@Valid @RequestBody UserDTO dto) {
+        Trainer trainer = trainerService.login(dto);
+        trainer.setToken(userAuthenticationProvider.createToken(trainer.getUsername()));
+        return new ResponseEntity<>(trainer, HttpStatus.OK);
     }
 
     /**
      * Registers a new fitness trainer and generates an authentication token.
      *
-     * @param dto The TrainerDTO containing registration details.
+     * @param trainer The Trainer object containing registration details.
      *
-     * @return A ResponseEntity containing the registered TrainerDTO with an authentication token and a status code of OK (200).
+     * @return A ResponseEntity containing the registered trainer with an authentication token and a status code of OK (200).
+     *
+     * @throws MethodArgumentNotValidException if the Trainer object is invalid.
      */
     @PostMapping("/register-trainer")
-    public ResponseEntity<TrainerDTO> registerTrainer(@RequestBody TrainerDTO dto) {
-        TrainerDTO createdTrainer = trainerService.registerTrainer(dto);
-        createdTrainer.setToken(userAuthenticationProvider.createToken(dto.getUsername()));
+    public ResponseEntity<Trainer> registerTrainer(@Valid @RequestBody Trainer trainer) {
+        Trainer createdTrainer = trainerService.registerTrainer(trainer);
+        createdTrainer.setToken(userAuthenticationProvider.createToken(trainer.getUsername()));
         return new ResponseEntity<>(createdTrainer, HttpStatus.OK);
     }
 

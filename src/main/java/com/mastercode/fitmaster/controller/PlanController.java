@@ -4,12 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.mastercode.fitmaster.exception.ValidatorException;
 import com.mastercode.fitmaster.model.*;
 import com.mastercode.fitmaster.service.PlanService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -18,12 +23,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * @author Uroš Gavrilović
  * The PlanController class handles HTTP requests related to fitness plans.
  */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/plan")
 public class PlanController {
+
+    @Autowired
+    private final Validator validator;
+
     @Autowired
     private PlanService planService;
 
@@ -45,6 +55,7 @@ public class PlanController {
      * @return A ResponseEntity containing the created Plan object and a status code of CREATED (201).
      *
      * @throws JsonProcessingException If there's an issue processing the JSON request.
+     * @throws ValidatorException      If there's an issue validating the Plan object.
      */
     @PostMapping
     public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException {
@@ -76,6 +87,11 @@ public class PlanController {
             }
         }
 
+        Set<ConstraintViolation<Plan>> violations = validator.validate(plan);
+        if (!violations.isEmpty()) {
+            throw new ValidatorException(violations.toString());
+        }
+
         Plan createdPlan = planService.create(plan);
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
     }
@@ -100,9 +116,11 @@ public class PlanController {
      * @param id The unique ID of the plan to delete.
      *
      * @return A ResponseEntity with a status code of NO_CONTENT (204) if the plan was successfully deleted.
+     *
+     * @throws MethodArgumentNotValidException If the provided ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Plan> deletePlan(@PathVariable Long id) {
+    public ResponseEntity<Plan> deletePlan(@NotEmpty @PathVariable Long id) {
         planService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -2,6 +2,9 @@ package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +28,7 @@ public class Plan {
      * The unique identifier for the fitness plan.
      */
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;
@@ -32,6 +36,7 @@ public class Plan {
     /**
      * The member associated with this fitness plan.
      */
+    @NotNull
     @OneToOne(optional = false)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
@@ -47,11 +52,15 @@ public class Plan {
     /**
      * The start date and time of the fitness plan.
      */
+    @Future
+    @NotNull
     private LocalDateTime startsAt;
 
     /**
      * The end date and time of the fitness plan.
      */
+    @Future
+    @NotNull
     private LocalDateTime endsAt;
 
     /**
@@ -62,6 +71,7 @@ public class Plan {
     /**
      * The set of activities associated with this fitness plan.
      */
+    @NotEmpty
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities = new HashSet<>();
 }
