@@ -23,7 +23,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        loadTestData();
+        //        loadTestData();
     }
 
     @Override
@@ -61,9 +61,14 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Membership ms = new Membership();
             ms.setMember(m);
             m.getMemberships().add(ms);
-            ms.setMembershipPackage(packageRepository.findAll().get((int) new Random().nextLong(packageRepository.count())));
-            ms.setStartDate(LocalDate.ofInstant(faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
-            ms.setEndDate(LocalDate.ofInstant(faker.date().future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
+            ms.setMembershipPackage(packageRepository.findAll()
+                    .get((int) new Random().nextLong(packageRepository.count())));
+            ms.setStartDate(LocalDate.ofInstant(faker.date()
+                    .past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now()))
+                    .toInstant(), ZoneId.systemDefault()));
+            ms.setEndDate(LocalDate.ofInstant(faker.date()
+                    .future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now()))
+                    .toInstant(), ZoneId.systemDefault()));
 
             membershipRepository.saveAndFlush(ms);
             memberRepository.saveAndFlush(m);
@@ -81,7 +86,9 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setUsername(faker.name().username());
             t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.phoneNumber().cellPhone());
-            t.setHireDate(LocalDate.ofInstant(faker.date().between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now())).toInstant(), ZoneId.systemDefault()));
+            t.setHireDate(LocalDate.ofInstant(faker.date()
+                    .between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now()))
+                    .toInstant(), ZoneId.systemDefault()));
 
             trainerRepository.saveAndFlush(t);
         }
