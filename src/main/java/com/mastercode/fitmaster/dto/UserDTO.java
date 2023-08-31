@@ -15,6 +15,8 @@ public class UserDTO {
 
     protected String password;
 
+    protected String email;
+
     protected String token;
 
 }

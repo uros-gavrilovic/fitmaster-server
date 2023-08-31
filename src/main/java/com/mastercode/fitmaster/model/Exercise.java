@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long exerciseID;
 
     private String name;

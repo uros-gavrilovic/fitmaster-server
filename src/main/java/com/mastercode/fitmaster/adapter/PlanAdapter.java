@@ -16,6 +16,7 @@ public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
         entity.setStartsAt(dto.getStartsAt());
         entity.setEndsAt(dto.getEndsAt());
         entity.setComment(dto.getComment());
+        entity.setCompleted(dto.isCompleted());
 
         return entity;
     }
@@ -29,6 +30,7 @@ public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
         dto.setStartsAt(entity.getStartsAt());
         dto.setEndsAt(entity.getEndsAt());
         dto.setComment(entity.getComment());
+        dto.setCompleted(entity.isCompleted());
 
         return dto;
     }

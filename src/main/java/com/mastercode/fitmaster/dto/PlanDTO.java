@@ -22,4 +22,6 @@ public class PlanDTO implements Serializable {
 
     private String comment;
 
+    private boolean completed;
+
 }

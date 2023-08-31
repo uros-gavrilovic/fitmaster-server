@@ -14,8 +14,8 @@ import lombok.Setter;
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ordinalNumber")
-    private Integer ordinalNumber;
+    @Column(name = "id")
+    private Long activityID;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

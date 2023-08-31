@@ -29,7 +29,7 @@ public class ActivityService implements AbstractService<Activity, ActivityDTO> {
 
     @Override
     public Activity findByID(Long id) {
-        return activityRepository.getByOrdinalNumber(Math.toIntExact(id));
+        return activityRepository.getByActivityID(id);
     }
 
     @Override

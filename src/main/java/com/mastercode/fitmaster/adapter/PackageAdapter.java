@@ -15,6 +15,7 @@ public class PackageAdapter extends AbstractAdapter<Package, PackageDTO> {
         entity.setPackageID(dto.getPackageID());
         entity.setName(dto.getName());
         entity.setPrice(dto.getPrice());
+        entity.setCurrency(dto.getCurrency());
 
         return entity;
     }
@@ -27,6 +28,7 @@ public class PackageAdapter extends AbstractAdapter<Package, PackageDTO> {
         dto.setPackageID(entity.getPackageID());
         dto.setName(entity.getName());
         dto.setPrice(entity.getPrice());
+        dto.setCurrency(entity.getCurrency());
 
         return dto;
     }

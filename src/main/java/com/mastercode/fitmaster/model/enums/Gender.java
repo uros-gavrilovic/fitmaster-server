@@ -1,11 +1,12 @@
 package com.mastercode.fitmaster.model.enums;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.Arrays;
+
 public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE"),
-    UNKNOWN(null);
+    MALE("MALE"), FEMALE("FEMALE"), UNKNOWN(null);
 
     private final String value;
 
@@ -21,11 +22,10 @@ public enum Gender {
     // Custom constructor to handle parsing of the enum from JSON
     @JsonCreator
     public static Gender fromValue(String value) {
-        for (Gender gender : Gender.values()) {
-            if (gender.value.equals(value)) {
-                return gender;
-            }
-        }
-        throw new IllegalArgumentException("Invalid Gender value: " + value);
+        return Arrays.stream(Gender.values())
+                .filter(gender -> gender.value.equals(value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Gender value: " + value));
     }
+
 }
