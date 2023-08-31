@@ -1,11 +1,9 @@
 package com.mastercode.fitmaster.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -26,7 +24,6 @@ public class Plan {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
     private Trainer trainer;

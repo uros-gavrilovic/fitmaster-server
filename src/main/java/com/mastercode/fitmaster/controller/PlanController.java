@@ -61,6 +61,12 @@ public class PlanController {
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Plan> getPlan(@PathVariable Long id) {
+        Plan plan = planService.findByID(id);
+        return new ResponseEntity<>(plan, HttpStatus.OK);
+    }
+
     @GetMapping("/trainer/{id}")
     public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
         Set<Plan> plans = planService.findByTrainerId(id);
