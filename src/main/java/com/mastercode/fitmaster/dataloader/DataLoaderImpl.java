@@ -39,6 +39,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Package p = new Package();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
+            p.setDuration(30);
             p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100).replace(',', '.'))));
             p.setCurrency(Currency.getInstance("EUR"));
             // Localization of PostgreSQL might cause issues with number formatting (eg. ',' and '.' characters).

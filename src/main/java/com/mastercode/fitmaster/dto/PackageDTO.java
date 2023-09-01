@@ -18,6 +18,8 @@ public class PackageDTO {
 
     private String name;
 
+    private Integer duration;
+
     private BigDecimal price;
 
     private Currency currency;
