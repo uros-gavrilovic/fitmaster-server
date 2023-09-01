@@ -29,7 +29,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
     @Override
     void loadTestData() {
         loadPackages(5);
-        loadMembers(10);
+        loadMembers(25);
         loadTrainers(5);
     }
 

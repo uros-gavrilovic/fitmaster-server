@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The ExerciseController class handles HTTP requests related to exercises.
+ *
+ * @author Uroš Gavrilović
+ */
 @RestController
 @RequestMapping(value = "/api/exercise")
 public class ExerciseController {
@@ -17,11 +22,21 @@ public class ExerciseController {
     @Autowired
     private ExerciseService exerciseService;
 
+    /**
+     * Retrieves a list of ExerciseDTO objects containing summarized information about exercises.
+     *
+     * @return A list of ExerciseDTO objects.
+     */
     @GetMapping("/dto")
     public List<ExerciseDTO> getAllDTOs() {
         return exerciseService.getAllDTOs();
     }
 
+    /**
+     * Retrieves filters like BodyPart or Category for exercises.
+     *
+     * @return An ObjectNode containing filters for fitness exercises.
+     */
     @GetMapping("/filters")
     public ObjectNode getAllFilters() {
         return exerciseService.getAllFilters();

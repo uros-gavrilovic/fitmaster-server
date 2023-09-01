@@ -7,15 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * The StatisticsController class handles HTTP requests related to fitness statistics.
+ */
 @RestController
 @RequestMapping("api/statistics")
 public class StatisticsController {
+
     @Autowired
     private MemberService memberService;
 
+    /**
+     * Retrieves statistics related to member activity.
+     *
+     * @return A ResponseEntity containing the member statistics and a status code of OK (200).
+     */
     @GetMapping("/members-activity")
     public ResponseEntity<Object> getTotalMembers() {
         Object statistics = memberService.getMemberStatistics();

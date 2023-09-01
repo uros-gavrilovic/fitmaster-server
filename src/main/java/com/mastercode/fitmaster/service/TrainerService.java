@@ -60,27 +60,25 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         trainerRepository.deleteById(id);
     }
 
-    public TrainerDTO login(TrainerDTO dto) {
+    public Trainer login(UserDTO dto) {
         Trainer trainer = trainerRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword()))
-            return trainerAdapter.entityToDTO(trainer);
+        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword())) return trainer;
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
-    public TrainerDTO registerTrainer(TrainerDTO dto) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(dto.getUsername());
+    public Trainer registerTrainer(Trainer trainer) {
+        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(trainer.getUsername());
 
         if (optionalTrainer.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        Trainer trainer = trainerAdapter.dtoToEntity(dto);
-        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainer.getPassword())));
         Trainer createdTrainer = trainerRepository.save(trainer);
 
-        return trainerAdapter.entityToDTO(createdTrainer);
+        return createdTrainer;
     }
 
     public UserDTO findByUsername(String username) {
