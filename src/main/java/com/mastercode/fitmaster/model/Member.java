@@ -18,8 +18,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Uroš Gavrilović
  * The Member class represents a fitness club member.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

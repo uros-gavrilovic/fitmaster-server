@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @author Uroš Gavrilović
  * The Exercise class represents a fitness exercise.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

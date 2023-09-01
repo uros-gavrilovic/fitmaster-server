@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * The PackageController class handles HTTP requests related to packages.
+ *
+ * @author Uroš Gavrilović
  */
 @RestController
 @RequestMapping(value = "/api/package")

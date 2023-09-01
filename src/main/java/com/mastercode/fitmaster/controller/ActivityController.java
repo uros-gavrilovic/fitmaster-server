@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * The ActivityController class handles HTTP requests related to fitness activities.
+ *
+ * @author Uroš Gavrilović
  */
 @RestController
 @RequestMapping(value = "/api/activity")

@@ -16,11 +16,16 @@ import java.util.List;
 
 /**
  * The MemberController class handles HTTP requests related to members of a fitness club.
+ *
+ * @author Uroš Gavrilović
  */
 @AllArgsConstructor
 @RestController()
 @RequestMapping("/api/member")
 public class MemberController {
+    /**
+     * Represents service class for entity Member.
+     */
     @Autowired
     private MemberService memberService;
 

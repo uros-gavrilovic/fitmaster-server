@@ -23,17 +23,24 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Uroš Gavrilović
  * The PlanController class handles HTTP requests related to fitness plans.
+ *
+ * @author Uroš Gavrilović
  */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/plan")
 public class PlanController {
 
+    /**
+     * Used to validate if passed entity is valid or not.
+     */
     @Autowired
     private final Validator validator;
 
+    /**
+     * Represents service class for entity Plan.
+     */
     @Autowired
     private PlanService planService;
 

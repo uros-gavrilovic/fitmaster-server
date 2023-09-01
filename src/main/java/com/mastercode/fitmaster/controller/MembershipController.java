@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * The MembershipController class handles HTTP requests related to fitness memberships.
+ *
+ * @author Uroš Gavrilović
  */
 @RestController
 @RequestMapping(value = "/api/membership")

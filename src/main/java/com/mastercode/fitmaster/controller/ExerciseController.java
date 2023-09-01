@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * The ExerciseController class handles HTTP requests related to exercises.
+ *
+ * @author Uroš Gavrilović
  */
 @RestController
 @RequestMapping(value = "/api/exercise")

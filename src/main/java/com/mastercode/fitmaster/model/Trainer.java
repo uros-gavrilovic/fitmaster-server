@@ -13,8 +13,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 /**
- * @author Uroš Gavrilović
  * The Trainer class represents a fitness trainer.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

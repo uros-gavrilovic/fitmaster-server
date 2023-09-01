@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @author Uroš Gavrilović
  * The Activity class represents a fitness activity within a training plan.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

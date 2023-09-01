@@ -12,8 +12,9 @@ import org.hibernate.annotations.Cascade;
 import java.time.LocalDate;
 
 /**
- * @author Uroš Gavrilović
  * The Membership class represents a membership subscription of a member to a fitness package.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

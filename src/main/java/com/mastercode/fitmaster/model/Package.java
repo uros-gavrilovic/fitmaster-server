@@ -11,8 +11,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 /**
- * @author Uroš Gavrilović
  * The Package class represents a fitness package available for purchase.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

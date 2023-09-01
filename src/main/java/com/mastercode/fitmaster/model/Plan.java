@@ -14,8 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Uroš Gavrilović
  * Represents a fitness plan associated with a member and potentially a trainer.
+ *
+ * @author Uroš Gavrilović
  */
 @Getter
 @Setter

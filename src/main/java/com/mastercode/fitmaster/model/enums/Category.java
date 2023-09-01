@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * @author Uroš Gavrilović
  * Enum representing different categories of exercise.
+ *
+ * @author Uroš Gavrilović
  */
 public enum Category {
     /**

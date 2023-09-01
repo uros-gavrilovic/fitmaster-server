@@ -19,12 +19,17 @@ import java.util.List;
 
 /**
  * The TrainerController class handles HTTP requests related to fitness trainers.
+ *
+ * @author Uroš Gavrilović
  */
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/api/trainer")
 public class TrainerController {
 
+    /**
+     * Represents service class for entity Trainer.
+     */
     @Autowired
     private TrainerService trainerService;
 
