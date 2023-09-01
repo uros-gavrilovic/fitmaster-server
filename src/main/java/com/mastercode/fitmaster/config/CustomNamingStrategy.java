@@ -38,8 +38,6 @@ public class CustomNamingStrategy implements PhysicalNamingStrategy {
     }
 
     private String toSnakeCase(String input) {
-        // Implement your camelCase to snake_case conversion logic here
-        // This example converts "myColumnName" to "my_column_name"
         StringBuilder result = new StringBuilder();
         boolean first = true;
 
