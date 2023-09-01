@@ -75,4 +75,6 @@ public class Plan {
     @NotEmpty
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities = new HashSet<>();
+
+    private boolean completed;
 }

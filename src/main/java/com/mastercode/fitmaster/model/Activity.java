@@ -23,8 +23,8 @@ public class Activity {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ordinalNumber")
-    private Integer ordinalNumber;
+    @Column(name = "id")
+    private Long activityID;
 
     /** The training plan to which this activity belongs. */
     @JsonIgnore

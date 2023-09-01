@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Currency;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +39,9 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Package p = new Package();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
+            p.setDuration(30);
             p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100).replace(',', '.'))));
+            p.setCurrency(Currency.getInstance("EUR"));
             // Localization of PostgreSQL might cause issues with number formatting (eg. ',' and '.' characters).
 
             packageRepository.saveAndFlush(p);
@@ -51,6 +54,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
+            m.setEmail(faker.internet().emailAddress());
             m.setUsername(faker.name().username());
             m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
@@ -83,6 +87,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setLastName(faker.name().lastName());
             t.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             t.setAddress(faker.address().streetAddress());
+            t.setEmail(faker.internet().emailAddress());
             t.setUsername(faker.name().username());
             t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.phoneNumber().cellPhone());

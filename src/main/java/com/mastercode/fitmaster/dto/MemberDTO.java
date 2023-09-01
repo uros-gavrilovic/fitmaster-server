@@ -1,6 +1,7 @@
 package com.mastercode.fitmaster.dto;
 
 import com.mastercode.fitmaster.model.enums.Gender;
+import com.mastercode.fitmaster.model.enums.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,5 @@ public class MemberDTO extends UserDTO implements Serializable {
 
     private LocalDate birthDate;
 
-    private Boolean active;
+    private MemberStatus status;
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ActivityDTO {
 
-    private Integer ordinalNumber;
+    private Long activityID;
 
     private Integer reps;
 
