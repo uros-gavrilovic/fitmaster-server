@@ -54,9 +54,8 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
 
     @Override
     public Member update(Member entity) {
-        Member member = memberRepository.findById(entity.getMemberID()).
-                orElseThrow(() ->
-                        new UserException("Member with id " + entity.getMemberID() + " does not exist", HttpStatus.NOT_FOUND));
+        Member member = memberRepository.findById(entity.getMemberID())
+                .orElseThrow(() -> new UserException("Member with id " + entity.getMemberID() + " does not exist", HttpStatus.NOT_FOUND));
         entity.setPassword(member.getPassword());
         entity.setUsername(member.getUsername());
         return memberRepository.saveAndFlush(entity);
@@ -71,27 +70,25 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
         return memberRepository.getMemberStatistics();
     }
 
-    public MemberDTO login(MemberDTO dto) {
-        Member member = memberRepository.findByUsername(dto.getUsername())
+    public Member login(UserDTO userDTO) {
+        Member member = memberRepository.findByUsername(userDTO.getUsername())
                 .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), member.getPassword()))
-            return memberAdapter.entityToDTO(member);
+        if (passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), member.getPassword())) return member;
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
-    public MemberDTO registerMember(MemberDTO dto) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(dto.getUsername());
+    public Member registerMember(Member member) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(member.getUsername());
 
         if (optionalMember.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        Member member = memberAdapter.dtoToEntity(dto);
-        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(member.getPassword())));
         Member createdMember = memberRepository.save(member);
 
-        return memberAdapter.entityToDTO(createdMember);
+        return createdMember;
     }
 
     @Transactional

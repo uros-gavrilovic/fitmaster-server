@@ -24,7 +24,6 @@ import lombok.Setter;
 public class Exercise {
     /** The ID of the exercise. Represents primary key in the database. */
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long exerciseID;

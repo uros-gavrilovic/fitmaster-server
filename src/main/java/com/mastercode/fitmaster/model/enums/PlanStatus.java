@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Gender implements AbstractEnum {
-    MALE("MALE"), FEMALE("FEMALE"), UNKNOWN(null);
+public enum PlanStatus implements AbstractEnum {
+    COMPLETED("COMPLETED"), AWAITING("AWAITING"), EXPIRED("EXPIRED"), CANCELLED("CANCELLED");
 
     private final String value;
 }

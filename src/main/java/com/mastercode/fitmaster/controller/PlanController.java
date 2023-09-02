@@ -77,6 +77,7 @@ public class PlanController {
         // TODO: Localization issues causes wrong time to be saved in DB.
         plan.setStartsAt(Instant.parse(jsonNode.get("startsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
         plan.setEndsAt(Instant.parse(jsonNode.get("endsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
+        plan.setCompleted(false);
 
         JsonNode exercisesNode = jsonNode.get("exercises");
         for (JsonNode exerciseNode : exercisesNode) {
@@ -116,6 +117,47 @@ public class PlanController {
     public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
         Set<Plan> plans = planService.findByTrainerId(id);
         return new ResponseEntity<>(plans, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves a list of fitness plans by member ID.
+     *
+     * @param id The unique ID of the member.
+     *
+     * @return A ResponseEntity containing a set of Plan objects associated with the member
+     * and a status code of OK (200).
+     */
+    @GetMapping("/member/{id}")
+    public ResponseEntity<Set<Plan>> getAllByMember(@PathVariable Long id) {
+        Set<Plan> plans = planService.findByMemberId(id);
+        return new ResponseEntity<>(plans, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Plan> getById(@PathVariable Long id) {
+        Plan plan = planService.findByID(id);
+        return new ResponseEntity<>(plan, HttpStatus.OK);
+    }
+
+    @PostMapping("/remove-trainer/{id}")
+    public ResponseEntity<Plan> removeTrainer(@NotEmpty @PathVariable Long id) {
+        Plan plan = planService.findByID(id);
+        plan.setTrainer(null);
+
+        Plan updatedPlan = planService.update(plan);
+
+        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<Plan> cancelPlan(@NotEmpty @PathVariable Long id) {
+        System.out.println("cancelPlan() called");
+        Plan plan = planService.findByID(id);
+        plan.setCompleted(false);
+
+        Plan updatedPlan = planService.update(plan);
+
+        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
     }
 
     /**

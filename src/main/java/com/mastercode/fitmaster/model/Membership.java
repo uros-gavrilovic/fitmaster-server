@@ -25,7 +25,6 @@ import java.time.LocalDate;
 public class Membership {
     /** The ID of the membership. */
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long membershipID;

@@ -1,8 +1,8 @@
 package com.mastercode.fitmaster.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mastercode.fitmaster.model.enums.PlanStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -29,7 +29,6 @@ public class Plan {
      * The unique identifier for the fitness plan.
      */
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;
@@ -45,7 +44,6 @@ public class Plan {
     /**
      * The trainer associated with this fitness plan (if any).
      */
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
     private Trainer trainer;
@@ -53,14 +51,14 @@ public class Plan {
     /**
      * The start date and time of the fitness plan.
      */
-    @Future
+    //    @Future
     @NotNull
     private LocalDateTime startsAt;
 
     /**
      * The end date and time of the fitness plan.
      */
-    @Future
+    //    @Future
     @NotNull
     private LocalDateTime endsAt;
 
@@ -76,5 +74,31 @@ public class Plan {
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities = new HashSet<>();
 
-    private boolean completed;
+    @Nullable
+    private Boolean completed;
+
+    @Transient
+    private PlanStatus status;
+
+    /**
+     * Determines the status of the plan based on the start and end date.
+     * Only completed is being saved in the database, while the rest is calculated on the fly.
+     * If plan is set as not completed, it means it has been cancelled.
+     *
+     * @see PlanStatus
+     */
+    @PostLoad
+    private void determineStatus() {
+        if (status == null) {
+            if (completed != null && completed) {
+                status = PlanStatus.COMPLETED;
+            } else if (completed != null && !completed) {
+                status = PlanStatus.CANCELLED;
+            } else {
+                status = (LocalDateTime.now().isAfter(endsAt)) ? PlanStatus.EXPIRED : PlanStatus.AWAITING;
+            }
+        }
+    }
+
+
 }

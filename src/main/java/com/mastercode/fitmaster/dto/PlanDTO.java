@@ -1,5 +1,6 @@
 package com.mastercode.fitmaster.dto;
 
+import com.mastercode.fitmaster.model.enums.PlanStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,6 @@ public class PlanDTO implements Serializable {
 
     private String comment;
 
-    private boolean completed;
+    private PlanStatus status;
 
 }

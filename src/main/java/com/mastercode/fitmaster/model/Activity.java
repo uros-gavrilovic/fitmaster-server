@@ -21,7 +21,6 @@ import lombok.Setter;
 public class Activity {
     /** The ordinal number of the activity within the training plan, also represents primary key. */
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long activityID;

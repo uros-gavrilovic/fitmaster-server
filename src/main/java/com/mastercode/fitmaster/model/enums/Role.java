@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Gender implements AbstractEnum {
-    MALE("MALE"), FEMALE("FEMALE"), UNKNOWN(null);
+public enum Role implements AbstractEnum {
+    TRAINER("TRAINER"), MEMBER("MEMBER");
 
     private final String value;
 }

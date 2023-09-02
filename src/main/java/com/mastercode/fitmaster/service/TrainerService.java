@@ -60,11 +60,11 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         trainerRepository.deleteById(id);
     }
 
-    public Trainer login(UserDTO dto) {
-        Trainer trainer = trainerRepository.findByUsername(dto.getUsername())
+    public Trainer login(UserDTO userDTO) {
+        Trainer trainer = trainerRepository.findByUsername(userDTO.getUsername())
                 .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword())) return trainer;
+        if (passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), trainer.getPassword())) return trainer;
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }

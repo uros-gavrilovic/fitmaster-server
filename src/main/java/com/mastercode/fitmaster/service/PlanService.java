@@ -41,7 +41,7 @@ public class PlanService implements AbstractService<Plan, PlanDTO> {
 
     @Override
     public Plan update(Plan entity) {
-        return null; // TODO
+        return planRepository.saveAndFlush(entity);
     }
 
     @Override
