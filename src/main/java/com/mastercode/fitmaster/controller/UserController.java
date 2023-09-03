@@ -1,9 +1,9 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.config.UserAuthenticationProvider;
+import com.mastercode.fitmaster.dto.ChangePasswordRequest;
 import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.model.Member;
-import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.model.User;
 import com.mastercode.fitmaster.model.enums.Role;
 import com.mastercode.fitmaster.service.MemberService;
@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -98,19 +95,29 @@ public class UserController {
      * @throws MethodArgumentNotValidException if the Trainer/Member object is invalid.
      */
     @PostMapping("/register")
-    public <T extends User> ResponseEntity<T> registerUser(@Valid @RequestBody T user) {
+    public <T extends User> ResponseEntity<T> registerUser(@RequestBody UserDTO user) {
         T createdUser;
 
-        if (user instanceof Trainer) {
-            createdUser = (T) trainerService.registerTrainer((Trainer) user);
-        } else if (user instanceof Member) {
-            createdUser = (T) memberService.registerMember((Member) user);
+        if (user.getRole().equals(Role.TRAINER)) {
+            createdUser = (T) trainerService.registerTrainer(user);
+        } else if (user.getRole().equals(Role.MEMBER)) {
+            createdUser = (T) memberService.registerMember(user);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         createdUser.setToken(userAuthenticationProvider.createToken(user.getUsername()));
         return new ResponseEntity<>(createdUser, HttpStatus.OK);
+    }
+
+    @PostMapping("/change-password/{memberID}")
+    public ResponseEntity<Member> changePassword(@PathVariable Long memberID, @RequestBody ChangePasswordRequest request) {
+        Member updatedMember = memberService.changePassword(memberID, request.getOldPassword(), request.getNewPassword());
+        if (updatedMember != null) {
+            return new ResponseEntity<>(updatedMember, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     // TODO: Create a log-out method that invalidates the token.

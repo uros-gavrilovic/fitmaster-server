@@ -79,16 +79,18 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
-    public Member registerMember(Member member) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(member.getUsername());
+    public Member registerMember(UserDTO dto) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(dto.getUsername());
 
         if (optionalMember.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(member.getPassword())));
-        Member createdMember = memberRepository.save(member);
-
-        return createdMember;
+        Member member = new Member();
+        member.setFirstName(dto.getFirstName());
+        member.setLastName(dto.getLastName());
+        member.setUsername(dto.getUsername());
+        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        return memberRepository.save(member);
     }
 
     @Transactional
@@ -96,5 +98,16 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("Unknown member"), HttpStatus.NOT_FOUND));
         return memberAdapter.entityToDTO(member);
+    }
+
+    public Member changePassword(Long memberID, String oldPassword, String newPassword) {
+        Member trainer = memberRepository.getByMemberID(memberID);
+
+        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), trainer.getPassword())) {
+            trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
+            return memberRepository.saveAndFlush(trainer);
+        }
+
+        throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 }
