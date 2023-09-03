@@ -2,10 +2,12 @@ package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.config.UserAuthenticationProvider;
 import com.mastercode.fitmaster.dto.ChangePasswordRequest;
+import com.mastercode.fitmaster.dto.MemberDTO;
+import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.model.Member;
+import com.mastercode.fitmaster.model.Trainer;
 import com.mastercode.fitmaster.model.User;
-import com.mastercode.fitmaster.model.enums.Role;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
@@ -70,12 +72,12 @@ public class UserController {
      * @return A ResponseEntity containing the logged-in Trainer with an authentication token and a status code of OK (200).
      */
     @PostMapping("/login")
-    public <T extends User> ResponseEntity<T> loginUser(@Valid @RequestBody UserDTO userDTO) {
+    public <T extends User> ResponseEntity<T> login(@Valid @RequestBody UserDTO userDTO) {
         T user;
 
-        if (userDTO.getRole().equals(Role.TRAINER)) {
+        if (userDTO instanceof TrainerDTO) {
             user = (T) trainerService.login(userDTO);
-        } else if (userDTO.getRole().equals(Role.MEMBER)) {
+        } else if (userDTO instanceof MemberDTO) {
             user = (T) memberService.login(userDTO);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -95,13 +97,13 @@ public class UserController {
      * @throws MethodArgumentNotValidException if the Trainer/Member object is invalid.
      */
     @PostMapping("/register")
-    public <T extends User> ResponseEntity<T> registerUser(@RequestBody UserDTO user) {
-        T createdUser;
+    public ResponseEntity<? extends User> register(@Valid @RequestBody User user) {
+        User createdUser;
 
-        if (user.getRole().equals(Role.TRAINER)) {
-            createdUser = (T) trainerService.registerTrainer(user);
-        } else if (user.getRole().equals(Role.MEMBER)) {
-            createdUser = (T) memberService.registerMember(user);
+        if (user instanceof Member) {
+            createdUser = memberService.registerMember((Member) user);
+        } else if (user instanceof Trainer) {
+            createdUser = trainerService.registerTrainer((Trainer) user);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

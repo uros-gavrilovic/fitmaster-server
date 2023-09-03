@@ -69,17 +69,13 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
-    public Trainer registerTrainer(UserDTO dto) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(dto.getUsername());
+    public Trainer registerTrainer(Trainer trainer) {
+        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(trainer.getUsername());
 
         if (optionalTrainer.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        Trainer trainer = new Trainer();
-        trainer.setFirstName(dto.getFirstName());
-        trainer.setLastName(dto.getLastName());
-        trainer.setUsername(dto.getUsername());
-        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainer.getPassword())));
         return trainerRepository.save(trainer);
     }
 

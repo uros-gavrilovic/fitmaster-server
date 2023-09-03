@@ -1,10 +1,10 @@
 package com.mastercode.fitmaster.model;
 
 import com.mastercode.fitmaster.model.enums.Gender;
+import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
 import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +51,6 @@ public class Trainer extends User {
     private String address;
 
     /** The date when the trainer was hired. */
-    @Past
+    @NotRequiredPast
     private LocalDate hireDate;
 }

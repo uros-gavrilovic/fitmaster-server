@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "plans")
 public class Plan {
 
@@ -52,14 +54,12 @@ public class Plan {
      * The start date and time of the fitness plan.
      */
     //    @Future
-    @NotNull
     private LocalDateTime startsAt;
 
     /**
      * The end date and time of the fitness plan.
      */
     //    @Future
-    @NotNull
     private LocalDateTime endsAt;
 
     /**

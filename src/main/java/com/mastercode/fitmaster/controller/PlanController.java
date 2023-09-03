@@ -77,7 +77,7 @@ public class PlanController {
         // TODO: Localization issues causes wrong time to be saved in DB.
         plan.setStartsAt(Instant.parse(jsonNode.get("startsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
         plan.setEndsAt(Instant.parse(jsonNode.get("endsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
-        plan.setCompleted(false);
+        plan.setCompleted(null);
 
         JsonNode exercisesNode = jsonNode.get("exercises");
         for (JsonNode exerciseNode : exercisesNode) {
@@ -137,6 +137,14 @@ public class PlanController {
     public ResponseEntity<Plan> getById(@PathVariable Long id) {
         Plan plan = planService.findByID(id);
         return new ResponseEntity<>(plan, HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Plan> updatePlan(@RequestBody Plan plan) {
+        plan.getActivities().forEach(activity -> activity.setPlan(plan));
+        Plan updatedPlan = planService.update(plan);
+
+        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
     }
 
     @PostMapping("/remove-trainer/{id}")

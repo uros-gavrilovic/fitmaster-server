@@ -79,17 +79,13 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
     }
 
-    public Member registerMember(UserDTO dto) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(dto.getUsername());
+    public Member registerMember(Member member) {
+        Optional<Member> optionalMember = memberRepository.findByUsername(member.getUsername());
 
         if (optionalMember.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        Member member = new Member();
-        member.setFirstName(dto.getFirstName());
-        member.setLastName(dto.getLastName());
-        member.setUsername(dto.getUsername());
-        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
+        member.setPassword(passwordEncoder.encode(CharBuffer.wrap(member.getPassword())));
         return memberRepository.save(member);
     }
 

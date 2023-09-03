@@ -8,6 +8,7 @@ CREATE TABLE trainers
     address      VARCHAR(255),
     hire_date    DATE,
     email        VARCHAR(255),
+    avatar       BYTEA,
     username     VARCHAR(255),
     password     VARCHAR(255),
 

@@ -1,5 +1,7 @@
 package com.mastercode.fitmaster.dto;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mastercode.fitmaster.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,14 +12,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role")
+@JsonSubTypes({@JsonSubTypes.Type(value = MemberDTO.class, name = "MEMBER"), @JsonSubTypes.Type(value = TrainerDTO.class, name = "TRAINER")})
 public class UserDTO {
 
     protected String username;
 
     protected String password;
-
-    private String firstName;
-    private String lastName;
 
     protected String email;
 

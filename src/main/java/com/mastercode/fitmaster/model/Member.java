@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.enums.MemberStatus;
+import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
+import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,8 +30,10 @@ public class Member extends User {
     @Column(name = "id")
     private Long memberID;
 
+    @NotEmpty
     private String firstName;
 
+    @NotEmpty
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -37,8 +42,10 @@ public class Member extends User {
 
     private String address;
 
+    @NotRequiredPhoneNumber
     private String phoneNumber;
 
+    @NotRequiredPast
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)

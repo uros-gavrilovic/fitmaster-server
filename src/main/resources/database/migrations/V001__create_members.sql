@@ -9,6 +9,7 @@ CREATE TABLE members
     birth_date   DATE,
     status       VARCHAR(32),
     email        VARCHAR(255),
+    avatar       BYTEA,
     username     VARCHAR(255),
     password     VARCHAR(255),
 
