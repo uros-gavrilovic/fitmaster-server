@@ -105,6 +105,15 @@ public class PlanController {
         return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
     }
 
+    @PostMapping("/created-by-member")
+    public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
+        plan.getActivities().forEach(activity -> activity.setPlan(plan));
+        plan.setTrainer(null);
+
+        Plan createdPlan = planService.create(plan);
+        return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
+    }
+
     /**
      * Retrieves a list of fitness plans by trainer ID.
      *
