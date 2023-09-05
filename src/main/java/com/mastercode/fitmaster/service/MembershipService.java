@@ -46,4 +46,9 @@ public class MembershipService implements AbstractService<Membership, Membership
     public void delete(Long id) {
         membershipRepository.deleteById(id);
     }
+
+    public List<MembershipDTO> getAllActiveMemberships(Long memberID) {
+        return membershipAdapter.entitiesToDTO
+                (membershipRepository.findAllByMemberMemberID(memberID));
+    }
 }
