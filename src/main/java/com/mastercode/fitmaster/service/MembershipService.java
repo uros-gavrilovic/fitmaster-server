@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MembershipService implements AbstractService<Membership, MembershipDTO> {
-    
+
     @Autowired
     MembershipRepository membershipRepository;
 
@@ -47,8 +48,7 @@ public class MembershipService implements AbstractService<Membership, Membership
         membershipRepository.deleteById(id);
     }
 
-    public List<MembershipDTO> getAllActiveMemberships(Long memberID) {
-        return membershipAdapter.entitiesToDTO
-                (membershipRepository.findAllByMemberMemberID(memberID));
+    public Set<Membership> getMembershipsByMemberID(Long memberID) {
+        return membershipRepository.findAllByMemberMemberID(memberID);
     }
 }

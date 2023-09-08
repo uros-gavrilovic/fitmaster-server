@@ -1,6 +1,5 @@
 package com.mastercode.fitmaster.controller;
 
-import com.mastercode.fitmaster.dto.MembershipDTO;
 import com.mastercode.fitmaster.model.Membership;
 import com.mastercode.fitmaster.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The MembershipController class handles HTTP requests related to fitness memberships.
@@ -36,8 +36,8 @@ public class MembershipController {
     }
 
     @GetMapping("/{memberID}")
-    public ResponseEntity<List<MembershipDTO>> getMembershipById(@PathVariable Long memberID) {
-        return new ResponseEntity<>(membershipService.getAllActiveMemberships(memberID), HttpStatus.OK);
+    public ResponseEntity<Set<Membership>> getMembershipsById(@PathVariable Long memberID) {
+        return new ResponseEntity<>(membershipService.getMembershipsByMemberID(memberID), HttpStatus.OK);
     }
 
 }

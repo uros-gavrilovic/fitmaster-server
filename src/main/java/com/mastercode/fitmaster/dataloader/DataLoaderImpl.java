@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
     Faker faker = new Faker();
+    private static final String PHONE_NUMBER_REGEX = "\\+\\(\\d{3}\\) \\d{2}-\\d{3}-\\d{4}";
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,7 +31,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
     @Override
     void loadTestData() {
         loadPackages(5);
-        loadMembers(15);
+        loadMembers(8);
         loadTrainers(5);
     }
 
@@ -59,7 +60,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             m.setAddress(faker.address().streetAddress());
-            m.setPhoneNumber(faker.phoneNumber().cellPhone());
+            m.setPhoneNumber(faker.regexify(PHONE_NUMBER_REGEX));
             m.setBirthDate(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()));
 
             Membership ms = new Membership();
@@ -90,7 +91,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setEmail(faker.internet().emailAddress());
             t.setUsername(faker.name().username());
             t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
-            t.setPhoneNumber(faker.phoneNumber().cellPhone());
+            t.setPhoneNumber(faker.regexify(PHONE_NUMBER_REGEX));
             t.setHireDate(LocalDate.ofInstant(faker.date()
                     .between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now()))
                     .toInstant(), ZoneId.systemDefault()));
