@@ -13,6 +13,7 @@ public class UserService {
         info.put("appName", DescriptionUtils.getAppName());
         info.put("appLocale", DescriptionUtils.getAppLocale());
         info.put("appVersion", DescriptionUtils.getAppVersion());
+        info.put("appTheme", DescriptionUtils.getAppTheme());
         return info;
     }
 }
