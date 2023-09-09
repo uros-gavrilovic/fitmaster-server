@@ -56,6 +56,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
             m.setEmail(faker.internet().emailAddress());
+            m.setEmailVerified(true);
             m.setUsername(faker.name().username());
             m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
@@ -66,14 +67,14 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             Membership ms = new Membership();
             ms.setMember(m);
             m.getMemberships().add(ms);
-            ms.setMembershipPackage(packageRepository.findAll()
-                    .get((int) new Random().nextLong(packageRepository.count())));
-            ms.setStartDate(LocalDate.ofInstant(faker.date()
-                    .past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now()))
-                    .toInstant(), ZoneId.systemDefault()));
-            ms.setEndDate(LocalDate.ofInstant(faker.date()
-                    .future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now()))
-                    .toInstant(), ZoneId.systemDefault()));
+            ms.setMembershipPackage(
+                    packageRepository.findAll().get((int) new Random().nextLong(packageRepository.count())));
+            ms.setStartDate(
+                    LocalDate.ofInstant(faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
+                            ZoneId.systemDefault()));
+            ms.setEndDate(LocalDate.ofInstant(
+                    faker.date().future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
+                    ZoneId.systemDefault()));
 
             membershipRepository.saveAndFlush(ms);
             memberRepository.saveAndFlush(m);
@@ -89,6 +90,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             t.setAddress(faker.address().streetAddress());
             t.setEmail(faker.internet().emailAddress());
+            t.setEmailVerified(true);
             t.setUsername(faker.name().username());
             t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.regexify(PHONE_NUMBER_REGEX));
