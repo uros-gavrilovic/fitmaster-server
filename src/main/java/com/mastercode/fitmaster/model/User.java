@@ -27,7 +27,10 @@ public abstract class User {
 
     protected String email;
 
-    protected Boolean emailVerified;
+    protected boolean emailVerified;
+
+    @Transient
+    protected String verificationToken;
 
     protected File avatar;
 

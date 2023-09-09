@@ -6,6 +6,7 @@ import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.exception.GlobalExceptionHandler;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.service.EmailService;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
 import com.mastercode.fitmaster.service.UserService;
@@ -44,14 +45,17 @@ public class UserControllerTest {
     private MemberService memberService;
 
     @Mock
+    private EmailService emailService;
+
+    @Mock
     private UserAuthenticationProvider userAuthenticationProvider;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, trainerService, memberService, userAuthenticationProvider))
-                .setControllerAdvice(new GlobalExceptionHandler())
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(
+                new UserController(userService, trainerService, memberService, emailService,
+                        userAuthenticationProvider)).setControllerAdvice(new GlobalExceptionHandler()).build();
         objectMapper = new ObjectMapper();
     }
 
@@ -93,7 +97,8 @@ public class UserControllerTest {
         userDTO.setUsername("testUsername");
         userDTO.setPassword("testIncorrectPassword");
 
-        when(trainerService.login(Mockito.any(userDTO.getClass()))).thenThrow(new LoginException("testTitle", HttpStatus.UNAUTHORIZED));
+        when(trainerService.login(Mockito.any(userDTO.getClass()))).thenThrow(
+                new LoginException("testTitle", HttpStatus.UNAUTHORIZED));
 
         mockMvc.perform(post("/login-trainer").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userDTO))).andExpect(status().isUnauthorized());

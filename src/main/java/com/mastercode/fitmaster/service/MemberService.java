@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,7 +57,8 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     @Override
     public Member update(Member entity) {
         Member member = memberRepository.findById(entity.getMemberID())
-                .orElseThrow(() -> new UserException("Member with id " + entity.getMemberID() + " does not exist", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new UserException("Member with id " + entity.getMemberID() + " does not exist",
+                        HttpStatus.NOT_FOUND));
         entity.setPassword(member.getPassword());
         entity.setUsername(member.getUsername());
         return memberRepository.saveAndFlush(entity);
@@ -72,11 +75,20 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
 
     public Member login(UserDTO userDTO) {
         Member member = memberRepository.findByUsername(userDTO.getUsername())
-                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
+                .orElseThrow(
+                        () -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
+                                HttpStatus.UNAUTHORIZED));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), member.getPassword())) return member;
+        if (!passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), member.getPassword())) {
+            throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
+                    HttpStatus.UNAUTHORIZED);
+        }
 
-        throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
+        if (!member.isEmailVerified()) {
+            throw new LoginException(DescriptionUtils.getErrorDescription("EMAIL_NOT_VERIFIED"), HttpStatus.FORBIDDEN);
+        }
+
+        return member;
     }
 
     public Member registerMember(Member member) {
@@ -86,24 +98,44 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
         member.setPassword(passwordEncoder.encode(CharBuffer.wrap(member.getPassword())));
-        return memberRepository.save(member);
+
+        Member savedMember = memberRepository.saveAndFlush(member);
+        savedMember.setVerificationToken(passwordEncoder.encode(CharBuffer.wrap(savedMember.getMemberID().toString())));
+
+        return savedMember;
     }
 
     @Transactional
     public UserDTO findByUsername(String username) {
         Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("Unknown member"), HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("Unknown member"),
+                        HttpStatus.NOT_FOUND));
         return memberAdapter.entityToDTO(member);
     }
 
     public Member changePassword(Long memberID, String oldPassword, String newPassword) {
-        Member trainer = memberRepository.getByMemberID(memberID);
+        Member member = memberRepository.getByMemberID(memberID);
 
-        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), trainer.getPassword())) {
-            trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
-            return memberRepository.saveAndFlush(trainer);
+        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), member.getPassword())) {
+            member.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
+            return memberRepository.saveAndFlush(member);
         }
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_PASSWORD"), HttpStatus.UNAUTHORIZED);
+    }
+
+    public boolean verifyMemberAccount(String token) {
+        byte[] decodedBytes = Base64.getDecoder().decode(token);
+        String decodedMemberID = new String(decodedBytes, StandardCharsets.UTF_8);
+
+        Member member = memberRepository.getByMemberID(Long.parseLong(decodedMemberID));
+
+        if (member != null) {
+            member.setEmailVerified(true);
+            memberRepository.saveAndFlush(member);
+            return true;
+        }
+
+        return false;
     }
 }
