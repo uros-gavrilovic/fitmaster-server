@@ -56,6 +56,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
             m.setEmail(faker.internet().emailAddress());
+            m.setEmailVerified(true);
             m.setUsername(faker.name().username());
             m.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             m.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
@@ -89,6 +90,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             t.setGender(Gender.valueOf(faker.demographic().sex().toUpperCase()));
             t.setAddress(faker.address().streetAddress());
             t.setEmail(faker.internet().emailAddress());
+            t.setEmailVerified(true);
             t.setUsername(faker.name().username());
             t.setPassword(new BCryptPasswordEncoder().encode(faker.internet().password(8, 32)));
             t.setPhoneNumber(faker.regexify(PHONE_NUMBER_REGEX));
