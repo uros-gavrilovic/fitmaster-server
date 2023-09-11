@@ -5,6 +5,8 @@ import com.mastercode.fitmaster.dto.ExerciseDTO;
 import com.mastercode.fitmaster.model.Exercise;
 import com.mastercode.fitmaster.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,18 +38,25 @@ public class ExerciseController {
         return exerciseService.getAllDTOs();
     }
 
-    @GetMapping("/id")
-    public Exercise getByID(Long id) {
+    @GetMapping("/{id}")
+    public Exercise getByID(@PathVariable Long id) {
         return exerciseService.findByID(id);
     }
 
     @PostMapping
-    public Exercise create(Exercise exercise) {
-        return exerciseService.create(exercise);
+    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
+        Exercise createdExercise = exerciseService.create(exercise);
+        return new ResponseEntity<>(createdExercise, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/id")
-    public void delete(Long id) {
+    @PutMapping
+    public ResponseEntity<Exercise> updateExercise(@RequestBody Exercise exercise) {
+        Exercise updatedExercise = exerciseService.update(exercise);
+        return new ResponseEntity<>(updatedExercise, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         exerciseService.delete(id);
     }
 

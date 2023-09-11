@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * The Exercise class represents a fitness exercise.
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "exercises")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class Exercise {
     /** The ID of the exercise. Represents primary key in the database. */
     @Id
