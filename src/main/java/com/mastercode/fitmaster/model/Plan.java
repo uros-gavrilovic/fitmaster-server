@@ -3,6 +3,7 @@ package com.mastercode.fitmaster.model;
 import com.mastercode.fitmaster.model.enums.PlanStatus;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -53,13 +54,15 @@ public class Plan {
     /**
      * The start date and time of the fitness plan.
      */
-    //    @Future
+    @Future
+    @NotNull
     private LocalDateTime startsAt;
 
     /**
      * The end date and time of the fitness plan.
      */
-    //    @Future
+    @Future
+    @NotNull
     private LocalDateTime endsAt;
 
     /**

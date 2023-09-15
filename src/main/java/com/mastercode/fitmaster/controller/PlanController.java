@@ -8,6 +8,7 @@ import com.mastercode.fitmaster.exception.ValidatorException;
 import com.mastercode.fitmaster.model.*;
 import com.mastercode.fitmaster.service.PlanService;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -66,7 +67,8 @@ public class PlanController {
      * @throws NullPointerException    If the provided JSON request is not valid, or a field is missing.
      */
     @PostMapping
-    public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse) throws JsonProcessingException, ValidatorException, NullPointerException {
+    public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse)
+            throws JsonProcessingException, ValidatorException, NullPointerException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);
@@ -148,8 +150,8 @@ public class PlanController {
         return new ResponseEntity<>(plan, HttpStatus.OK);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Plan> updatePlan(@RequestBody Plan plan) {
+    @PutMapping
+    public ResponseEntity<Plan> updatePlan(@Valid @RequestBody Plan plan) {
         plan.getActivities().forEach(activity -> activity.setPlan(plan));
         Plan updatedPlan = planService.update(plan);
 
