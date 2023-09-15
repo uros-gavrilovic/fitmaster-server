@@ -1,5 +1,6 @@
 package com.mastercode.fitmaster.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mastercode.fitmaster.model.enums.PlanStatus;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -78,6 +79,7 @@ public class Plan {
     private Set<Activity> activities = new HashSet<>();
 
     @Nullable
+    @JsonIgnore
     private Boolean completed;
 
     @Transient
