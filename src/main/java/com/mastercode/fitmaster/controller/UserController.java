@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -102,9 +104,11 @@ public class UserController {
      * @throws MethodArgumentNotValidException if the Trainer/Member object is invalid.
      */
     @PostMapping("/register")
-    public ResponseEntity<? extends User> register(@Valid @RequestBody User user) throws MessagingException {
+    public ResponseEntity<? extends User> register(@Valid @RequestBody User user)
+            throws MessagingException, UnsupportedEncodingException, NoSuchAlgorithmException {
         User createdUser;
-        String mailText = "<p>Welcome to FitMaster! Your account has succesfully been created.<p><br>Please click on the following link to verify your account: http://localhost:8080/verify-account/";
+        String mailText =
+                "<p>Welcome to FitMaster! Your account has succesfully been created.<p><br>Please click on the following link to verify your account: http://localhost:8080/verify-account/";
 
         if (user instanceof Member) {
             createdUser = memberService.registerMember((Member) user);
@@ -125,8 +129,8 @@ public class UserController {
     @PostMapping("/change-password/{memberID}")
     public ResponseEntity<Member> changePassword(@PathVariable Long memberID,
                                                  @RequestBody ChangePasswordRequest request) {
-        Member updatedMember = memberService.changePassword(memberID, request.getOldPassword(),
-                request.getNewPassword());
+        Member updatedMember =
+                memberService.changePassword(memberID, request.getOldPassword(), request.getNewPassword());
         if (updatedMember != null) {
             return new ResponseEntity<>(updatedMember, HttpStatus.OK);
         } else {

@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -89,8 +88,9 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainer.getPassword())));
 
         Trainer savedTrainer = trainerRepository.saveAndFlush(trainer);
-        savedTrainer.setVerificationToken(
-                passwordEncoder.encode(CharBuffer.wrap(savedTrainer.getTrainerID().toString())));
+
+        String encodedID = new String(Base64.getUrlEncoder().encode(trainer.getTrainerID().toString().getBytes()));
+        savedTrainer.setVerificationToken(encodedID);
 
         return savedTrainer;
     }
@@ -113,10 +113,8 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     }
 
     public boolean verifyTrainerAccount(String token) {
-        byte[] decodedBytes = Base64.getDecoder().decode(token);
-        String decodedMemberID = new String(decodedBytes, StandardCharsets.UTF_8);
-
-        Trainer trainer = trainerRepository.getByTrainerID(Long.parseLong(decodedMemberID));
+        String decodedID = new String(Base64.getUrlDecoder().decode(token));
+        Trainer trainer = trainerRepository.getByTrainerID(Long.parseLong(decodedID));
 
         if (trainer != null) {
             trainer.setEmailVerified(true);

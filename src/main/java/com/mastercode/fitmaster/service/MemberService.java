@@ -92,6 +92,7 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     }
 
     public Member registerMember(Member member) {
+        // TODO: Edit encoding proccess to make it URL friendly.
         Optional<Member> optionalMember = memberRepository.findByUsername(member.getUsername());
 
         if (optionalMember.isPresent())
@@ -125,6 +126,7 @@ public class MemberService implements AbstractService<Member, MemberDTO> {
     }
 
     public boolean verifyMemberAccount(String token) {
+        // TODO: Edit decoding proccess to make it URL friendly.
         byte[] decodedBytes = Base64.getDecoder().decode(token);
         String decodedMemberID = new String(decodedBytes, StandardCharsets.UTF_8);
 
