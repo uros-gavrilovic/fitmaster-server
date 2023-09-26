@@ -20,17 +20,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+        http.exceptionHandling()
+                .authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), BasicAuthenticationFilter.class)
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/login-trainer", "/login-member", "/register-trainer").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/app-info").permitAll()
-                        .anyRequest().authenticated());
+                .authorizeHttpRequests((requests) -> requests.requestMatchers(HttpMethod.POST, "/login", "/register")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/app-info", "/verify-account/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated());
         // TODO: Create a file that contains each permitted API endpoint instead of listing them here.
         return http.build();
     }

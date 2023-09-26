@@ -4,8 +4,6 @@ import com.mastercode.fitmaster.dto.ActivityDTO;
 import com.mastercode.fitmaster.model.Activity;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
 
@@ -14,7 +12,7 @@ public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
         if (dto == null) return null;
         final Activity entity = new Activity();
 
-        entity.setOrdinalNumber(dto.getOrdinalNumber());
+        entity.setActivityID(dto.getActivityID());
         entity.setReps(dto.getReps());
         entity.setSets(dto.getSets());
         entity.setComment(dto.getComment());
@@ -27,7 +25,7 @@ public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
         if (entity == null) return null;
         final ActivityDTO dto = new ActivityDTO();
 
-        dto.setOrdinalNumber(entity.getOrdinalNumber());
+        dto.setActivityID(entity.getActivityID());
         dto.setReps(entity.getReps());
         dto.setSets(entity.getSets());
         dto.setComment(entity.getComment());

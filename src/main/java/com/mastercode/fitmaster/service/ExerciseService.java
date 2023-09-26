@@ -45,7 +45,7 @@ public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
 
     @Override
     public Exercise update(Exercise entity) {
-        return null; // TODO
+        return exerciseRepository.saveAndFlush(entity);
     }
 
     @Override

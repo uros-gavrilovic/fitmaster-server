@@ -1,2 +1,3 @@
-INSERT INTO Trainers(id, firstName, lastName, gender, username, password, phoneNumber, address, hireDate)
-VALUES(0, 'Admin', 'Admin', null, 'a', '$2a$10$2Rv9EfIRecIh6chMYas4nenW2IYF7kRKBxjPEfR1gIxkc.z3YJnmS', null, null, null)
+INSERT INTO trainers(id, first_name, last_name, username, email, email_verified, password)
+VALUES (0, 'Admin', 'Admin', 'admin', 'admin@fitmaster.com', true,
+        '$2a$10$DckRmrkx7D6nwVpB6juCB..ekyqwfqRMHdN0Kx.11UWbGndMacrUa')

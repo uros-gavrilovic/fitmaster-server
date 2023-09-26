@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 @Getter
 @Setter
@@ -20,5 +21,9 @@ public class Package {
 
     private String name;
 
+    private Integer duration;
+
     private BigDecimal price;
+
+    private Currency currency;
 }

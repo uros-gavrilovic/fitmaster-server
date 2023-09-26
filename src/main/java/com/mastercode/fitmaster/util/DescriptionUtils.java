@@ -66,9 +66,22 @@ public class DescriptionUtils {
         try {
             appVersion = bundle.getString("app.version");
         } catch (Exception e) {
-            appVersion = "0.1";
+            appVersion = "1.0";
         }
 
         return appVersion;
+    }
+
+    public static String getAppTheme() {
+        ResourceBundle bundle = ResourceBundle.getBundle("application");
+        String appTheme;
+
+        try {
+            appTheme = bundle.getString("app.theme");
+        } catch (Exception e) {
+            appTheme = "light";
+        }
+
+        return appTheme;
     }
 }

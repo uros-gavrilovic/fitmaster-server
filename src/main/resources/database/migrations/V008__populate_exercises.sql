@@ -1,4 +1,4 @@
-INSERT INTO exercises (name, bodyPart, category, instructions)
+INSERT INTO exercises (name, body_part, category, instructions)
 VALUES ('Bench Press', 'CHEST', 'BARBELL',
         'Lie on a flat bench with a barbell at chest level. Grip the barbell slightly wider than shoulder-width apart. Lift the barbell off the rack and lower it to your chest. Push the barbell back up to the starting position.'),
        ('Bench Press', 'CHEST', 'DUMBBELL',

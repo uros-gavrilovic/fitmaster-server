@@ -15,5 +15,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     @Query("SELECT p FROM Plan p WHERE p.trainer.id = :trainerId")
     public Set<Plan> findByTrainerId(@Param("trainerId") Long trainerId);
 
+    @Query("SELECT p FROM Plan p WHERE p.member.id = :memberId")
+    public Set<Plan> findByMemberId(@Param("memberId") Long memberId);
 }
 

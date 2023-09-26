@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,27 +61,38 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         trainerRepository.deleteById(id);
     }
 
-    public TrainerDTO login(TrainerDTO dto) {
-        Trainer trainer = trainerRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED));
+    public Trainer login(UserDTO userDTO) {
+        Trainer trainer = trainerRepository.findByUsername(userDTO.getUsername())
+                .orElseThrow(
+                        () -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
+                                HttpStatus.UNAUTHORIZED));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(dto.getPassword()), trainer.getPassword()))
-            return trainerAdapter.entityToDTO(trainer);
+        if (!passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), trainer.getPassword())) {
+            throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
+                    HttpStatus.UNAUTHORIZED);
+        }
 
-        throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"), HttpStatus.UNAUTHORIZED);
+        if (!trainer.isEmailVerified()) {
+            throw new LoginException(DescriptionUtils.getErrorDescription("EMAIL_NOT_VERIFIED"), HttpStatus.FORBIDDEN);
+        }
+
+        return trainer;
     }
 
-    public TrainerDTO registerTrainer(TrainerDTO dto) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(dto.getUsername());
+    public Trainer registerTrainer(Trainer trainer) {
+        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(trainer.getUsername());
 
         if (optionalTrainer.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        Trainer trainer = trainerAdapter.dtoToEntity(dto);
-        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
-        Trainer createdTrainer = trainerRepository.save(trainer);
+        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainer.getPassword())));
 
-        return trainerAdapter.entityToDTO(createdTrainer);
+        Trainer savedTrainer = trainerRepository.saveAndFlush(trainer);
+
+        String encodedID = new String(Base64.getUrlEncoder().encode(trainer.getTrainerID().toString().getBytes()));
+        savedTrainer.setVerificationToken(encodedID);
+
+        return savedTrainer;
     }
 
     public UserDTO findByUsername(String username) {
@@ -98,5 +110,18 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         }
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_PASSWORD"), HttpStatus.UNAUTHORIZED);
+    }
+
+    public boolean verifyTrainerAccount(String token) {
+        String decodedID = new String(Base64.getUrlDecoder().decode(token));
+        Trainer trainer = trainerRepository.getByTrainerID(Long.parseLong(decodedID));
+
+        if (trainer != null) {
+            trainer.setEmailVerified(true);
+            trainerRepository.saveAndFlush(trainer);
+            return true;
+        }
+
+        return false;
     }
 }

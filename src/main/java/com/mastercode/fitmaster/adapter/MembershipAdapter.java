@@ -4,6 +4,9 @@ import com.mastercode.fitmaster.dto.MembershipDTO;
 import com.mastercode.fitmaster.model.Membership;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO> {
 
@@ -31,6 +34,13 @@ public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO
         dto.setActive(entity.isActive());
 
         return dto;
+    }
+
+    public List<MembershipDTO> entitiesToDTO(List<Membership> list) {
+        if(list == null)
+            return null;
+
+        return list.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
 }
