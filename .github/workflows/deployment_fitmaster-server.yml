@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven (skip tests)
-        run: mvn clean install -Dmaven.test.skip=true  # EXPERIMENTAL! Delete for production.
+        run: mvn clean install --% -Dmaven.test.skip=true  # EXPERIMENTAL! Delete for production.
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
