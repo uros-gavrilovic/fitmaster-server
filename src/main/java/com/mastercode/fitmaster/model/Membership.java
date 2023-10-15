@@ -53,11 +53,16 @@ public class Membership {
     @Transient
     private boolean active;
 
-    /**
-     * Calculates the 'active' status of the membership based on the end date and the current date.
-     */
-    @PostLoad
-    private void calculate() {
-        this.active = endDate.isAfter(LocalDate.now());
+    @Transient
+    public boolean isActive() {
+        return endDate.isAfter(LocalDate.now());
     }
+
+    //    /**
+    //     * Calculates the 'active' status of the membership based on the end date and the current date.
+    //     */
+    //    @PostLoad
+    //    private void calculate() {
+    //        this.active = endDate.isAfter(LocalDate.now());
+    //    }
 }

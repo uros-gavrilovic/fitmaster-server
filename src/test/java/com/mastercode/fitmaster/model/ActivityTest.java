@@ -27,12 +27,12 @@ public class ActivityTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        
+
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
 
         this.activity = new Activity();
-        activity.setOrdinalNumber(1);
+        activity.setActivityID(1L);
         activity.setPlan(mockPlan);
         activity.setExercise(mockExercise);
         activity.setSets(1);
@@ -48,8 +48,8 @@ public class ActivityTest {
     }
 
     @Test
-    public void testOrdinalNumberNotNull() {
-        activity.setOrdinalNumber(null);
+    public void testActivityIDNotNull() {
+        activity.setActivityID(null);
         Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
 
         assertEquals(1, violations.size());
