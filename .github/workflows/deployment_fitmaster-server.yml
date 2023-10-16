@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven (skip tests)
-        run: mvn clean install -Dmaven.test.skip=true  # EXPERIMENTAL! Delete for production.
+        run: mvn clean install --% -Dmaven.test.skip=true  # EXPERIMENTAL! Delete for production.
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -31,12 +31,12 @@ jobs:
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'fitmaster-server'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B826BEE812BD443586F159F1E304844A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_94D3A1DF7010417DB5F68706809819E3 }}
           package: '*.jar'
