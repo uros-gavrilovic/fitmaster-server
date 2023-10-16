@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .cors()
+                .and()
                 .authorizeHttpRequests((requests) -> requests.requestMatchers(HttpMethod.POST, "/login", "/register")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/app-info", "/verify-account/**")
