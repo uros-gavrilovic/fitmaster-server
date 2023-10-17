@@ -23,7 +23,7 @@ public class WebConfig {
         configuration.addAllowedOrigin("http://localhost:3000"); // React frontend
         configuration.addAllowedOrigin("http://localhost:19006"); // Mobile application
         configuration.addAllowedOrigin(
-                "https://delightful-stone-0033d2303.3.azurestaticapps.net"); // Front-End URL (Azure)
+                "https://victorious-flower-0f7326e10.3.azurestaticapps.net"); // Front-End URL (Azure)
         configuration.setAllowedHeaders(
                 Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT));
         configuration.setAllowedMethods(
