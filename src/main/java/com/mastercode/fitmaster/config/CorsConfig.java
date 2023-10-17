@@ -13,7 +13,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://delightful-stone-0033d2303.3.azurestaticapps.net"); // Front-End URL
+        config.addAllowedOrigin("https://delightful-stone-0033d2303.3.azurestaticapps.net"); // Front-End URL (Azure)
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
