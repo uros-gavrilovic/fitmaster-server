@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FitMaster {
     public static void main(String[] args) {
+        System.out.println("Deploy");
         SpringApplication.run(FitMaster.class, args);
     }
 }
