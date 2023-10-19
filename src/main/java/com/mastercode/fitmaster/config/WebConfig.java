@@ -15,7 +15,10 @@ import java.util.Arrays;
 public class WebConfig {
 
     @Value("${app.client.url}")
-    private String clientUrl;  // Front-End URL (Azure)
+    private String clientUrl;
+
+    @Value("${app.mobile.url}")
+    private String mobileUrl;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -25,9 +28,8 @@ public class WebConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowCredentials(true);
-        //        configuration.addAllowedOrigin("http://localhost:3000"); // React frontend
-        //        configuration.addAllowedOrigin("http://localhost:19006"); // Mobile application
         configuration.addAllowedOrigin(clientUrl);
+        configuration.addAllowedOrigin(mobileUrl);
         configuration.setAllowedHeaders(
                 Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT));
         configuration.setAllowedMethods(
