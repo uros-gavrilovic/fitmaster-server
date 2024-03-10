@@ -22,9 +22,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "members")
+@Table(name = "member")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Member extends User {
+public class MemberEntity extends UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,10 +49,10 @@ public class Member extends User {
     @NotRequiredPast
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "memberEntity", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JsonManagedReference
-    private Set<Membership> memberships = new HashSet<>();
+    private Set<MembershipEntity> membershipEntities = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
@@ -63,12 +64,12 @@ public class Member extends User {
      * @return membership with latest field "startDate".
      */
     @Transient
-    public Membership getLatestMembership() {
-        return memberships.stream().max(Comparator.comparing(Membership::getStartDate)).orElse(null);
+    public MembershipEntity getLatestMembership() {
+        return membershipEntities.stream().max(Comparator.comparing(MembershipEntity::getStartDate)).orElse(null);
     }
 
     /**
-     * Determines the status of the member based on the memberships.
+     * Determines the status of the member based on the membershipEntities.
      * Only banned status will be saved to the database. Everything else will be calculated on the fly.
      *
      * @see MemberStatus
@@ -76,12 +77,13 @@ public class Member extends User {
     @PostLoad
     private void determineStatus() {
         if (status == null) {
-            if (memberships.isEmpty()) {
+            if (membershipEntities.isEmpty()) {
                 status = MemberStatus.PENDING; // Freshly created member doesn't have any membership.
             } else {
-                status = memberships.stream()
-                        .anyMatch(Membership::isActive) ? MemberStatus.ACTIVE : MemberStatus.INACTIVE;
+                status = membershipEntities.stream()
+                        .anyMatch(MembershipEntity::isActive) ? MemberStatus.ACTIVE : MemberStatus.INACTIVE;
             }
         }
     }
+
 }

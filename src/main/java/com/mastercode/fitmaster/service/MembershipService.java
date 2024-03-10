@@ -2,7 +2,7 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.MembershipAdapter;
 import com.mastercode.fitmaster.dto.MembershipDTO;
-import com.mastercode.fitmaster.model.Membership;
+import com.mastercode.fitmaster.model.MembershipEntity;
 import com.mastercode.fitmaster.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class MembershipService implements AbstractService<Membership, MembershipDTO> {
+public class MembershipService implements AbstractService<MembershipEntity, MembershipDTO> {
 
     @Autowired
     MembershipRepository membershipRepository;
@@ -19,12 +19,12 @@ public class MembershipService implements AbstractService<Membership, Membership
     @Autowired
     MembershipAdapter membershipAdapter;
 
-    public List<Membership> getAll() {
+    public List<MembershipEntity> getAll() {
         return membershipRepository.findAll();
     }
 
     @Override
-    public Membership findByID(Long id) {
+    public MembershipEntity findByID(Long id) {
         return membershipRepository.getByMembershipID(id);
     }
 
@@ -34,12 +34,12 @@ public class MembershipService implements AbstractService<Membership, Membership
     }
 
     @Override
-    public Membership create(Membership entity) {
+    public MembershipEntity create(MembershipEntity entity) {
         return membershipRepository.saveAndFlush(entity);
     }
 
     @Override
-    public Membership update(Membership entity) {
+    public MembershipEntity update(MembershipEntity entity) {
         return null; // TODO
     }
 
@@ -48,7 +48,8 @@ public class MembershipService implements AbstractService<Membership, Membership
         membershipRepository.deleteById(id);
     }
 
-    public Set<Membership> getMembershipsByMemberID(Long memberID) {
-        return membershipRepository.findAllByMemberMemberID(memberID);
+    public Set<MembershipEntity> getMembershipsByMemberID(Long memberID) {
+        return null;
+        //        return membershipRepository.findAllByMemberMemberID(memberID);
     }
 }

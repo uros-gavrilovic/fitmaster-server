@@ -13,7 +13,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 /**
- * The Trainer class represents a fitness trainer.
+ * The TrainerEntity class represents a fitness trainer.
  *
  * @author Uroš Gavrilović
  */
@@ -22,8 +22,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "trainers")
-public class Trainer extends User {
+@Table(name = "trainer")
+public class TrainerEntity extends UserEntity {
+
     /** Unique identifier of the trainer. Represents a primary key in the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,4 +54,5 @@ public class Trainer extends User {
     /** The date when the trainer was hired. */
     @NotRequiredPast
     private LocalDate hireDate;
+
 }

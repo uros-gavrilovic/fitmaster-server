@@ -40,7 +40,7 @@ public class PlanController {
     private final Validator validator;
 
     /**
-     * Represents service class for entity Plan.
+     * Represents service class for entity PlanEntity.
      */
     @Autowired
     private PlanService planService;
@@ -48,10 +48,10 @@ public class PlanController {
     /**
      * Retrieves a list of all fitness plans.
      *
-     * @return A list of Plan objects representing fitness plans.
+     * @return A list of PlanEntity objects representing fitness plans.
      */
     @GetMapping
-    public List<Plan> getAll() {
+    public List<PlanEntity> getAll() {
         return planService.getAll();
     }
 
@@ -60,60 +60,61 @@ public class PlanController {
      *
      * @param jsonResponse The JSON request containing plan information.
      *
-     * @return A ResponseEntity containing the created Plan object and a status code of CREATED (201).
+     * @return A ResponseEntity containing the created PlanEntity object and a status code of CREATED (201).
      *
      * @throws JsonProcessingException If there's an issue processing the JSON request.
-     * @throws ValidatorException      If there's an issue validating the Plan object.
+     * @throws ValidatorException      If there's an issue validating the PlanEntity object.
      * @throws NullPointerException    If the provided JSON request is not valid, or a field is missing.
      */
     @PostMapping
-    public ResponseEntity<Plan> createPlan(@RequestBody String jsonResponse)
+    public ResponseEntity<PlanEntity> createPlan(@RequestBody String jsonResponse)
             throws JsonProcessingException, ValidatorException, NullPointerException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 
-        Plan plan = new Plan();
-        plan.setTrainer(objectMapper.treeToValue(jsonNode.get("trainer"), Trainer.class));
-        plan.setMember(objectMapper.treeToValue(jsonNode.get("member"), Member.class));
+        PlanEntity planEntity = new PlanEntity();
+        planEntity.setTrainerEntity(objectMapper.treeToValue(jsonNode.get("trainer"), TrainerEntity.class));
+        planEntity.setMemberEntity(objectMapper.treeToValue(jsonNode.get("member"), MemberEntity.class));
         // TODO: Localization issues causes wrong time to be saved in DB.
-        plan.setStartsAt(Instant.parse(jsonNode.get("startsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
-        plan.setEndsAt(Instant.parse(jsonNode.get("endsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
-        plan.setCompleted(null);
+        planEntity.setStartsAt(
+                Instant.parse(jsonNode.get("startsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
+        planEntity.setEndsAt(Instant.parse(jsonNode.get("endsAt").asText()).atZone(ZoneOffset.UTC).toLocalDateTime());
+        planEntity.setCompleted(null);
 
         JsonNode exercisesNode = jsonNode.get("exercises");
         for (JsonNode exerciseNode : exercisesNode) {
             try {
-                Exercise exercise = objectMapper.treeToValue(exerciseNode, Exercise.class);
+                ExerciseEntity exerciseEntity = objectMapper.treeToValue(exerciseNode, ExerciseEntity.class);
 
-                Activity activity = new Activity();
-                activity.setPlan(plan);
-                activity.setExercise(exercise);
-                activity.setReps(exerciseNode.get("reps").asInt());
-                activity.setSets(exerciseNode.get("sets").asInt());
+                ActivityEntity activityEntity = new ActivityEntity();
+                activityEntity.setPlanEntity(planEntity);
+                activityEntity.setExerciseEntity(exerciseEntity);
+                activityEntity.setReps(exerciseNode.get("reps").asInt());
+                activityEntity.setSets(exerciseNode.get("sets").asInt());
 
-                plan.getActivities().add(activity);
+                planEntity.getActivities().add(activityEntity);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        Set<ConstraintViolation<Plan>> violations = validator.validate(plan);
+        Set<ConstraintViolation<PlanEntity>> violations = validator.validate(planEntity);
         if (!violations.isEmpty()) {
             throw new ValidatorException(violations.toString());
         }
 
-        Plan createdPlan = planService.create(plan);
-        return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
+        PlanEntity createdPlanEntity = planService.create(planEntity);
+        return new ResponseEntity<>(createdPlanEntity, HttpStatus.CREATED);
     }
 
     @PostMapping("/created-by-member")
-    public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
-        plan.getActivities().forEach(activity -> activity.setPlan(plan));
-        plan.setTrainer(null);
+    public ResponseEntity<PlanEntity> createPlan(@RequestBody PlanEntity planEntity) {
+        planEntity.getActivities().forEach(activity -> activity.setPlanEntity(planEntity));
+        planEntity.setTrainerEntity(null);
 
-        Plan createdPlan = planService.create(plan);
-        return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
+        PlanEntity createdPlanEntity = planService.create(planEntity);
+        return new ResponseEntity<>(createdPlanEntity, HttpStatus.CREATED);
     }
 
     /**
@@ -121,13 +122,13 @@ public class PlanController {
      *
      * @param id The unique ID of the trainer.
      *
-     * @return A ResponseEntity containing a set of Plan objects associated with the trainer
+     * @return A ResponseEntity containing a set of PlanEntity objects associated with the trainer
      * and a status code of OK (200).
      */
     @GetMapping("/trainer/{id}")
-    public ResponseEntity<Set<Plan>> getAllByTrainer(@PathVariable Long id) {
-        Set<Plan> plans = planService.findByTrainerId(id);
-        return new ResponseEntity<>(plans, HttpStatus.OK);
+    public ResponseEntity<Set<PlanEntity>> getAllByTrainer(@PathVariable Long id) {
+        Set<PlanEntity> planEntities = planService.findByTrainerId(id);
+        return new ResponseEntity<>(planEntities, HttpStatus.OK);
     }
 
     /**
@@ -135,48 +136,48 @@ public class PlanController {
      *
      * @param id The unique ID of the member.
      *
-     * @return A ResponseEntity containing a set of Plan objects associated with the member
+     * @return A ResponseEntity containing a set of PlanEntity objects associated with the member
      * and a status code of OK (200).
      */
     @GetMapping("/member/{id}")
-    public ResponseEntity<Set<Plan>> getAllByMember(@PathVariable Long id) {
-        Set<Plan> plans = planService.findByMemberId(id);
-        return new ResponseEntity<>(plans, HttpStatus.OK);
+    public ResponseEntity<Set<PlanEntity>> getAllByMember(@PathVariable Long id) {
+        Set<PlanEntity> planEntities = planService.findByMemberId(id);
+        return new ResponseEntity<>(planEntities, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plan> getById(@PathVariable Long id) {
-        Plan plan = planService.findByID(id);
-        return new ResponseEntity<>(plan, HttpStatus.OK);
+    public ResponseEntity<PlanEntity> getById(@PathVariable Long id) {
+        PlanEntity planEntity = planService.findByID(id);
+        return new ResponseEntity<>(planEntity, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Plan> updatePlan(@Valid @RequestBody Plan plan) {
-        plan.getActivities().forEach(activity -> activity.setPlan(plan));
-        Plan updatedPlan = planService.update(plan);
+    public ResponseEntity<PlanEntity> updatePlan(@Valid @RequestBody PlanEntity planEntity) {
+        planEntity.getActivities().forEach(activity -> activity.setPlanEntity(planEntity));
+        PlanEntity updatedPlanEntity = planService.update(planEntity);
 
-        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
     }
 
     @PostMapping("/remove-trainer/{id}")
-    public ResponseEntity<Plan> removeTrainer(@NotEmpty @PathVariable Long id) {
-        Plan plan = planService.findByID(id);
-        plan.setTrainer(null);
+    public ResponseEntity<PlanEntity> removeTrainer(@NotEmpty @PathVariable Long id) {
+        PlanEntity planEntity = planService.findByID(id);
+        planEntity.setTrainerEntity(null);
 
-        Plan updatedPlan = planService.update(plan);
+        PlanEntity updatedPlanEntity = planService.update(planEntity);
 
-        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
     }
 
     @PostMapping("/cancel/{id}")
-    public ResponseEntity<Plan> cancelPlan(@NotEmpty @PathVariable Long id) {
+    public ResponseEntity<PlanEntity> cancelPlan(@NotEmpty @PathVariable Long id) {
         System.out.println("cancelPlan() called");
-        Plan plan = planService.findByID(id);
-        plan.setCompleted(false);
+        PlanEntity planEntity = planService.findByID(id);
+        planEntity.setCompleted(false);
 
-        Plan updatedPlan = planService.update(plan);
+        PlanEntity updatedPlanEntity = planService.update(planEntity);
 
-        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
     }
 
     /**
@@ -189,7 +190,7 @@ public class PlanController {
      * @throws MethodArgumentNotValidException If the provided ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Plan> deletePlan(@NotEmpty @PathVariable Long id) {
+    public ResponseEntity<PlanEntity> deletePlan(@NotEmpty @PathVariable Long id) {
         planService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

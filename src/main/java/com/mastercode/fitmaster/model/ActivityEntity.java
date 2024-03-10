@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * The Activity class represents a fitness activity within a training plan.
+ * The ActivityEntity class represents a fitness activity within a training planEntity.
  *
  * @author Uroš Gavrilović
  */
@@ -17,37 +17,39 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "activities")
-public class Activity {
-    /** The ordinal number of the activity within the training plan, also represents primary key. */
+@Table(name = "activity")
+public class ActivityEntity {
+
+    /** The ordinal number of the activity within the training planEntity, also represents primary key. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long activityID;
 
-    /** The training plan to which this activity belongs. */
+    /** The training planEntity to which this activity belongs. */
     @JsonIgnore
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id")
-    private Plan plan;
+    private PlanEntity planEntity;
 
-    /** The exercise associated with this activity. */
+    /** The exerciseEntity associated with this activity. */
     @NotNull
     @OneToOne
     @JoinColumn(name = "exercise_id")
-    private Exercise exercise;
+    private ExerciseEntity exerciseEntity;
 
-    /** The number of repetitions for the exercise. */
+    /** The number of repetitions for the exerciseEntity. */
     @NotNull
     @Positive
     private Integer reps;
 
-    /** The number of sets for the exercise. */
+    /** The number of sets for the exerciseEntity. */
     @NotNull
     @Positive
     private Integer sets;
 
     /** Additional comments or notes about the activity. */
     private String comment;
+
 }

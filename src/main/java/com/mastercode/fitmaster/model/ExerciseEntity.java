@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Exercise class represents a fitness exercise.
+ * The ExerciseEntity class represents a fitness exercise.
  *
  * @author Uroš Gavrilović
  */
@@ -20,10 +20,11 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "exercises")
+@Table(name = "exercise")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
-public class Exercise {
+public class ExerciseEntity {
+
     /** The ID of the exercise. Represents primary key in the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +47,5 @@ public class Exercise {
 
     /** Instructions for performing the exercise. */
     private String instructions;
+
 }

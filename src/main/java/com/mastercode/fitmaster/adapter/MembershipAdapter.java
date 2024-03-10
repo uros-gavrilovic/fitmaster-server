@@ -1,19 +1,19 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.MembershipDTO;
-import com.mastercode.fitmaster.model.Membership;
+import com.mastercode.fitmaster.model.MembershipEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO> {
+public class MembershipAdapter extends AbstractAdapter<MembershipEntity, MembershipDTO> {
 
     @Override
-    public Membership dtoToEntity(MembershipDTO dto) {
+    public MembershipEntity dtoToEntity(MembershipDTO dto) {
         if (dto == null) return null;
-        final Membership entity = new Membership();
+        final MembershipEntity entity = new MembershipEntity();
 
         entity.setMembershipID(dto.getMembershipID());
         entity.setStartDate(dto.getStartDate());
@@ -24,7 +24,7 @@ public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO
     }
 
     @Override
-    public MembershipDTO entityToDTO(Membership entity) {
+    public MembershipDTO entityToDTO(MembershipEntity entity) {
         if (entity == null) return null;
         final MembershipDTO dto = new MembershipDTO();
 
@@ -36,9 +36,8 @@ public class MembershipAdapter extends AbstractAdapter<Membership, MembershipDTO
         return dto;
     }
 
-    public List<MembershipDTO> entitiesToDTO(List<Membership> list) {
-        if(list == null)
-            return null;
+    public List<MembershipDTO> entitiesToDTO(List<MembershipEntity> list) {
+        if (list == null) return null;
 
         return list.stream().map(this::entityToDTO).collect(Collectors.toList());
     }

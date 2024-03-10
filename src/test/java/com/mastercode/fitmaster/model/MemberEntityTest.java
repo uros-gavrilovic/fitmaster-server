@@ -12,38 +12,38 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MemberTest {
+public class MemberEntityTest {
 
     private ValidatorFactory validatorFactory;
     private Validator validator;
-    private Member member;
+    private MemberEntity memberEntity;
 
     @BeforeEach
     public void setUp() {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
 
-        this.member = new Member();
-        this.member.setFirstName("testValidFirstName");
-        this.member.setLastName("testValidLastName");
-        this.member.setUsername("testValidUsername");
-        this.member.setPassword("testValidPassword");
-        this.member.setPhoneNumber("+381/61-2345678");
-        this.member.setBirthDate(LocalDate.now().minusYears(1));
+        this.memberEntity = new MemberEntity();
+        this.memberEntity.setFirstName("testValidFirstName");
+        this.memberEntity.setLastName("testValidLastName");
+        this.memberEntity.setUsername("testValidUsername");
+        this.memberEntity.setPassword("testValidPassword");
+        this.memberEntity.setPhoneNumber("+381/61-2345678");
+        this.memberEntity.setBirthDate(LocalDate.now().minusYears(1));
     }
 
     @Test
     public void testValidMember() {
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(0, violations.size());
     }
 
     @Test
     public void testFirstNameNotNull() {
-        member.setFirstName(null); // Null first name, violating @NotEmpty constraint
+        memberEntity.setFirstName(null); // Null first name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("firstName", violations.iterator().next().getPropertyPath().toString());
@@ -51,9 +51,9 @@ public class MemberTest {
 
     @Test
     public void testFirstNameNotEmpty() {
-        member.setFirstName(""); // Empty first name, violating @NotEmpty constraint
+        memberEntity.setFirstName(""); // Empty first name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("firstName", violations.iterator().next().getPropertyPath().toString());
@@ -61,9 +61,9 @@ public class MemberTest {
 
     @Test
     public void testLastNameNotNull() {
-        member.setLastName(null); // Null last name, violating @NotEmpty constraint
+        memberEntity.setLastName(null); // Null last name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("lastName", violations.iterator().next().getPropertyPath().toString());
@@ -71,9 +71,9 @@ public class MemberTest {
 
     @Test
     public void testLastNameNotEmpty() {
-        member.setLastName(""); // Empty last name, violating @NotEmpty constraint
+        memberEntity.setLastName(""); // Empty last name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("lastName", violations.iterator().next().getPropertyPath().toString());
@@ -81,9 +81,9 @@ public class MemberTest {
 
     @Test
     public void testUsernameNotNull() {
-        member.setUsername(null); // Null username, violating @NotEmpty constraint
+        memberEntity.setUsername(null); // Null username, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("username", violations.iterator().next().getPropertyPath().toString());
@@ -91,9 +91,9 @@ public class MemberTest {
 
     @Test
     public void testEmptyUsername() {
-        member.setUsername(""); // Empty username, violating @NotEmpty and @Size constraint
+        memberEntity.setUsername(""); // Empty username, violating @NotEmpty and @Size constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
         System.out.println(violations);
 
         assertEquals(2, violations.size());
@@ -102,9 +102,10 @@ public class MemberTest {
 
     @Test
     public void testUsernameTooLong() {
-        member.setUsername("testVeryLongUserNameExceeds30Characters"); // Username too long, violating @Size constraint
+        memberEntity.setUsername(
+                "testVeryLongUserNameExceeds30Characters"); // Username too long, violating @Size constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("username", violations.iterator().next().getPropertyPath().toString());
@@ -112,9 +113,9 @@ public class MemberTest {
 
     @Test
     public void testInvalidUsernamePattern() {
-        member.setUsername("testInvalidUsername!/-+"); // Invalid username, violating @Pattern constraint
+        memberEntity.setUsername("testInvalidUsername!/-+"); // Invalid username, violating @Pattern constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("username", violations.iterator().next().getPropertyPath().toString());
@@ -122,9 +123,9 @@ public class MemberTest {
 
     @Test
     public void testEmptyPassword() {
-        member.setPassword(""); // Empty password, violating @NotEmpty constraint
+        memberEntity.setPassword(""); // Empty password, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("password", violations.iterator().next().getPropertyPath().toString());
@@ -132,9 +133,9 @@ public class MemberTest {
 
     @Test
     public void testPasswordNotNull() {
-        member.setPassword(null); // Null password, violating @NotEmpty constraint
+        memberEntity.setPassword(null); // Null password, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<User>> violations = validator.validate(member);
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("password", violations.iterator().next().getPropertyPath().toString());
@@ -142,18 +143,19 @@ public class MemberTest {
 
     @Test
     public void testPhoneNumberNotRequired() {
-        member.setPhoneNumber(null); // Null phone number, not violating any constraint
+        memberEntity.setPhoneNumber(null); // Null phone number, not violating any constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(0, violations.size());
     }
 
     @Test
     public void testInvalidPhoneNumberPattern() {
-        member.setPhoneNumber("testInvalidPhoneNumber!/-+"); // Invalid phone number, violating @NotRequiredPhoneNumber constraint
+        memberEntity.setPhoneNumber(
+                "testInvalidPhoneNumber!/-+"); // Invalid phone number, violating @NotRequiredPhoneNumber constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("phoneNumber", violations.iterator().next().getPropertyPath().toString());
@@ -161,9 +163,9 @@ public class MemberTest {
 
     @Test
     public void testBirthDateNotRequired() {
-        member.setBirthDate(null); // Null birthdate, not violating any constraint
+        memberEntity.setBirthDate(null); // Null birthdate, not violating any constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
         System.out.println(violations);
 
         assertEquals(0, violations.size());
@@ -171,10 +173,10 @@ public class MemberTest {
 
     @Test
     public void testBirthDateInFuture() {
-        member.setBirthDate(LocalDate.now()
-                .plusDays(1)); // Birthdate in the future, violating @NotRequiredPast constraint
+        memberEntity.setBirthDate(
+                LocalDate.now().plusDays(1)); // Birthdate in the future, violating @NotRequiredPast constraint
 
-        Set<ConstraintViolation<Member>> violations = validator.validate(member);
+        Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
         assertEquals(1, violations.size());
         assertEquals("birthDate", violations.iterator().next().getPropertyPath().toString());

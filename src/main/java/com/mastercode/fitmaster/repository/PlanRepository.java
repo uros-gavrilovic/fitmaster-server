@@ -1,21 +1,18 @@
 package com.mastercode.fitmaster.repository;
 
-import com.mastercode.fitmaster.model.Plan;
+import com.mastercode.fitmaster.model.PlanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
 @Repository
-public interface PlanRepository extends JpaRepository<Plan, Long> {
-    Plan getByPlanID(Long id);
+public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
+    PlanEntity getByPlanID(Long id);
 
-    @Query("SELECT p FROM Plan p WHERE p.trainer.id = :trainerId")
-    public Set<Plan> findByTrainerId(@Param("trainerId") Long trainerId);
+    Set<PlanEntity> findByTrainerEntity_TrainerID(@Param("trainerId") Long trainerId);
 
-    @Query("SELECT p FROM Plan p WHERE p.member.id = :memberId")
-    public Set<Plan> findByMemberId(@Param("memberId") Long memberId);
+    Set<PlanEntity> findByMemberEntity_MemberID(@Param("memberId") Long memberId);
 }
 

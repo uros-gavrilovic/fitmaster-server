@@ -5,9 +5,9 @@ import com.mastercode.fitmaster.dto.ChangePasswordRequest;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
-import com.mastercode.fitmaster.model.Member;
-import com.mastercode.fitmaster.model.Trainer;
-import com.mastercode.fitmaster.model.User;
+import com.mastercode.fitmaster.model.MemberEntity;
+import com.mastercode.fitmaster.model.TrainerEntity;
+import com.mastercode.fitmaster.model.UserEntity;
 import com.mastercode.fitmaster.model.enums.Role;
 import com.mastercode.fitmaster.service.EmailService;
 import com.mastercode.fitmaster.service.MemberService;
@@ -76,10 +76,10 @@ public class UserController {
      *
      * @param userDTO The UserDTO containing login credentials.
      *
-     * @return A ResponseEntity containing the logged-in Trainer with an authentication token and a status code of OK (200).
+     * @return A ResponseEntity containing the logged-in TrainerEntity with an authentication token and a status code of OK (200).
      */
     @PostMapping("/login")
-    public <T extends User> ResponseEntity<T> login(@Valid @RequestBody UserDTO userDTO) {
+    public <T extends UserEntity> ResponseEntity<T> login(@Valid @RequestBody UserDTO userDTO) {
         T user;
 
         if (userDTO instanceof TrainerDTO) {
@@ -97,42 +97,42 @@ public class UserController {
     /**
      * Registers a new fitness trainer/member and generates an authentication token.
      *
-     * @param user The member/trainer object containing registration details.
+     * @param userEntity The member/trainer object containing registration details.
      *
      * @return A ResponseEntity containing the registered member/trainer with an authentication token and a status code of OK (200).
      *
-     * @throws MethodArgumentNotValidException if the Trainer/Member object is invalid.
+     * @throws MethodArgumentNotValidException if the TrainerEntity/MemberEntity object is invalid.
      */
     @PostMapping("/register")
-    public ResponseEntity<? extends User> register(@Valid @RequestBody User user)
+    public ResponseEntity<? extends UserEntity> register(@Valid @RequestBody UserEntity userEntity)
             throws MessagingException, UnsupportedEncodingException, NoSuchAlgorithmException {
-        User createdUser;
+        UserEntity createdUserEntity;
         String mailText =
                 "<p>Welcome to FitMaster! Your account has succesfully been created.<p><br>Please click on the following link to verify your account: http://localhost:8080/verify-account/";
 
-        if (user instanceof Member) {
-            createdUser = memberService.registerMember((Member) user);
+        if (userEntity instanceof MemberEntity) {
+            createdUserEntity = memberService.registerMember((MemberEntity) userEntity);
             mailText += "member/";
-        } else if (user instanceof Trainer) {
-            createdUser = trainerService.registerTrainer((Trainer) user);
+        } else if (userEntity instanceof TrainerEntity) {
+            createdUserEntity = trainerService.registerTrainer((TrainerEntity) userEntity);
             mailText += "trainer/";
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
 
-        mailText += createdUser.getVerificationToken();
-        emailService.sendVerificationEmail(createdUser.getEmail(), "Registration successful", mailText);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        mailText += createdUserEntity.getVerificationToken();
+        emailService.sendVerificationEmail(createdUserEntity.getEmail(), "Registration successful", mailText);
+        return new ResponseEntity<>(createdUserEntity, HttpStatus.CREATED);
     }
 
     @PostMapping("/change-password/{memberID}")
-    public ResponseEntity<Member> changePassword(@PathVariable Long memberID,
-                                                 @RequestBody ChangePasswordRequest request) {
-        Member updatedMember =
+    public ResponseEntity<MemberEntity> changePassword(@PathVariable Long memberID,
+                                                       @RequestBody ChangePasswordRequest request) {
+        MemberEntity updatedMemberEntity =
                 memberService.changePassword(memberID, request.getOldPassword(), request.getNewPassword());
-        if (updatedMember != null) {
-            return new ResponseEntity<>(updatedMember, HttpStatus.OK);
+        if (updatedMemberEntity != null) {
+            return new ResponseEntity<>(updatedMemberEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

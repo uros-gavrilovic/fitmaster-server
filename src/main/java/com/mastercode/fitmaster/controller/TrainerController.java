@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mastercode.fitmaster.dto.TrainerDTO;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import com.mastercode.fitmaster.service.TrainerService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,7 +28,7 @@ import java.util.List;
 public class TrainerController {
 
     /**
-     * Represents service class for entity Trainer.
+     * Represents service class for entity TrainerEntity.
      */
     @Autowired
     private TrainerService trainerService;
@@ -36,10 +36,10 @@ public class TrainerController {
     /**
      * Retrieves a list of all fitness trainers.
      *
-     * @return A ResponseEntity containing a list of Trainer objects and a status code of OK (200).
+     * @return A ResponseEntity containing a list of TrainerEntity objects and a status code of OK (200).
      */
     @GetMapping
-    public ResponseEntity<List<Trainer>> getAll() {
+    public ResponseEntity<List<TrainerEntity>> getAll() {
         return new ResponseEntity<>(trainerService.getAll(), HttpStatus.OK);
     }
 
@@ -58,34 +58,34 @@ public class TrainerController {
      *
      * @param id The unique ID of the trainer to retrieve.
      *
-     * @return A ResponseEntity containing the retrieved Trainer object and a status code of OK (200),
+     * @return A ResponseEntity containing the retrieved TrainerEntity object and a status code of OK (200),
      * or a 404 status code if the trainer is not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Trainer> getByID(@NotEmpty @PathVariable Long id) {
-        Trainer foundTrainer = trainerService.findByID(id);
-        if (foundTrainer != null) {
-            return new ResponseEntity<>(foundTrainer, HttpStatus.OK);
+    public ResponseEntity<TrainerEntity> getByID(@NotEmpty @PathVariable Long id) {
+        TrainerEntity foundTrainerEntity = trainerService.findByID(id);
+        if (foundTrainerEntity != null) {
+            return new ResponseEntity<>(foundTrainerEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     /**
-     * Updates an existing fitness trainer's information.
+     * Updates an existing fitness trainerEntity's information.
      *
-     * @param trainer The Trainer object representing the updated trainer information.
+     * @param trainerEntity The TrainerEntity object representing the updated trainerEntity information.
      *
-     * @return A ResponseEntity containing the updated Trainer object and a status code of OK (200),
-     * or a 404 status code if the trainer is not found.
+     * @return A ResponseEntity containing the updated TrainerEntity object and a status code of OK (200),
+     * or a 404 status code if the trainerEntity is not found.
      *
-     * @throws MethodArgumentNotValidException If there's an issue validating the Trainer object.
+     * @throws MethodArgumentNotValidException If there's an issue validating the TrainerEntity object.
      */
     @PutMapping
-    public ResponseEntity<Trainer> updateTrainer(@Valid @RequestBody Trainer trainer) {
-        Trainer updatedTrainer = trainerService.update(trainer);
-        if (updatedTrainer != null) {
-            return new ResponseEntity<>(updatedTrainer, HttpStatus.OK);
+    public ResponseEntity<TrainerEntity> updateTrainer(@Valid @RequestBody TrainerEntity trainerEntity) {
+        TrainerEntity updatedTrainerEntity = trainerService.update(trainerEntity);
+        if (updatedTrainerEntity != null) {
+            return new ResponseEntity<>(updatedTrainerEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -102,7 +102,7 @@ public class TrainerController {
      * @throws MethodArgumentNotValidException If trainer's ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Trainer> deleteTrainer(@NotEmpty @PathVariable Long id) {
+    public ResponseEntity<TrainerEntity> deleteTrainer(@NotEmpty @PathVariable Long id) {
         trainerService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -112,13 +112,14 @@ public class TrainerController {
      *
      * @param jsonRequest The JSON request containing the trainer's ID, old password, and new password.
      *
-     * @return A ResponseEntity containing the updated Trainer object with a status code of OK (200),
+     * @return A ResponseEntity containing the updated TrainerEntity object with a status code of OK (200),
      * or a 404 status code if the trainer is not found or the old password is incorrect.
      *
      * @throws JsonProcessingException If there's an issue processing the JSON request.
      */
     @PostMapping("/change-password")
-    public ResponseEntity<Trainer> changePassword(@RequestBody String jsonRequest) throws JsonProcessingException {
+    public ResponseEntity<TrainerEntity> changePassword(@RequestBody String jsonRequest)
+            throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(jsonRequest);
 
@@ -126,9 +127,9 @@ public class TrainerController {
         String oldPassword = jsonNode.get("oldPassword").asText();
         String newPassword = jsonNode.get("newPassword").asText();
 
-        Trainer updatedTrainer = trainerService.changePassword(trainerID, oldPassword, newPassword);
-        if (updatedTrainer != null) {
-            return new ResponseEntity<>(updatedTrainer, HttpStatus.OK);
+        TrainerEntity updatedTrainerEntity = trainerService.changePassword(trainerID, oldPassword, newPassword);
+        if (updatedTrainerEntity != null) {
+            return new ResponseEntity<>(updatedTrainerEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

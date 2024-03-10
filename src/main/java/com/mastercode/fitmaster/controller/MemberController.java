@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.MemberDTO;
-import com.mastercode.fitmaster.model.Member;
+import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/api/member")
 public class MemberController {
     /**
-     * Represents service class for entity Member.
+     * Represents service class for entity MemberEntity.
      */
     @Autowired
     private MemberService memberService;
@@ -32,10 +32,10 @@ public class MemberController {
     /**
      * Retrieves a list of all members.
      *
-     * @return A ResponseEntity containing a list of Member objects and a status code of OK (200).
+     * @return A ResponseEntity containing a list of MemberEntity objects and a status code of OK (200).
      */
     @GetMapping
-    public ResponseEntity<List<Member>> getAll() {
+    public ResponseEntity<List<MemberEntity>> getAll() {
         return new ResponseEntity<>(memberService.getAll(), HttpStatus.OK);
     }
 
@@ -54,49 +54,49 @@ public class MemberController {
      *
      * @param id The unique ID of the member to retrieve.
      *
-     * @return A ResponseEntity containing the retrieved Member object and a status code of OK (200),
+     * @return A ResponseEntity containing the retrieved MemberEntity object and a status code of OK (200),
      * or a 404 status code if the member is not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Member> getByID(@PathVariable Long id) {
-        Member foundMember = memberService.findByID(id);
-        if (foundMember != null) {
-            return new ResponseEntity<>(foundMember, HttpStatus.OK);
+    public ResponseEntity<MemberEntity> getByID(@PathVariable Long id) {
+        MemberEntity foundMemberEntity = memberService.findByID(id);
+        if (foundMemberEntity != null) {
+            return new ResponseEntity<>(foundMemberEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     /**
-     * Creates a new member.
+     * Creates a new memberEntity.
      *
-     * @param member The Member object representing the member to be created.
+     * @param memberEntity The MemberEntity object representing the memberEntity to be created.
      *
-     * @return A ResponseEntity containing the created Member object and a status code of CREATED (201).
+     * @return A ResponseEntity containing the created MemberEntity object and a status code of CREATED (201).
      *
-     * @throws MethodArgumentNotValidException if the member object is not valid.
+     * @throws MethodArgumentNotValidException if the memberEntity object is not valid.
      */
     @PostMapping
-    public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-        Member createdMember = memberService.create(member);
-        return new ResponseEntity<>(createdMember, HttpStatus.CREATED);
+    public ResponseEntity<MemberEntity> createMember(@Valid @RequestBody MemberEntity memberEntity) {
+        MemberEntity createdMemberEntity = memberService.create(memberEntity);
+        return new ResponseEntity<>(createdMemberEntity, HttpStatus.CREATED);
     }
 
     /**
-     * Updates an existing member's information.
+     * Updates an existing memberEntity's information.
      *
-     * @param member The Member object representing the updated member information.
+     * @param memberEntity The MemberEntity object representing the updated memberEntity information.
      *
-     * @return A ResponseEntity containing the updated Member object and a status code of OK (200),
-     * or a 404 status code if the member is not found.
+     * @return A ResponseEntity containing the updated MemberEntity object and a status code of OK (200),
+     * or a 404 status code if the memberEntity is not found.
      *
-     * @throws MethodArgumentNotValidException if the member object is not valid.
+     * @throws MethodArgumentNotValidException if the memberEntity object is not valid.
      */
     @PutMapping
-    public ResponseEntity<Member> updateMember(@Valid @RequestBody Member member) {
-        Member updatedMember = memberService.update(member);
-        if (updatedMember != null) {
-            return new ResponseEntity<>(updatedMember, HttpStatus.OK);
+    public ResponseEntity<MemberEntity> updateMember(@Valid @RequestBody MemberEntity memberEntity) {
+        MemberEntity updatedMemberEntity = memberService.update(memberEntity);
+        if (updatedMemberEntity != null) {
+            return new ResponseEntity<>(updatedMemberEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -112,7 +112,7 @@ public class MemberController {
      * @throws MethodArgumentNotValidException if the member ID is empty or null.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Member> deleteMember(@NotEmpty @PathVariable Long id) {
+    public ResponseEntity<MemberEntity> deleteMember(@NotEmpty @PathVariable Long id) {
         memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

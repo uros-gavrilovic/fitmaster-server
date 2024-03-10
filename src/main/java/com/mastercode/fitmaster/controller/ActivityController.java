@@ -1,6 +1,6 @@
 package com.mastercode.fitmaster.controller;
 
-import com.mastercode.fitmaster.model.Activity;
+import com.mastercode.fitmaster.model.ActivityEntity;
 import com.mastercode.fitmaster.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +24,10 @@ public class ActivityController {
     /**
      * Retrieves a list of all fitness activities.
      *
-     * @return A list of Activity objects representing fitness activities.
+     * @return A list of ActivityEntity objects representing fitness activities.
      */
     @GetMapping
-    public List<Activity> getAll() {
+    public List<ActivityEntity> getAll() {
         return activityService.getAll();
     }
 }

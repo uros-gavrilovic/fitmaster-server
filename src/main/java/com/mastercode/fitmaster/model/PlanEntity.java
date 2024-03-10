@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents a fitness plan associated with a member and potentially a trainer.
+ * Represents a fitness plan associated with a memberEntity and potentially a trainerEntity.
  *
  * @author Uroš Gavrilović
  */
@@ -26,8 +26,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @ToString
-@Table(name = "plans")
-public class Plan {
+@Table(name = "plan")
+public class PlanEntity {
 
     /**
      * The unique identifier for the fitness plan.
@@ -38,19 +38,19 @@ public class Plan {
     private Long planID;
 
     /**
-     * The member associated with this fitness plan.
+     * The memberEntity associated with this fitness plan.
      */
     @NotNull
     @OneToOne(optional = false)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member member;
+    private MemberEntity memberEntity;
 
     /**
-     * The trainer associated with this fitness plan (if any).
+     * The trainerEntity associated with this fitness plan (if any).
      */
     @OneToOne
     @JoinColumn(name = "trainer_id", referencedColumnName = "id")
-    private Trainer trainer;
+    private TrainerEntity trainerEntity;
 
     /**
      * The start date and time of the fitness plan.
@@ -75,8 +75,8 @@ public class Plan {
      * The set of activities associated with this fitness plan.
      */
     @NotEmpty
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Activity> activities = new HashSet<>();
+    @OneToMany(mappedBy = "planEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ActivityEntity> activities = new HashSet<>();
 
     @Nullable
     @JsonIgnore

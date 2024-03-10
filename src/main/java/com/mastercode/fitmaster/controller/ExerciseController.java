@@ -2,7 +2,7 @@ package com.mastercode.fitmaster.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mastercode.fitmaster.dto.ExerciseDTO;
-import com.mastercode.fitmaster.model.Exercise;
+import com.mastercode.fitmaster.model.ExerciseEntity;
 import com.mastercode.fitmaster.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @GetMapping
-    public List<Exercise> getAll() {
+    public List<ExerciseEntity> getAll() {
         return exerciseService.getAll();
     }
 
@@ -39,20 +39,20 @@ public class ExerciseController {
     }
 
     @GetMapping("/{id}")
-    public Exercise getByID(@PathVariable Long id) {
+    public ExerciseEntity getByID(@PathVariable Long id) {
         return exerciseService.findByID(id);
     }
 
     @PostMapping
-    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
-        Exercise createdExercise = exerciseService.create(exercise);
-        return new ResponseEntity<>(createdExercise, HttpStatus.CREATED);
+    public ResponseEntity<ExerciseEntity> createExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        ExerciseEntity createdExerciseEntity = exerciseService.create(exerciseEntity);
+        return new ResponseEntity<>(createdExerciseEntity, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Exercise> updateExercise(@RequestBody Exercise exercise) {
-        Exercise updatedExercise = exerciseService.update(exercise);
-        return new ResponseEntity<>(updatedExercise, HttpStatus.OK);
+    public ResponseEntity<ExerciseEntity> updateExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        ExerciseEntity updatedExerciseEntity = exerciseService.update(exerciseEntity);
+        return new ResponseEntity<>(updatedExerciseEntity, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

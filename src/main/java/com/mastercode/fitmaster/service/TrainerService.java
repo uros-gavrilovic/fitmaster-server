@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import com.mastercode.fitmaster.repository.TrainerRepository;
 import com.mastercode.fitmaster.util.DescriptionUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
+public class TrainerService implements AbstractService<TrainerEntity, TrainerDTO> {
 
     @Autowired
     private TrainerRepository trainerRepository;
@@ -32,12 +32,12 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<Trainer> getAll() {
+    public List<TrainerEntity> getAll() {
         return trainerRepository.findAll();
     }
 
     @Override
-    public Trainer findByID(Long id) {
+    public TrainerEntity findByID(Long id) {
         return trainerRepository.getByTrainerID(id);
     }
 
@@ -47,12 +47,12 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
     }
 
     @Override
-    public Trainer create(Trainer entity) {
+    public TrainerEntity create(TrainerEntity entity) {
         return trainerRepository.saveAndFlush(entity);
     }
 
     @Override
-    public Trainer update(Trainer entity) {
+    public TrainerEntity update(TrainerEntity entity) {
         return trainerRepository.saveAndFlush(entity);
     }
 
@@ -61,52 +61,53 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
         trainerRepository.deleteById(id);
     }
 
-    public Trainer login(UserDTO userDTO) {
-        Trainer trainer = trainerRepository.findByUsername(userDTO.getUsername())
+    public TrainerEntity login(UserDTO userDTO) {
+        TrainerEntity trainerEntity = trainerRepository.findByUsername(userDTO.getUsername())
                 .orElseThrow(
                         () -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
                                 HttpStatus.UNAUTHORIZED));
 
-        if (!passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), trainer.getPassword())) {
+        if (!passwordEncoder.matches(CharBuffer.wrap(userDTO.getPassword()), trainerEntity.getPassword())) {
             throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
                     HttpStatus.UNAUTHORIZED);
         }
 
-        if (!trainer.isEmailVerified()) {
+        if (!trainerEntity.isEmailVerified()) {
             throw new LoginException(DescriptionUtils.getErrorDescription("EMAIL_NOT_VERIFIED"), HttpStatus.FORBIDDEN);
         }
 
-        return trainer;
+        return trainerEntity;
     }
 
-    public Trainer registerTrainer(Trainer trainer) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findByUsername(trainer.getUsername());
+    public TrainerEntity registerTrainer(TrainerEntity trainerEntity) {
+        Optional<TrainerEntity> optionalTrainer = trainerRepository.findByUsername(trainerEntity.getUsername());
 
         if (optionalTrainer.isPresent())
             throw new RegisterException(DescriptionUtils.getErrorDescription("USERNAME_TAKEN"), HttpStatus.CONFLICT);
 
-        trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainer.getPassword())));
+        trainerEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(trainerEntity.getPassword())));
 
-        Trainer savedTrainer = trainerRepository.saveAndFlush(trainer);
+        TrainerEntity savedTrainerEntity = trainerRepository.saveAndFlush(trainerEntity);
 
-        String encodedID = new String(Base64.getUrlEncoder().encode(trainer.getTrainerID().toString().getBytes()));
-        savedTrainer.setVerificationToken(encodedID);
+        String encodedID =
+                new String(Base64.getUrlEncoder().encode(trainerEntity.getTrainerID().toString().getBytes()));
+        savedTrainerEntity.setVerificationToken(encodedID);
 
-        return savedTrainer;
+        return savedTrainerEntity;
     }
 
     public UserDTO findByUsername(String username) {
-        Trainer trainer = trainerRepository.findByUsername(username)
-                .orElseThrow(() -> new LoginException("Unknown trainer", HttpStatus.NOT_FOUND));
-        return trainerAdapter.entityToDTO(trainer);
+        TrainerEntity trainerEntity = trainerRepository.findByUsername(username)
+                .orElseThrow(() -> new LoginException("Unknown trainerEntity", HttpStatus.NOT_FOUND));
+        return trainerAdapter.entityToDTO(trainerEntity);
     }
 
-    public Trainer changePassword(Long trainerID, String oldPassword, String newPassword) {
-        Trainer trainer = trainerRepository.getByTrainerID(trainerID);
+    public TrainerEntity changePassword(Long trainerID, String oldPassword, String newPassword) {
+        TrainerEntity trainerEntity = trainerRepository.getByTrainerID(trainerID);
 
-        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), trainer.getPassword())) {
-            trainer.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
-            return trainerRepository.saveAndFlush(trainer);
+        if (passwordEncoder.matches(CharBuffer.wrap(oldPassword), trainerEntity.getPassword())) {
+            trainerEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(newPassword)));
+            return trainerRepository.saveAndFlush(trainerEntity);
         }
 
         throw new LoginException(DescriptionUtils.getErrorDescription("WRONG_PASSWORD"), HttpStatus.UNAUTHORIZED);
@@ -114,11 +115,11 @@ public class TrainerService implements AbstractService<Trainer, TrainerDTO> {
 
     public boolean verifyTrainerAccount(String token) {
         String decodedID = new String(Base64.getUrlDecoder().decode(token));
-        Trainer trainer = trainerRepository.getByTrainerID(Long.parseLong(decodedID));
+        TrainerEntity trainerEntity = trainerRepository.getByTrainerID(Long.parseLong(decodedID));
 
-        if (trainer != null) {
-            trainer.setEmailVerified(true);
-            trainerRepository.saveAndFlush(trainer);
+        if (trainerEntity != null) {
+            trainerEntity.setEmailVerified(true);
+            trainerRepository.saveAndFlush(trainerEntity);
             return true;
         }
 

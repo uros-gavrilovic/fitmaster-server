@@ -1,6 +1,6 @@
 package com.mastercode.fitmaster.controller;
 
-import com.mastercode.fitmaster.model.Membership;
+import com.mastercode.fitmaster.model.MembershipEntity;
 import com.mastercode.fitmaster.service.MembershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,15 +28,15 @@ public class MembershipController {
     /**
      * Retrieves a list of all fitness memberships.
      *
-     * @return A list of Membership objects representing fitness memberships.
+     * @return A list of MembershipEntity objects representing fitness memberships.
      */
     @GetMapping
-    public List<Membership> getAll() {
+    public List<MembershipEntity> getAll() {
         return membershipService.getAll();
     }
 
     @GetMapping("/{memberID}")
-    public ResponseEntity<Set<Membership>> getMembershipsById(@PathVariable Long memberID) {
+    public ResponseEntity<Set<MembershipEntity>> getMembershipsById(@PathVariable Long memberID) {
         return new ResponseEntity<>(membershipService.getMembershipsByMemberID(memberID), HttpStatus.OK);
     }
 

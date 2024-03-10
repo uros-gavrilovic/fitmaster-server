@@ -1,6 +1,6 @@
 package com.mastercode.fitmaster.service;
 
-import com.mastercode.fitmaster.model.Member;
+import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.repository.MemberRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class MemberServiceTest {
+public class MemberEntityServiceTest {
 
     @InjectMocks
     private MemberService memberService;
@@ -26,29 +26,29 @@ public class MemberServiceTest {
 
     @Test
     public void testCreateMember() {
-        Member member = new Member();
-        member.setFirstName("TEST_FIRSTNAME");
-        member.setLastName("TEST_LASTNAME");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setFirstName("TEST_FIRSTNAME");
+        memberEntity.setLastName("TEST_LASTNAME");
 
-        when(memberRepository.saveAndFlush(member)).thenReturn(member);
+        when(memberRepository.saveAndFlush(memberEntity)).thenReturn(memberEntity);
 
-        Member createdMember = memberService.create(member);
+        MemberEntity createdMemberEntity = memberService.create(memberEntity);
 
-        assertEquals(member, createdMember);
+        assertEquals(memberEntity, createdMemberEntity);
     }
 
     @Test
     public void testUpdateMember() {
-        Member member = new Member();
-        member.setMemberID(1L);
-        member.setFirstName("TEST_FIRSTNAME");
-        member.setLastName("TEST_LASTNAME");
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberID(1L);
+        memberEntity.setFirstName("TEST_FIRSTNAME");
+        memberEntity.setLastName("TEST_LASTNAME");
 
-        when(memberRepository.saveAndFlush(member)).thenReturn(member);
+        when(memberRepository.saveAndFlush(memberEntity)).thenReturn(memberEntity);
 
-        Member updatedMember = memberService.update(member);
+        MemberEntity updatedMemberEntity = memberService.update(memberEntity);
 
-        assertEquals(member, updatedMember);
+        assertEquals(memberEntity, updatedMemberEntity);
     }
 
     @Test

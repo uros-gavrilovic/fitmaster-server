@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.PlanAdapter;
-import com.mastercode.fitmaster.model.Plan;
+import com.mastercode.fitmaster.model.PlanEntity;
 import com.mastercode.fitmaster.repository.PlanRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class PlanServiceTest {
+public class PlanEntityServiceTest {
 
     @InjectMocks
     private PlanService planService;
@@ -31,14 +31,14 @@ public class PlanServiceTest {
 
     @Test
     public void testCreatePlan() {
-        Plan plan = new Plan();
+        PlanEntity planEntity = new PlanEntity();
 
-        when(planRepository.saveAndFlush(any(Plan.class))).thenReturn(plan);
+        when(planRepository.saveAndFlush(any(PlanEntity.class))).thenReturn(planEntity);
 
-        Plan createdPlan = planService.create(plan);
+        PlanEntity createdPlanEntity = planService.create(planEntity);
 
-        assertEquals(plan, createdPlan);
-        verify(planRepository, times(1)).saveAndFlush(any(Plan.class));
+        assertEquals(planEntity, createdPlanEntity);
+        verify(planRepository, times(1)).saveAndFlush(any(PlanEntity.class));
     }
 
     @Test

@@ -1,15 +1,13 @@
 package com.mastercode.fitmaster.repository;
 
-import com.mastercode.fitmaster.model.Membership;
+import com.mastercode.fitmaster.model.MembershipEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
-
 @Repository
-public interface MembershipRepository extends JpaRepository<Membership, Long> {
-    Membership getByMembershipID(Long id);
+public interface MembershipRepository extends JpaRepository<MembershipEntity, Long> {
+    MembershipEntity getByMembershipID(Long id);
 
-    Set<Membership> findAllByMemberMemberID(Long memberID);
+    //    Set<MembershipEntity> findAllByMemberMemberID(Long memberID);
 }
 

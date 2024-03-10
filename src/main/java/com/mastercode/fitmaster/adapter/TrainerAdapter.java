@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.TrainerDTO;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 import java.nio.CharBuffer;
 
 @Component
-public class TrainerAdapter extends AbstractAdapter<Trainer, TrainerDTO> {
+public class TrainerAdapter extends AbstractAdapter<TrainerEntity, TrainerDTO> {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Trainer dtoToEntity(TrainerDTO dto) {
+    public TrainerEntity dtoToEntity(TrainerDTO dto) {
         if (dto == null) return null;
-        final Trainer entity = new Trainer();
+        final TrainerEntity entity = new TrainerEntity();
 
         entity.setTrainerID(dto.getTrainerID());
         entity.setFirstName(dto.getFirstName());
@@ -34,7 +34,7 @@ public class TrainerAdapter extends AbstractAdapter<Trainer, TrainerDTO> {
     }
 
     @Override
-    public TrainerDTO entityToDTO(Trainer entity) {
+    public TrainerDTO entityToDTO(TrainerEntity entity) {
         if (entity == null) return null;
         final TrainerDTO dto = new TrainerDTO();
 

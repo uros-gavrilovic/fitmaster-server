@@ -2,7 +2,7 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.PackageAdapter;
 import com.mastercode.fitmaster.dto.PackageDTO;
-import com.mastercode.fitmaster.model.Package;
+import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PackageService implements AbstractService<Package, PackageDTO> {
-    
+public class PackageService implements AbstractService<PackageEntity, PackageDTO> {
+
     @Autowired
     PackageRepository packageRepository;
 
     @Autowired
     PackageAdapter packageAdapter;
 
-    public List<Package> getAll() {
+    public List<PackageEntity> getAll() {
         return packageRepository.findAll();
     }
 
     @Override
-    public Package findByID(Long id) {
+    public PackageEntity findByID(Long id) {
         return packageRepository.getByPackageID(id);
     }
 
@@ -33,12 +33,12 @@ public class PackageService implements AbstractService<Package, PackageDTO> {
     }
 
     @Override
-    public Package create(Package entity) {
+    public PackageEntity create(PackageEntity entity) {
         return packageRepository.saveAndFlush(entity);
     }
 
     @Override
-    public Package update(Package entity) {
+    public PackageEntity update(PackageEntity entity) {
         return null; // TODO
     }
 

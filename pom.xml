@@ -15,6 +15,13 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <exec-plugin.version>1.6.0</exec-plugin.version>
+        <jooq-archetype.version>1.0-SNAPSHOT</jooq-archetype.version>
+        <jooq-tables-to-include>
+            "activity exercise member membership package plan trainer"
+        </jooq-tables-to-include>
+        <jooq-directory-path>src/main/java/com/mastercode/fitmaster</jooq-directory-path>
+        <jooq-generated-package-name>database</jooq-generated-package-name>
     </properties>
 
     <dependencies>
@@ -108,7 +115,66 @@
             <artifactId>azure-webapp-maven-plugin</artifactId>
             <version>1.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.19.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen-maven</artifactId>
+            <version>3.11.2</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>generate-jooq</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <version>3.11.2</version>
+
+                        <executions>
+                            <execution>
+                                <id>jooq-codegen</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <jdbc>
+                                <driver>org.postgresql.Driver</driver>
+                                <url>jdbc:postgresql://localhost:5432/fitmaster</url>
+                                <user>admin</user>
+                                <password>admin</password>
+                            </jdbc>
+
+                            <generator>
+                                <name>org.jooq.codegen.JavaGenerator</name>
+                                <database>
+                                    <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                                    <inputSchema>public</inputSchema>
+                                    <includes>.*</includes>
+                                    <excludes>flyway_schema_history</excludes>
+                                </database>
+                                <target>
+                                    <packageName>${jooq-generated-package-name}</packageName>
+                                    <directory>${jooq-directory-path}</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

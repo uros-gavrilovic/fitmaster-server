@@ -1,16 +1,16 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.ExerciseDTO;
-import com.mastercode.fitmaster.model.Exercise;
+import com.mastercode.fitmaster.model.ExerciseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExerciseAdapter extends AbstractAdapter<Exercise, ExerciseDTO> {
+public class ExerciseAdapter extends AbstractAdapter<ExerciseEntity, ExerciseDTO> {
 
     @Override
-    public Exercise dtoToEntity(ExerciseDTO dto) {
+    public ExerciseEntity dtoToEntity(ExerciseDTO dto) {
         if (dto == null) return null;
-        final Exercise entity = new Exercise();
+        final ExerciseEntity entity = new ExerciseEntity();
 
         entity.setExerciseID(dto.getExerciseID());
         entity.setName(dto.getName());
@@ -22,7 +22,7 @@ public class ExerciseAdapter extends AbstractAdapter<Exercise, ExerciseDTO> {
     }
 
     @Override
-    public ExerciseDTO entityToDTO(Exercise entity) {
+    public ExerciseDTO entityToDTO(ExerciseEntity entity) {
         if (entity == null) return null;
         final ExerciseDTO dto = new ExerciseDTO();
 

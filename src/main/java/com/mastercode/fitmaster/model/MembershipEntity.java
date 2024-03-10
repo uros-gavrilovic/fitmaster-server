@@ -12,7 +12,7 @@ import org.hibernate.annotations.Cascade;
 import java.time.LocalDate;
 
 /**
- * The Membership class represents a membership subscription of a member to a fitness package.
+ * The MembershipEntity class represents a membership subscription of a memberEntity to a fitness package.
  *
  * @author Uroš Gavrilović
  */
@@ -21,27 +21,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table(name = "memberships")
-public class Membership {
+@Table(name = "membership")
+public class MembershipEntity {
+
     /** The ID of the membership. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long membershipID;
 
-    /** The member associated with this membership. */
+    /** The memberEntity associated with this membership. */
     @JsonBackReference
     @NotNull
     @ManyToOne
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member member;
+    private MemberEntity memberEntity;
 
     /** The fitness package associated with this membership. */
     @OneToOne
     @NotNull
     @JoinColumn(name = "package_id", referencedColumnName = "id")
-    private Package membershipPackage;
+    private PackageEntity membershipPackageEntity;
 
     /** The start date of the membership subscription. */
     private LocalDate startDate;
@@ -58,11 +59,4 @@ public class Membership {
         return endDate.isAfter(LocalDate.now());
     }
 
-    //    /**
-    //     * Calculates the 'active' status of the membership based on the end date and the current date.
-    //     */
-    //    @PostLoad
-    //    private void calculate() {
-    //        this.active = endDate.isAfter(LocalDate.now());
-    //    }
 }

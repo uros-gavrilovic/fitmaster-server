@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.PackageDTO;
-import com.mastercode.fitmaster.model.Package;
+import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +25,10 @@ public class PackageController {
     /**
      * Retrieves a list of all packages.
      *
-     * @return A list of Package objects.
+     * @return A list of PackageEntity objects.
      */
     @GetMapping
-    public List<Package> getAll() {
+    public List<PackageEntity> getAll() {
         return packageService.getAll();
     }
 
@@ -47,22 +47,22 @@ public class PackageController {
      *
      * @param id The ID of the package to retrieve.
      *
-     * @return A ResponseEntity containing the retrieved Package object.
+     * @return A ResponseEntity containing the retrieved PackageEntity object.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Package> getPackageById(@PathVariable Long id) {
+    public ResponseEntity<PackageEntity> getPackageById(@PathVariable Long id) {
         return new ResponseEntity<>(packageService.findByID(id), HttpStatus.OK);
     }
 
     /**
      * Creates a new package.
      *
-     * @param entity The Package object to create.
+     * @param entity The PackageEntity object to create.
      *
-     * @return A ResponseEntity containing the created Package object.
+     * @return A ResponseEntity containing the created PackageEntity object.
      */
     @PostMapping("/save")
-    public ResponseEntity<Package> savePackage(@RequestBody Package entity) {
+    public ResponseEntity<PackageEntity> savePackage(@RequestBody PackageEntity entity) {
         return new ResponseEntity<>(packageService.create(entity), HttpStatus.CREATED);
     }
 
@@ -74,7 +74,7 @@ public class PackageController {
      * @return A ResponseEntity with a status of NO_CONTENT.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Package> deletePackage(@PathVariable Long id) {
+    public ResponseEntity<PackageEntity> deletePackage(@PathVariable Long id) {
         packageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

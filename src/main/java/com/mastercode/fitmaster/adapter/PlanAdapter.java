@@ -1,16 +1,16 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.PlanDTO;
-import com.mastercode.fitmaster.model.Plan;
+import com.mastercode.fitmaster.model.PlanEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
+public class PlanAdapter extends AbstractAdapter<PlanEntity, PlanDTO> {
 
     @Override
-    public Plan dtoToEntity(final PlanDTO dto) {
+    public PlanEntity dtoToEntity(final PlanDTO dto) {
         if (dto == null) return null;
-        final Plan entity = new Plan();
+        final PlanEntity entity = new PlanEntity();
 
         entity.setPlanID(dto.getPlanID());
         entity.setStartsAt(dto.getStartsAt());
@@ -22,7 +22,7 @@ public class PlanAdapter extends AbstractAdapter<Plan, PlanDTO> {
     }
 
     @Override
-    public PlanDTO entityToDTO(final Plan entity) {
+    public PlanDTO entityToDTO(final PlanEntity entity) {
         if (entity == null) return null;
         final PlanDTO dto = new PlanDTO();
 

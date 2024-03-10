@@ -1,10 +1,10 @@
 package com.mastercode.fitmaster.dataloader;
 
 import com.github.javafaker.Faker;
-import com.mastercode.fitmaster.model.Member;
-import com.mastercode.fitmaster.model.Membership;
-import com.mastercode.fitmaster.model.Package;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.MemberEntity;
+import com.mastercode.fitmaster.model.MembershipEntity;
+import com.mastercode.fitmaster.model.PackageEntity;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import com.mastercode.fitmaster.model.enums.Gender;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,7 +37,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     private void loadPackages(int counter) {
         for (int i = 0; i < counter; i++) {
-            Package p = new Package();
+            PackageEntity p = new PackageEntity();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
             p.setDuration(30);
@@ -51,7 +51,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     private void loadMembers(int counter) {
         for (int i = 0; i < counter; i++) {
-            Member m = new Member();
+            MemberEntity m = new MemberEntity();
 
             m.setFirstName(faker.name().firstName());
             m.setLastName(faker.name().lastName());
@@ -64,10 +64,10 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
             m.setPhoneNumber(faker.regexify(PHONE_NUMBER_REGEX));
             m.setBirthDate(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()));
 
-            Membership ms = new Membership();
-            ms.setMember(m);
-            m.getMemberships().add(ms);
-            ms.setMembershipPackage(
+            MembershipEntity ms = new MembershipEntity();
+            ms.setMemberEntity(m);
+            m.getMembershipEntities().add(ms);
+            ms.setMembershipPackageEntity(
                     packageRepository.findAll().get((int) new Random().nextLong(packageRepository.count())));
             ms.setStartDate(
                     LocalDate.ofInstant(faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
@@ -83,7 +83,7 @@ public class DataLoaderImpl extends DataLoader implements CommandLineRunner {
 
     private void loadTrainers(int counter) {
         for (int i = 0; i < counter; i++) {
-            Trainer t = new Trainer();
+            TrainerEntity t = new TrainerEntity();
 
             t.setFirstName(faker.name().firstName());
             t.setLastName(faker.name().lastName());

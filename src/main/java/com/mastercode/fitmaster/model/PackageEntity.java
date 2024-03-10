@@ -12,8 +12,9 @@ import java.util.Currency;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "packages")
-public class Package {
+@Table(name = "package")
+public class PackageEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -26,4 +27,5 @@ public class Package {
     private BigDecimal price;
 
     private Currency currency;
+
 }

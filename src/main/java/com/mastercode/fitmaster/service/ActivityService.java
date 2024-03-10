@@ -2,7 +2,7 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.ActivityAdapter;
 import com.mastercode.fitmaster.dto.ActivityDTO;
-import com.mastercode.fitmaster.model.Activity;
+import com.mastercode.fitmaster.model.ActivityEntity;
 import com.mastercode.fitmaster.repository.ActivityRepository;
 import com.mastercode.fitmaster.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ActivityService implements AbstractService<Activity, ActivityDTO> {
+public class ActivityService implements AbstractService<ActivityEntity, ActivityDTO> {
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -23,12 +23,12 @@ public class ActivityService implements AbstractService<Activity, ActivityDTO> {
     private MemberRepository memberRepository;
 
     @Override
-    public List<Activity> getAll() {
+    public List<ActivityEntity> getAll() {
         return activityRepository.findAll();
     }
 
     @Override
-    public Activity findByID(Long id) {
+    public ActivityEntity findByID(Long id) {
         return activityRepository.getByActivityID(id);
     }
 
@@ -38,12 +38,12 @@ public class ActivityService implements AbstractService<Activity, ActivityDTO> {
     }
 
     @Override
-    public Activity create(Activity entity) {
+    public ActivityEntity create(ActivityEntity entity) {
         return activityRepository.saveAndFlush(entity);
     }
 
     @Override
-    public Activity update(Activity entity) {
+    public ActivityEntity update(ActivityEntity entity) {
         return null; // TODO
     }
 

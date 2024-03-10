@@ -18,8 +18,8 @@ import java.io.File;
 @NoArgsConstructor
 @MappedSuperclass
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role")
-@JsonSubTypes({@JsonSubTypes.Type(value = Member.class, name = "MEMBER"), @JsonSubTypes.Type(value = Trainer.class, name = "TRAINER")})
-public abstract class User {
+@JsonSubTypes({@JsonSubTypes.Type(value = MemberEntity.class, name = "MEMBER"), @JsonSubTypes.Type(value = TrainerEntity.class, name = "TRAINER")})
+public abstract class UserEntity {
 
     protected String username;
 

@@ -1,16 +1,16 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.PackageDTO;
-import com.mastercode.fitmaster.model.Package;
+import com.mastercode.fitmaster.model.PackageEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PackageAdapter extends AbstractAdapter<Package, PackageDTO> {
+public class PackageAdapter extends AbstractAdapter<PackageEntity, PackageDTO> {
 
     @Override
-    public Package dtoToEntity(PackageDTO dto) {
+    public PackageEntity dtoToEntity(PackageDTO dto) {
         if (dto == null) return null;
-        final Package entity = new Package();
+        final PackageEntity entity = new PackageEntity();
 
         entity.setPackageID(dto.getPackageID());
         entity.setName(dto.getName());
@@ -22,7 +22,7 @@ public class PackageAdapter extends AbstractAdapter<Package, PackageDTO> {
     }
 
     @Override
-    public PackageDTO entityToDTO(Package entity) {
+    public PackageDTO entityToDTO(PackageEntity entity) {
         if (entity == null) return null;
         final PackageDTO dto = new PackageDTO();
 

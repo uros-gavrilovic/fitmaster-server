@@ -1,16 +1,16 @@
 package com.mastercode.fitmaster.adapter;
 
 import com.mastercode.fitmaster.dto.ActivityDTO;
-import com.mastercode.fitmaster.model.Activity;
+import com.mastercode.fitmaster.model.ActivityEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
+public class ActivityAdapter extends AbstractAdapter<ActivityEntity, ActivityDTO> {
 
     @Override
-    public Activity dtoToEntity(ActivityDTO dto) {
+    public ActivityEntity dtoToEntity(ActivityDTO dto) {
         if (dto == null) return null;
-        final Activity entity = new Activity();
+        final ActivityEntity entity = new ActivityEntity();
 
         entity.setActivityID(dto.getActivityID());
         entity.setReps(dto.getReps());
@@ -21,7 +21,7 @@ public class ActivityAdapter extends AbstractAdapter<Activity, ActivityDTO> {
     }
 
     @Override
-    public ActivityDTO entityToDTO(Activity entity) {
+    public ActivityDTO entityToDTO(ActivityEntity entity) {
         if (entity == null) return null;
         final ActivityDTO dto = new ActivityDTO();
 

@@ -13,37 +13,37 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExerciseTest {
+public class ExerciseEntityTest {
 
     private ValidatorFactory validatorFactory;
     private Validator validator;
-    private Exercise exercise;
+    private ExerciseEntity exerciseEntity;
 
     @BeforeEach
     public void setUp() {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
 
-        this.exercise = new Exercise();
-        this.exercise.setExerciseID(1L);
-        this.exercise.setName("testValidName");
-        this.exercise.setInstructions("testValidInstructions");
-        this.exercise.setBodyPart(BodyPart.OTHER);
-        this.exercise.setCategory(Category.OTHER);
+        this.exerciseEntity = new ExerciseEntity();
+        this.exerciseEntity.setExerciseID(1L);
+        this.exerciseEntity.setName("testValidName");
+        this.exerciseEntity.setInstructions("testValidInstructions");
+        this.exerciseEntity.setBodyPart(BodyPart.OTHER);
+        this.exerciseEntity.setCategory(Category.OTHER);
     }
 
     @Test
     public void testValidExercise() {
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
 
         assertEquals(0, violations.size());
     }
 
     @Test
     public void testExerciseIDNotNull() {
-        exercise.setExerciseID(null); // Null exercise ID, violating @NotNull constraint
+        exerciseEntity.setExerciseID(null); // Null exerciseEntity ID, violating @NotNull constraint
 
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
 
         assertEquals(1, violations.size());
         assertEquals("exerciseID", violations.iterator().next().getPropertyPath().toString());
@@ -51,9 +51,9 @@ public class ExerciseTest {
 
     @Test
     public void testExerciseNameNotNull() {
-        exercise.setName(null); // Null exercise name, violating @NotEmpty constraint
+        exerciseEntity.setName(null); // Null exerciseEntity name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
 
         assertEquals(1, violations.size());
         assertEquals("name", violations.iterator().next().getPropertyPath().toString());
@@ -61,9 +61,9 @@ public class ExerciseTest {
 
     @Test
     public void testExerciseNameNotEmpty() {
-        exercise.setName(""); // Empty exercise name, violating @NotEmpty constraint
+        exerciseEntity.setName(""); // Empty exerciseEntity name, violating @NotEmpty constraint
 
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
 
         assertEquals(1, violations.size());
         assertEquals("name", violations.iterator().next().getPropertyPath().toString());
@@ -71,9 +71,9 @@ public class ExerciseTest {
 
     @Test
     public void testBodyPartNotNull() {
-        exercise.setBodyPart(null); // Null exercise instructions, violating @NotNull constraint
+        exerciseEntity.setBodyPart(null); // Null exerciseEntity instructions, violating @NotNull constraint
 
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
         System.out.println(violations);
 
         assertEquals(1, violations.size());
@@ -82,9 +82,9 @@ public class ExerciseTest {
 
     @Test
     public void testCategoryNotNull() {
-        exercise.setCategory(null); // Null exercise instructions, violating @NotNull constraint
+        exerciseEntity.setCategory(null); // Null exerciseEntity instructions, violating @NotNull constraint
 
-        Set<ConstraintViolation<Exercise>> violations = validator.validate(exercise);
+        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
 
         assertEquals(1, violations.size());
         assertEquals("category", violations.iterator().next().getPropertyPath().toString());

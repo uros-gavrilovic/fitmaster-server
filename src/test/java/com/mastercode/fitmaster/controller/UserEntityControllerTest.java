@@ -5,7 +5,7 @@ import com.mastercode.fitmaster.config.UserAuthenticationProvider;
 import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.exception.GlobalExceptionHandler;
 import com.mastercode.fitmaster.exception.LoginException;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import com.mastercode.fitmaster.service.EmailService;
 import com.mastercode.fitmaster.service.MemberService;
 import com.mastercode.fitmaster.service.TrainerService;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerTest {
+public class UserEntityControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
@@ -77,11 +77,11 @@ public class UserControllerTest {
         userDTO.setUsername("testUsername");
         userDTO.setPassword("testpassword");
 
-        Trainer mockTrainer = new Trainer(); // Trainer linked to the username and password
-        mockTrainer.setUsername("testUsername");
-        mockTrainer.setToken("testToken");
+        TrainerEntity mockTrainerEntity = new TrainerEntity(); // TrainerEntity linked to the username and password
+        mockTrainerEntity.setUsername("testUsername");
+        mockTrainerEntity.setToken("testToken");
 
-        when(trainerService.login(Mockito.any(userDTO.getClass()))).thenReturn(mockTrainer);
+        when(trainerService.login(Mockito.any(userDTO.getClass()))).thenReturn(mockTrainerEntity);
         when(userAuthenticationProvider.createToken("testUsername")).thenReturn("testToken");
 
         mockMvc.perform(post("/login-trainer").contentType(MediaType.APPLICATION_JSON)
@@ -106,25 +106,25 @@ public class UserControllerTest {
 
     @Test
     void testRegisterTrainer() throws Exception {
-        Trainer trainerToBeRegistered = new Trainer();
-        trainerToBeRegistered.setUsername("testUsername");
-        trainerToBeRegistered.setPassword("testPassword");
-        trainerToBeRegistered.setFirstName("testFirstname");
-        trainerToBeRegistered.setLastName("testLastname");
-        trainerToBeRegistered.setToken("testToken");
+        TrainerEntity trainerEntityToBeRegistered = new TrainerEntity();
+        trainerEntityToBeRegistered.setUsername("testUsername");
+        trainerEntityToBeRegistered.setPassword("testPassword");
+        trainerEntityToBeRegistered.setFirstName("testFirstname");
+        trainerEntityToBeRegistered.setLastName("testLastname");
+        trainerEntityToBeRegistered.setToken("testToken");
 
-        Trainer registeredTrainer = new Trainer();
-        registeredTrainer.setUsername("testUsername");
-        registeredTrainer.setPassword("testPassword");
-        registeredTrainer.setFirstName("testFirstname");
-        registeredTrainer.setLastName("testLastname");
-        registeredTrainer.setToken("testToken");
+        TrainerEntity registeredTrainerEntity = new TrainerEntity();
+        registeredTrainerEntity.setUsername("testUsername");
+        registeredTrainerEntity.setPassword("testPassword");
+        registeredTrainerEntity.setFirstName("testFirstname");
+        registeredTrainerEntity.setLastName("testLastname");
+        registeredTrainerEntity.setToken("testToken");
 
-        when(trainerService.registerTrainer(Mockito.any(Trainer.class))).thenReturn(trainerToBeRegistered);
+        when(trainerService.registerTrainer(Mockito.any(TrainerEntity.class))).thenReturn(trainerEntityToBeRegistered);
         when(userAuthenticationProvider.createToken("testUsername")).thenReturn("testToken");
 
         mockMvc.perform(post("/register-trainer").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registeredTrainer)))
+                        .content(objectMapper.writeValueAsString(registeredTrainerEntity)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("testUsername"))
                 .andExpect(jsonPath("$.token").value("testToken"));
@@ -132,28 +132,28 @@ public class UserControllerTest {
 
     @Test
     void testRegisterTrainerMissingFirstName() throws Exception {
-        Trainer trainerToBeRegistered = new Trainer();
-        trainerToBeRegistered.setUsername("testUsername");
-        trainerToBeRegistered.setPassword("testPassword");
-        trainerToBeRegistered.setFirstName(null);
-        trainerToBeRegistered.setLastName("testLastname");
+        TrainerEntity trainerEntityToBeRegistered = new TrainerEntity();
+        trainerEntityToBeRegistered.setUsername("testUsername");
+        trainerEntityToBeRegistered.setPassword("testPassword");
+        trainerEntityToBeRegistered.setFirstName(null);
+        trainerEntityToBeRegistered.setLastName("testLastname");
 
         mockMvc.perform(post("/register-trainer").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(trainerToBeRegistered)))
+                        .content(objectMapper.writeValueAsString(trainerEntityToBeRegistered)))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message", Matchers.matchesPattern(".*Validation failed.*")));
     }
 
     @Test
     void testRegisterTrainerUsernamePatternMismatch() throws Exception {
-        Trainer trainerToBeRegistered = new Trainer();
-        trainerToBeRegistered.setUsername("?*/-testInvalidUsername");
-        trainerToBeRegistered.setPassword("testPassword");
-        trainerToBeRegistered.setFirstName("testFirstname");
-        trainerToBeRegistered.setLastName("testLastname");
+        TrainerEntity trainerEntityToBeRegistered = new TrainerEntity();
+        trainerEntityToBeRegistered.setUsername("?*/-testInvalidUsername");
+        trainerEntityToBeRegistered.setPassword("testPassword");
+        trainerEntityToBeRegistered.setFirstName("testFirstname");
+        trainerEntityToBeRegistered.setLastName("testLastname");
 
         mockMvc.perform(post("/register-trainer").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(trainerToBeRegistered)))
+                        .content(objectMapper.writeValueAsString(trainerEntityToBeRegistered)))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message", Matchers.matchesPattern(".*Validation failed.*")));
     }

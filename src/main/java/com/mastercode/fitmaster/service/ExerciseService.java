@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mastercode.fitmaster.adapter.ExerciseAdapter;
 import com.mastercode.fitmaster.dto.ExerciseDTO;
-import com.mastercode.fitmaster.model.Exercise;
+import com.mastercode.fitmaster.model.ExerciseEntity;
 import com.mastercode.fitmaster.model.enums.BodyPart;
 import com.mastercode.fitmaster.model.enums.Category;
 import com.mastercode.fitmaster.repository.ExerciseRepository;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
+public class ExerciseService implements AbstractService<ExerciseEntity, ExerciseDTO> {
 
     @Autowired
     private ExerciseRepository exerciseRepository;
@@ -24,12 +24,12 @@ public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
     private ExerciseAdapter exerciseAdapter;
 
     @Override
-    public List<Exercise> getAll() {
+    public List<ExerciseEntity> getAll() {
         return exerciseRepository.findAll();
     }
 
     @Override
-    public Exercise findByID(Long id) {
+    public ExerciseEntity findByID(Long id) {
         return exerciseRepository.getByExerciseID(id);
     }
 
@@ -39,12 +39,12 @@ public class ExerciseService implements AbstractService<Exercise, ExerciseDTO> {
     }
 
     @Override
-    public Exercise create(Exercise entity) {
+    public ExerciseEntity create(ExerciseEntity entity) {
         return exerciseRepository.saveAndFlush(entity);
     }
 
     @Override
-    public Exercise update(Exercise entity) {
+    public ExerciseEntity update(ExerciseEntity entity) {
         return exerciseRepository.saveAndFlush(entity);
     }
 

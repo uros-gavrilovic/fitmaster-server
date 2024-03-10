@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mastercode.fitmaster.model.Trainer;
+import com.mastercode.fitmaster.model.TrainerEntity;
 import com.mastercode.fitmaster.service.TrainerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-public class TrainerControllerTest {
+public class TrainerEntityControllerTest {
 
     @InjectMocks
     private TrainerController trainerController;
@@ -23,28 +23,28 @@ public class TrainerControllerTest {
     @Mock
     private MockMvc mockMvc;
 
-    private Trainer trainer;
+    private TrainerEntity trainerEntity;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(trainerController).build();
 
-        this.trainer = new Trainer();
-        this.trainer.setTrainerID(1L);
-        this.trainer.setFirstName("testFirstname");
-        this.trainer.setLastName("testLastname");
-        this.trainer.setUsername("testUsername");
-        this.trainer.setPassword("testPassword");
+        this.trainerEntity = new TrainerEntity();
+        this.trainerEntity.setTrainerID(1L);
+        this.trainerEntity.setFirstName("testFirstname");
+        this.trainerEntity.setLastName("testLastname");
+        this.trainerEntity.setUsername("testUsername");
+        this.trainerEntity.setPassword("testPassword");
     }
 
     @Test
     public void testUpdateTrainerMissingRequiredField() throws Exception {
-        trainer.setFirstName(null);
+        trainerEntity.setFirstName(null);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/trainer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(trainer)))
+                        .content(new ObjectMapper().writeValueAsString(trainerEntity)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -52,7 +52,7 @@ public class TrainerControllerTest {
     public void testUpdateTrainerWithNonExistingID() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/trainer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(trainer)))
+                        .content(new ObjectMapper().writeValueAsString(trainerEntity)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
