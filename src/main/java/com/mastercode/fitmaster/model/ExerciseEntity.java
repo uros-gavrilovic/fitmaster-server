@@ -6,10 +6,7 @@ import com.mastercode.fitmaster.model.enums.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * The ExerciseEntity class represents a fitness exercise.
@@ -23,10 +20,13 @@ import lombok.ToString;
 @Table(name = "exercise")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
+@Builder(toBuilder = true)
+@AllArgsConstructor
 public class ExerciseEntity {
 
     /** The ID of the exercise. Represents primary key in the database. */
     @Id
+//    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long exerciseID;

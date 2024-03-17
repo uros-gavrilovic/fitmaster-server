@@ -44,15 +44,13 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public ResponseEntity<ExerciseEntity> createExercise(@RequestBody ExerciseEntity exerciseEntity) {
-        ExerciseEntity createdExerciseEntity = exerciseService.create(exerciseEntity);
-        return new ResponseEntity<>(createdExerciseEntity, HttpStatus.CREATED);
+    public ResponseEntity<ExerciseDTO> createExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        return ResponseEntity.ok(exerciseService.create(exerciseEntity));
     }
 
     @PutMapping
-    public ResponseEntity<ExerciseEntity> updateExercise(@RequestBody ExerciseEntity exerciseEntity) {
-        ExerciseEntity updatedExerciseEntity = exerciseService.update(exerciseEntity);
-        return new ResponseEntity<>(updatedExerciseEntity, HttpStatus.OK);
+    public ResponseEntity<ExerciseDTO> updateExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        return ResponseEntity.ok(exerciseService.update(exerciseEntity));
     }
 
     @DeleteMapping("/{id}")

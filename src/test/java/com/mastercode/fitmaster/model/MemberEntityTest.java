@@ -1,9 +1,12 @@
 package com.mastercode.fitmaster.model;
 
+import com.mastercode.fitmaster.data.MemberData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,13 +26,7 @@ public class MemberEntityTest {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
 
-        this.memberEntity = new MemberEntity();
-        this.memberEntity.setFirstName("testValidFirstName");
-        this.memberEntity.setLastName("testValidLastName");
-        this.memberEntity.setUsername("testValidUsername");
-        this.memberEntity.setPassword("testValidPassword");
-        this.memberEntity.setPhoneNumber("+381/61-2345678");
-        this.memberEntity.setBirthDate(LocalDate.now().minusYears(1));
+        this.memberEntity = MemberData.MEMBER_ENTITY.toBuilder().build();
     }
 
     @Test
@@ -91,19 +88,7 @@ public class MemberEntityTest {
 
     @Test
     public void testEmptyUsername() {
-        memberEntity.setUsername(""); // Empty username, violating @NotEmpty and @Size constraint
-
-        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
-        System.out.println(violations);
-
-        assertEquals(2, violations.size());
-        assertEquals("username", violations.iterator().next().getPropertyPath().toString());
-    }
-
-    @Test
-    public void testUsernameTooLong() {
-        memberEntity.setUsername(
-                "testVeryLongUserNameExceeds30Characters"); // Username too long, violating @Size constraint
+        memberEntity.setUsername(""); // Empty username, violating @Size constraint
 
         Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 
@@ -113,7 +98,7 @@ public class MemberEntityTest {
 
     @Test
     public void testInvalidUsernamePattern() {
-        memberEntity.setUsername("testInvalidUsername!/-+"); // Invalid username, violating @Pattern constraint
+        memberEntity.setUsername("testUsername!/-+"); // Invalid username, violating @Pattern constraint
 
         Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
 

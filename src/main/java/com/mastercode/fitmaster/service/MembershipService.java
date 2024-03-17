@@ -7,6 +7,7 @@ import com.mastercode.fitmaster.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.List;
 import java.util.Set;
 
@@ -34,13 +35,13 @@ public class MembershipService implements AbstractService<MembershipEntity, Memb
     }
 
     @Override
-    public MembershipEntity create(MembershipEntity entity) {
-        return membershipRepository.saveAndFlush(entity);
+    public MembershipDTO create(MembershipEntity entity) {
+        return membershipAdapter.entityToDTO(membershipRepository.saveAndFlush(entity));
     }
 
     @Override
-    public MembershipEntity update(MembershipEntity entity) {
-        return null; // TODO
+    public MembershipDTO update(MembershipEntity entity) {
+        throw new UnsupportedOperationException(); // TODO
     }
 
     @Override
@@ -50,6 +51,6 @@ public class MembershipService implements AbstractService<MembershipEntity, Memb
 
     public Set<MembershipEntity> getMembershipsByMemberID(Long memberID) {
         return null;
-        //        return membershipRepository.findAllByMemberMemberID(memberID);
+//                return membershipRepository.findAllByMemberMemberID(memberID);
     }
 }

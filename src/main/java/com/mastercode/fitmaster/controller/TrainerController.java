@@ -82,10 +82,10 @@ public class TrainerController {
      * @throws MethodArgumentNotValidException If there's an issue validating the TrainerEntity object.
      */
     @PutMapping
-    public ResponseEntity<TrainerEntity> updateTrainer(@Valid @RequestBody TrainerEntity trainerEntity) {
-        TrainerEntity updatedTrainerEntity = trainerService.update(trainerEntity);
-        if (updatedTrainerEntity != null) {
-            return new ResponseEntity<>(updatedTrainerEntity, HttpStatus.OK);
+    public ResponseEntity<TrainerDTO> updateTrainer(@Valid @RequestBody TrainerEntity trainerEntity) {
+        TrainerDTO trainer = trainerService.update(trainerEntity);
+        if (trainer != null) {
+            return new ResponseEntity<>(trainer, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

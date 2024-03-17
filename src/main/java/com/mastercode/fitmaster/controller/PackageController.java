@@ -62,7 +62,7 @@ public class PackageController {
      * @return A ResponseEntity containing the created PackageEntity object.
      */
     @PostMapping("/save")
-    public ResponseEntity<PackageEntity> savePackage(@RequestBody PackageEntity entity) {
+    public ResponseEntity<PackageDTO> savePackage(@RequestBody PackageEntity entity) {
         return new ResponseEntity<>(packageService.create(entity), HttpStatus.CREATED);
     }
 

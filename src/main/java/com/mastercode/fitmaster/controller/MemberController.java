@@ -77,9 +77,8 @@ public class MemberController {
      * @throws MethodArgumentNotValidException if the memberEntity object is not valid.
      */
     @PostMapping
-    public ResponseEntity<MemberEntity> createMember(@Valid @RequestBody MemberEntity memberEntity) {
-        MemberEntity createdMemberEntity = memberService.create(memberEntity);
-        return new ResponseEntity<>(createdMemberEntity, HttpStatus.CREATED);
+    public ResponseEntity<MemberDTO> createMember(@Valid @RequestBody MemberEntity memberEntity) {
+        return new ResponseEntity<>(memberService.create(memberEntity), HttpStatus.CREATED);
     }
 
     /**
@@ -93,10 +92,10 @@ public class MemberController {
      * @throws MethodArgumentNotValidException if the memberEntity object is not valid.
      */
     @PutMapping
-    public ResponseEntity<MemberEntity> updateMember(@Valid @RequestBody MemberEntity memberEntity) {
-        MemberEntity updatedMemberEntity = memberService.update(memberEntity);
-        if (updatedMemberEntity != null) {
-            return new ResponseEntity<>(updatedMemberEntity, HttpStatus.OK);
+    public ResponseEntity<MemberDTO> updateMember(@Valid @RequestBody MemberEntity memberEntity) {
+        MemberDTO member = memberService.update(memberEntity);
+        if (member != null) {
+            return new ResponseEntity<>(member, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

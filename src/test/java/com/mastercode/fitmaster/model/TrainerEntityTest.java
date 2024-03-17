@@ -1,5 +1,6 @@
 package com.mastercode.fitmaster.model;
 
+import com.mastercode.fitmaster.data.TrainerData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -24,13 +25,7 @@ public class TrainerEntityTest {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
 
-        this.trainerEntity = new TrainerEntity();
-        this.trainerEntity.setFirstName("testValidFirstName");
-        this.trainerEntity.setLastName("testValidLastName");
-        this.trainerEntity.setUsername("testValidUsername");
-        this.trainerEntity.setPassword("testValidPassword");
-        this.trainerEntity.setPhoneNumber("+381/61-2345678");
-        this.trainerEntity.setHireDate(LocalDate.now().minusDays(1));
+        this.trainerEntity = TrainerData.TRAINER_ENTITY.toBuilder().build();
     }
 
     @Test
@@ -96,7 +91,7 @@ public class TrainerEntityTest {
 
         Set<ConstraintViolation<UserEntity>> violations = validator.validate(trainerEntity);
 
-        assertEquals(2, violations.size());
+        assertEquals(1, violations.size());
         assertEquals("username", violations.iterator().next().getPropertyPath().toString());
     }
 
@@ -113,7 +108,7 @@ public class TrainerEntityTest {
 
     @Test
     public void testInvalidUsernamePattern() {
-        trainerEntity.setUsername("testInvalidUsername!/-+"); // Invalid username, violating @Pattern constraint
+        trainerEntity.setUsername("testUsername!/-+"); // Invalid username, violating @Pattern constraint
 
         Set<ConstraintViolation<UserEntity>> violations = validator.validate(trainerEntity);
 

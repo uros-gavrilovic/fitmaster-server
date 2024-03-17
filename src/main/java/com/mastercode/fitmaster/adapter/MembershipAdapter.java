@@ -9,37 +9,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class MembershipAdapter extends AbstractAdapter<MembershipEntity, MembershipDTO> {
-
-    @Override
-    public MembershipEntity dtoToEntity(MembershipDTO dto) {
-        if (dto == null) return null;
-        final MembershipEntity entity = new MembershipEntity();
-
-        entity.setMembershipID(dto.getMembershipID());
-        entity.setStartDate(dto.getStartDate());
-        entity.setEndDate(dto.getEndDate());
-        entity.setActive(dto.isActive());
-
-        return entity;
-    }
-
     @Override
     public MembershipDTO entityToDTO(MembershipEntity entity) {
         if (entity == null) return null;
-        final MembershipDTO dto = new MembershipDTO();
 
-        dto.setMembershipID(entity.getMembershipID());
-        dto.setStartDate(entity.getStartDate());
-        dto.setEndDate(entity.getEndDate());
-        dto.setActive(entity.isActive());
-
-        return dto;
+        return MembershipDTO.builder()
+                .membershipID(entity.getMembershipID())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .active(entity.isActive())
+                .build();
     }
-
-    public List<MembershipDTO> entitiesToDTO(List<MembershipEntity> list) {
-        if (list == null) return null;
-
-        return list.stream().map(this::entityToDTO).collect(Collectors.toList());
-    }
-
 }

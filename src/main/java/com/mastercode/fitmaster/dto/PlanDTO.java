@@ -1,10 +1,7 @@
 package com.mastercode.fitmaster.dto;
 
 import com.mastercode.fitmaster.model.enums.PlanStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PlanDTO implements Serializable {
 
     private Long planID;

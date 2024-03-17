@@ -2,10 +2,8 @@ package com.mastercode.fitmaster.dto;
 
 import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.enums.MemberStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -14,6 +12,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder(toBuilder = true)
+@ToString
 public class MemberDTO extends UserDTO implements Serializable {
 
     private Long memberID;

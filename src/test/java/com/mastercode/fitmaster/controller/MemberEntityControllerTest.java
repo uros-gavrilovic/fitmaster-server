@@ -1,6 +1,10 @@
 package com.mastercode.fitmaster.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.mastercode.fitmaster.data.MemberData;
+import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,13 +22,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.mastercode.fitmaster.util.constants.JsonConstants.*;
+
+import static com.mastercode.fitmaster.data.MemberData.*;
 
 public class MemberEntityControllerTest {
+    @Mock
+    private MemberService memberService;
 
     @InjectMocks
     private MemberController memberController;
-    @Mock
-    private MemberService memberService;
     private MockMvc mockMvc;
 
     private MemberEntity memberEntity;
@@ -38,26 +44,16 @@ public class MemberEntityControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
 
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        this.memberEntity = new MemberEntity();
-        this.memberEntity.setMemberID(1L);
-        this.memberEntity.setFirstName("testFirstname");
-        this.memberEntity.setLastName("testLastname");
-        this.memberEntity.setUsername("testUsername");
-        this.memberEntity.setPassword("testPassword");
+        this.memberEntity = MEMBER_ENTITY.toBuilder().build();
     }
 
     @Test
     public void testGetAllMembers() throws Exception {
-        MemberEntity m1 = new MemberEntity();
-        m1.setMemberID(1L);
-        m1.setFirstName("testFirstnameA");
-        m1.setLastName("testLastnameA");
-
-        MemberEntity m2 = new MemberEntity();
-        m2.setMemberID(2L);
-        m2.setFirstName("testFirstnameB");
-        m2.setLastName("testLastnameB");
+        MemberEntity m1 = MEMBER_ENTITY;
+        MemberEntity m2 = MEMBER_ENTITY;
 
         List<MemberEntity> memberEntities = Arrays.asList(m1, m2);
 
@@ -82,20 +78,19 @@ public class MemberEntityControllerTest {
 
     @Test
     public void testCreateMember() throws Exception {
-        MemberEntity createdMemberEntity = new MemberEntity();
-        createdMemberEntity.setFirstName("testFirstname");
-        createdMemberEntity.setLastName("testLastname");
-        createdMemberEntity.setUsername("testUsername");
-        createdMemberEntity.setPassword("testPassword");
-
-        when(memberService.create(any(MemberEntity.class))).thenReturn(createdMemberEntity);
+        when(memberService.create(any())).thenReturn(MEMBER_DTO);
 
         mockMvc.perform(post("/api/member").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(memberEntity)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.firstName").value(createdMemberEntity.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(createdMemberEntity.getLastName()));
+                .andExpect(jsonPath(path(FIRST_NAME)).value(memberEntity.getFirstName()))
+                .andExpect(jsonPath(path(LAST_NAME)).value(memberEntity.getLastName()))
+                .andExpect(jsonPath(path(GENDER)).value(memberEntity.getGender().toString()))
+//                .andExpect(jsonPath(path(BIRTH_DATE).value(memberEntity.getBirthDate().toString()))
+                .andExpect(jsonPath(path(ADDRESS)).value(memberEntity.getAddress()))
+                .andExpect(jsonPath(path(PHONE_NUMBER)).value(memberEntity.getPhoneNumber()))
+                .andExpect(jsonPath(path(STATUS)).value(memberEntity.getStatus().toString()));
     }
 
     @Test
@@ -108,19 +103,20 @@ public class MemberEntityControllerTest {
 
     @Test
     public void testUpdateMember() throws Exception {
-        MemberEntity updatedMemberEntity = new MemberEntity();
-        updatedMemberEntity.setMemberID(1L);
-        updatedMemberEntity.setFirstName("testUpdatedFirstname");
-        updatedMemberEntity.setLastName("testLastname");
-
-        when(memberService.update(any(MemberEntity.class))).thenReturn(updatedMemberEntity);
+        MemberDTO updatedMember = UPDATED_MEMBER_DTO;
+        when(memberService.update(any())).thenReturn(updatedMember);
 
         mockMvc.perform(put("/api/member").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(memberEntity)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.firstName").value(updatedMemberEntity.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(updatedMemberEntity.getLastName()));
+                .andExpect(jsonPath(path(FIRST_NAME)).value(updatedMember.getFirstName()))
+                .andExpect(jsonPath(path(LAST_NAME)).value(updatedMember.getLastName()))
+                .andExpect(jsonPath(path(GENDER)).value(updatedMember.getGender().toString()))
+//                .andExpect(jsonPath(path(BIRTH_DATE).value(memberEntity.getBirthDate().toString()))
+                .andExpect(jsonPath(path(ADDRESS)).value(memberEntity.getAddress()))
+                .andExpect(jsonPath(path(PHONE_NUMBER)).value(memberEntity.getPhoneNumber()))
+                .andExpect(jsonPath(path(STATUS)).value(memberEntity.getStatus().toString()));
     }
 
     @Test

@@ -1,6 +1,8 @@
 package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mastercode.fitmaster.adapter.ActivityAdapter;
+import com.mastercode.fitmaster.dto.ActivityDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,6 +24,7 @@ public class ActivityEntity {
 
     /** The ordinal number of the activity within the training planEntity, also represents primary key. */
     @Id
+//    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long activityID;

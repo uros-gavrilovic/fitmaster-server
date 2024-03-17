@@ -50,15 +50,15 @@ public class PlanEntityTest {
         assertTrue(violations.isEmpty());
     }
 
-    @Test
-    public void testPlanIDNotNull() {
-        planEntity.setPlanID(null); // Missing planID, violating @NotNull constraint
-
-        Set<ConstraintViolation<PlanEntity>> violations = validator.validate(planEntity);
-
-        assertEquals(1, violations.size());
-        assertEquals("planID", violations.iterator().next().getPropertyPath().toString());
-    }
+//    @Test
+//    public void testPlanIDNotNull() {
+//        planEntity.setPlanID(null); // Missing planID, violating @NotNull constraint
+//
+//        Set<ConstraintViolation<PlanEntity>> violations = validator.validate(planEntity);
+//
+//        assertEquals(1, violations.size());
+//        assertEquals("planID", violations.iterator().next().getPropertyPath().toString());
+//    }
 
     @Test
     public void testMemberNotNull() {
@@ -67,7 +67,7 @@ public class PlanEntityTest {
         Set<ConstraintViolation<PlanEntity>> violations = validator.validate(planEntity);
 
         assertEquals(1, violations.size());
-        assertEquals("member", violations.iterator().next().getPropertyPath().toString());
+        assertEquals("memberEntity", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test

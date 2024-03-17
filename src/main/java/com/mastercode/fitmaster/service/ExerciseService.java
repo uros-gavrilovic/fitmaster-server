@@ -39,13 +39,13 @@ public class ExerciseService implements AbstractService<ExerciseEntity, Exercise
     }
 
     @Override
-    public ExerciseEntity create(ExerciseEntity entity) {
-        return exerciseRepository.saveAndFlush(entity);
+    public ExerciseDTO create(ExerciseEntity entity) {
+        return exerciseAdapter.entityToDTO(exerciseRepository.saveAndFlush(entity));
     }
 
     @Override
-    public ExerciseEntity update(ExerciseEntity entity) {
-        return exerciseRepository.saveAndFlush(entity);
+    public ExerciseDTO update(ExerciseEntity entity) {
+        return exerciseAdapter.entityToDTO(exerciseRepository.saveAndFlush(entity));
     }
 
     @Override

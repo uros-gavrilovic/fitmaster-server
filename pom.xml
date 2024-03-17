@@ -20,8 +20,7 @@
         <jooq-tables-to-include>
             "activity exercise member membership package plan trainer"
         </jooq-tables-to-include>
-        <jooq-directory-path>src/main/java/com/mastercode/fitmaster</jooq-directory-path>
-        <jooq-generated-package-name>database</jooq-generated-package-name>
+        <jooq-generated-package-name>com.mastercode.fitmaster.service.jooq</jooq-generated-package-name>
     </properties>
 
     <dependencies>
@@ -125,6 +124,13 @@
             <artifactId>jooq-codegen-maven</artifactId>
             <version>3.11.2</version>
         </dependency>
+
+<!--        TEST-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -165,7 +171,6 @@
                                 </database>
                                 <target>
                                     <packageName>${jooq-generated-package-name}</packageName>
-                                    <directory>${jooq-directory-path}</directory>
                                 </target>
                             </generator>
                         </configuration>

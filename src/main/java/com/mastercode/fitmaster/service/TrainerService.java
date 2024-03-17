@@ -47,13 +47,13 @@ public class TrainerService implements AbstractService<TrainerEntity, TrainerDTO
     }
 
     @Override
-    public TrainerEntity create(TrainerEntity entity) {
-        return trainerRepository.saveAndFlush(entity);
+    public TrainerDTO create(TrainerEntity entity) {
+        return trainerAdapter.entityToDTO(trainerRepository.saveAndFlush(entity));
     }
 
     @Override
-    public TrainerEntity update(TrainerEntity entity) {
-        return trainerRepository.saveAndFlush(entity);
+    public TrainerDTO update(TrainerEntity entity) {
+        return trainerAdapter.entityToDTO(trainerRepository.saveAndFlush(entity));
     }
 
     @Override

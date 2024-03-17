@@ -2,6 +2,12 @@ package com.mastercode.fitmaster.service;
 
 import java.util.List;
 
+/**\
+ *
+ * @param <T> Entity
+ * @param <TDTO> DTO
+ * @param <TSV> Single View
+ */
 public interface AbstractService<T, TDTO> {
 
     List<T> getAll();
@@ -10,9 +16,9 @@ public interface AbstractService<T, TDTO> {
 
     List<TDTO> getAllDTOs();
 
-    T create(final T entity);
+    TDTO create(final T entity);
 
-    T update(final T entity);
+    TDTO update(final T entity);
 
     void delete(final Long id);
 }

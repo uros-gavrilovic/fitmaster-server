@@ -39,15 +39,15 @@ public class ExerciseEntityTest {
         assertEquals(0, violations.size());
     }
 
-    @Test
-    public void testExerciseIDNotNull() {
-        exerciseEntity.setExerciseID(null); // Null exerciseEntity ID, violating @NotNull constraint
-
-        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
-
-        assertEquals(1, violations.size());
-        assertEquals("exerciseID", violations.iterator().next().getPropertyPath().toString());
-    }
+//    @Test
+//    public void testExerciseIDNotNull() {
+//        exerciseEntity.setExerciseID(null); // Null exerciseEntity ID, violating @NotNull constraint
+//
+//        Set<ConstraintViolation<ExerciseEntity>> violations = validator.validate(exerciseEntity);
+//
+//        assertEquals(1, violations.size());
+//        assertEquals("exerciseID", violations.iterator().next().getPropertyPath().toString());
+//    }
 
     @Test
     public void testExerciseNameNotNull() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.mastercode.fitmaster.dto.PlanDTO;
 import com.mastercode.fitmaster.exception.ValidatorException;
 import com.mastercode.fitmaster.model.*;
 import com.mastercode.fitmaster.service.PlanService;
@@ -67,7 +68,7 @@ public class PlanController {
      * @throws NullPointerException    If the provided JSON request is not valid, or a field is missing.
      */
     @PostMapping
-    public ResponseEntity<PlanEntity> createPlan(@RequestBody String jsonResponse)
+    public ResponseEntity<PlanDTO> createPlan(@RequestBody String jsonResponse)
             throws JsonProcessingException, ValidatorException, NullPointerException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -104,17 +105,16 @@ public class PlanController {
             throw new ValidatorException(violations.toString());
         }
 
-        PlanEntity createdPlanEntity = planService.create(planEntity);
-        return new ResponseEntity<>(createdPlanEntity, HttpStatus.CREATED);
+        PlanDTO createdPlan = planService.create(planEntity);
+        return new ResponseEntity<>(createdPlan, HttpStatus.CREATED);
     }
 
     @PostMapping("/created-by-member")
-    public ResponseEntity<PlanEntity> createPlan(@RequestBody PlanEntity planEntity) {
+    public ResponseEntity<PlanDTO> createPlan(@RequestBody PlanEntity planEntity) {
         planEntity.getActivities().forEach(activity -> activity.setPlanEntity(planEntity));
         planEntity.setTrainerEntity(null);
 
-        PlanEntity createdPlanEntity = planService.create(planEntity);
-        return new ResponseEntity<>(createdPlanEntity, HttpStatus.CREATED);
+        return new ResponseEntity<>(planService.create(planEntity), HttpStatus.CREATED);
     }
 
     /**
@@ -127,8 +127,7 @@ public class PlanController {
      */
     @GetMapping("/trainer/{id}")
     public ResponseEntity<Set<PlanEntity>> getAllByTrainer(@PathVariable Long id) {
-        Set<PlanEntity> planEntities = planService.findByTrainerId(id);
-        return new ResponseEntity<>(planEntities, HttpStatus.OK);
+        return new ResponseEntity<>(planService.findByTrainerId(id), HttpStatus.OK);
     }
 
     /**
@@ -141,8 +140,7 @@ public class PlanController {
      */
     @GetMapping("/member/{id}")
     public ResponseEntity<Set<PlanEntity>> getAllByMember(@PathVariable Long id) {
-        Set<PlanEntity> planEntities = planService.findByMemberId(id);
-        return new ResponseEntity<>(planEntities, HttpStatus.OK);
+        return new ResponseEntity<>(planService.findByMemberId(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -152,32 +150,27 @@ public class PlanController {
     }
 
     @PutMapping
-    public ResponseEntity<PlanEntity> updatePlan(@Valid @RequestBody PlanEntity planEntity) {
+    public ResponseEntity<PlanDTO> updatePlan(@Valid @RequestBody PlanEntity planEntity) {
         planEntity.getActivities().forEach(activity -> activity.setPlanEntity(planEntity));
-        PlanEntity updatedPlanEntity = planService.update(planEntity);
+        PlanDTO updatedPlan = planService.update(planEntity);
 
-        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
     }
 
     @PostMapping("/remove-trainer/{id}")
-    public ResponseEntity<PlanEntity> removeTrainer(@NotEmpty @PathVariable Long id) {
+    public ResponseEntity<PlanDTO> removeTrainer(@NotEmpty @PathVariable Long id) {
         PlanEntity planEntity = planService.findByID(id);
         planEntity.setTrainerEntity(null);
 
-        PlanEntity updatedPlanEntity = planService.update(planEntity);
-
-        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
+        return new ResponseEntity<>(planService.update(planEntity), HttpStatus.OK);
     }
 
     @PostMapping("/cancel/{id}")
-    public ResponseEntity<PlanEntity> cancelPlan(@NotEmpty @PathVariable Long id) {
-        System.out.println("cancelPlan() called");
+    public ResponseEntity<PlanDTO> cancelPlan(@NotEmpty @PathVariable Long id) {
         PlanEntity planEntity = planService.findByID(id);
         planEntity.setCompleted(false);
 
-        PlanEntity updatedPlanEntity = planService.update(planEntity);
-
-        return new ResponseEntity<>(updatedPlanEntity, HttpStatus.OK);
+        return new ResponseEntity<>(planService.update(planEntity), HttpStatus.OK);
     }
 
     /**

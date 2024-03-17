@@ -33,6 +33,7 @@ public class PlanEntity {
      * The unique identifier for the fitness plan.
      */
     @Id
+//    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long planID;

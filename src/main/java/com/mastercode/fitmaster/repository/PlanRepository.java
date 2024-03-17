@@ -10,9 +10,5 @@ import java.util.Set;
 @Repository
 public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
     PlanEntity getByPlanID(Long id);
-
-    Set<PlanEntity> findByTrainerEntity_TrainerID(@Param("trainerId") Long trainerId);
-
-    Set<PlanEntity> findByMemberEntity_MemberID(@Param("memberId") Long memberId);
 }
 

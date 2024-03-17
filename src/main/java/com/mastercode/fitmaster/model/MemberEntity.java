@@ -2,15 +2,15 @@ package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.enums.MemberStatus;
 import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
 import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
@@ -23,8 +23,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "member")
+@SuperBuilder(toBuilder = true)
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberEntity extends UserEntity {
+public class MemberEntity extends UserEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

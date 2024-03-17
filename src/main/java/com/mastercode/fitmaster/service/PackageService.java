@@ -7,6 +7,7 @@ import com.mastercode.fitmaster.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 @Service
@@ -33,13 +34,13 @@ public class PackageService implements AbstractService<PackageEntity, PackageDTO
     }
 
     @Override
-    public PackageEntity create(PackageEntity entity) {
-        return packageRepository.saveAndFlush(entity);
+    public PackageDTO create(PackageEntity entity) {
+        return packageAdapter.entityToDTO(packageRepository.saveAndFlush(entity));
     }
 
     @Override
-    public PackageEntity update(PackageEntity entity) {
-        return null; // TODO
+    public PackageDTO update(PackageEntity entity) {
+        throw new UnsupportedOperationException(); // TODO: Implement
     }
 
     @Override

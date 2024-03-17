@@ -10,48 +10,19 @@ import java.nio.CharBuffer;
 
 @Component
 public class MemberAdapter extends AbstractAdapter<MemberEntity, MemberDTO> {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public MemberEntity dtoToEntity(MemberDTO dto) {
-        if (dto == null) return null;
-        final MemberEntity entity = new MemberEntity();
-
-        entity.setMemberID(dto.getMemberID());
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
-        entity.setGender(dto.getGender());
-        entity.setAddress(dto.getAddress());
-        entity.setPhoneNumber(dto.getPhoneNumber());
-        entity.setBirthDate(dto.getBirthDate());
-        entity.setStatus(dto.getStatus());
-        entity.setEmail(dto.getEmail());
-        entity.setUsername(dto.getUsername());
-        if (dto.getPassword() != null) entity.setPassword(passwordEncoder.encode(CharBuffer.wrap(dto.getPassword())));
-
-        return entity;
-    }
-
     @Override
     public MemberDTO entityToDTO(MemberEntity entity) {
         if (entity == null) return null;
-        final MemberDTO dto = new MemberDTO();
 
-        dto.setMemberID(entity.getMemberID());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setGender(entity.getGender());
-        dto.setAddress(entity.getAddress());
-        dto.setPhoneNumber(entity.getPhoneNumber());
-        dto.setBirthDate(entity.getBirthDate());
-        dto.setStatus(entity.getStatus());
-        dto.setEmail(entity.getEmail());
-        dto.setUsername(entity.getUsername());
-        dto.setPassword(entity.getPassword());
-
-        return dto;
+        return MemberDTO.builder()
+                .memberID(entity.getMemberID())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .gender(entity.getGender())
+                .address(entity.getAddress())
+                .phoneNumber(entity.getPhoneNumber())
+                .birthDate(entity.getBirthDate())
+                .status(entity.getStatus())
+                .build();
     }
-
 }

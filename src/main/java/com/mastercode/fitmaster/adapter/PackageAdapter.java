@@ -6,33 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PackageAdapter extends AbstractAdapter<PackageEntity, PackageDTO> {
-
-    @Override
-    public PackageEntity dtoToEntity(PackageDTO dto) {
-        if (dto == null) return null;
-        final PackageEntity entity = new PackageEntity();
-
-        entity.setPackageID(dto.getPackageID());
-        entity.setName(dto.getName());
-        entity.setDuration(dto.getDuration());
-        entity.setPrice(dto.getPrice());
-        entity.setCurrency(dto.getCurrency());
-
-        return entity;
-    }
-
     @Override
     public PackageDTO entityToDTO(PackageEntity entity) {
         if (entity == null) return null;
-        final PackageDTO dto = new PackageDTO();
 
-        dto.setPackageID(entity.getPackageID());
-        dto.setName(entity.getName());
-        dto.setDuration(entity.getDuration());
-        dto.setPrice(entity.getPrice());
-        dto.setCurrency(entity.getCurrency());
-
-        return dto;
+        return PackageDTO.builder()
+                .packageID(entity.getPackageID())
+                .name(entity.getName())
+                .duration(entity.getDuration())
+                .price(entity.getPrice())
+                .currency(entity.getCurrency())
+                .build();
     }
 
 }

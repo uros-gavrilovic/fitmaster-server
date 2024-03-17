@@ -1,9 +1,6 @@
 package com.mastercode.fitmaster.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -12,6 +9,7 @@ import java.util.Currency;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PackageDTO {
 
     private Long packageID;

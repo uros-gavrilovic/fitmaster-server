@@ -8,6 +8,7 @@ import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.exception.UserException;
 import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.repository.MemberRepository;
+import com.mastercode.fitmaster.service.jooq.tables.Plan;
 import com.mastercode.fitmaster.util.DescriptionUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,9 @@ import java.util.Optional;
 
 @Service
 public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
-
-    @Autowired
-    private JooqService jooqService;
-
     @Autowired
     MemberRepository memberRepository;
+
     @Autowired
     MemberAdapter memberAdapter;
 
@@ -52,18 +50,22 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     }
 
     @Override
-    public MemberEntity create(MemberEntity entity) {
-        return memberRepository.saveAndFlush(entity);
+    public MemberDTO create(MemberEntity entity) {
+        return memberAdapter.entityToDTO(memberRepository.saveAndFlush(entity));
     }
 
     @Override
-    public MemberEntity update(MemberEntity entity) {
+    public MemberDTO update(MemberEntity entity) {
         MemberEntity memberEntity = memberRepository.findById(entity.getMemberID())
                 .orElseThrow(() -> new UserException("MemberEntity with id " + entity.getMemberID() + " does not exist",
                         HttpStatus.NOT_FOUND));
+
+        System.out.println("Updating Memberentity: " + memberEntity);
+
         entity.setPassword(memberEntity.getPassword());
         entity.setUsername(memberEntity.getUsername());
-        return memberRepository.saveAndFlush(entity);
+
+        return memberAdapter.entityToDTO(memberRepository.saveAndFlush(entity));
     }
 
     @Override
@@ -72,18 +74,12 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     }
 
     public Map<String, Object> getMemberStatistics() {
-        //    @Query(nativeQuery = true, value = "SELECT\n" +
-        //            "    SUM(CASE WHEN latest_memberships.end_date > CURRENT_DATE THEN 1 ELSE 0 END) AS active_members,\n" +
-        //            "    SUM(CASE WHEN latest_memberships.end_date <= CURRENT_DATE THEN 1 ELSE 0 END) AS inactive_members\n" +
-        //            "FROM (\n" + "    SELECT\n" + "        mb.id AS member_id,\n" + "        MAX(ms.end_date) AS end_date\n" +
-        //            "    FROM member mb\n" + "    LEFT JOIN membership ms ON mb.id = ms.member_id\n" + "    GROUP BY mb.id\n" +
-        //            ") AS latest_memberships;")
-        //    Map<String, Object> getMemberStatistics();
         return null;
         //        return memberRepository.getMemberStatistics();
     }
 
     public MemberEntity login(UserDTO userDTO) {
+        Plan p = null;
         MemberEntity memberEntity = memberRepository.findByUsername(userDTO.getUsername())
                 .orElseThrow(
                         () -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),
@@ -102,6 +98,7 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     }
 
     public MemberEntity registerMember(MemberEntity memberEntity) {
+        // TODO: Edit encoding proccess to make it URL friendly.
         Optional<MemberEntity> optionalMember = memberRepository.findByUsername(memberEntity.getUsername());
 
         if (optionalMember.isPresent())
@@ -119,8 +116,11 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     @Transactional
     public UserDTO findByUsername(String username) {
         MemberEntity memberEntity = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new LoginException(DescriptionUtils.getErrorDescription("Unknown memberEntity"),
-                        HttpStatus.NOT_FOUND));
+                .orElseThrow(
+                        () -> new LoginException(DescriptionUtils.getErrorDescription("Unknown memberEntity"),
+                        HttpStatus.NOT_FOUND)
+                );
+
         return memberAdapter.entityToDTO(memberEntity);
     }
 
@@ -136,6 +136,7 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     }
 
     public boolean verifyMemberAccount(String token) {
+        // TODO: Edit decoding proccess to make it URL friendly.
         byte[] decodedBytes = Base64.getDecoder().decode(token);
         String decodedMemberID = new String(decodedBytes, StandardCharsets.UTF_8);
 

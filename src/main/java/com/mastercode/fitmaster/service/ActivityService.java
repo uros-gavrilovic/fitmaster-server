@@ -38,12 +38,12 @@ public class ActivityService implements AbstractService<ActivityEntity, Activity
     }
 
     @Override
-    public ActivityEntity create(ActivityEntity entity) {
-        return activityRepository.saveAndFlush(entity);
+    public ActivityDTO create(ActivityEntity entity) {
+        return activityAdapter.entityToDTO(activityRepository.saveAndFlush(entity));
     }
 
     @Override
-    public ActivityEntity update(ActivityEntity entity) {
+    public ActivityDTO update(ActivityEntity entity) {
         return null; // TODO
     }
 

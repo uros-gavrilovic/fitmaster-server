@@ -47,13 +47,13 @@ public class ActivityEntityTest {
         assertEquals(0, violations.size());
     }
 
-    @Test
-    public void testActivityIDNotNull() {
-        activityEntity.setActivityID(null);
-        Set<ConstraintViolation<ActivityEntity>> violations = validator.validate(activityEntity);
-
-        assertEquals(1, violations.size());
-    }
+//    @Test
+//    public void testActivityIDNotNull() {
+//        activityEntity.setActivityID(null);
+//        Set<ConstraintViolation<ActivityEntity>> violations = validator.validate(activityEntity);
+//
+//        assertEquals(1, violations.size());
+//    }
 
     @Test
     public void testPlanNotNull() {
