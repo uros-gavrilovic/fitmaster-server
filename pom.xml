@@ -14,6 +14,10 @@
     <name>FitMaster</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+        <db.url>jdbc:postgresql://localhost:5432/fitmaster</db.url>
+        <db.username>admin</db.username>
+        <db.password>admin</db.password>
+
         <java.version>17</java.version>
         <exec-plugin.version>1.6.0</exec-plugin.version>
         <jooq-archetype.version>1.0-SNAPSHOT</jooq-archetype.version>
@@ -42,11 +46,11 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>9.16.3</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flywaydb</groupId>-->
+<!--            <artifactId>flyway-core</artifactId>-->
+<!--            <version>9.16.3</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -124,6 +128,11 @@
             <artifactId>jooq-codegen-maven</artifactId>
             <version>3.11.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>3.0</version>
+        </dependency>
 
 <!--        TEST-->
         <dependency>
@@ -139,13 +148,37 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jooq</groupId>
-                        <artifactId>jooq-codegen-maven</artifactId>
-                        <version>3.11.2</version>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>3.0</version>
 
                         <executions>
                             <execution>
-                                <id>jooq-codegen</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>migrate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <initOnMigrate>true</initOnMigrate>
+                            <url>${db.url}</url>
+                            <user>${db.username}</user>
+                            <password>${db.password}</password>
+                            <locations>
+                                <location>filesystem:src/main/resources/database/migrations</location>
+                            </locations>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+<!--                        <version>${org.jooq.version}</version>-->
+
+                        <executions>
+                            <execution>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>generate</goal>
@@ -155,26 +188,44 @@
 
                         <configuration>
                             <jdbc>
-                                <driver>org.postgresql.Driver</driver>
-                                <url>jdbc:postgresql://localhost:5432/fitmaster</url>
-                                <user>admin</user>
-                                <password>admin</password>
+                                <url>${db.url}</url>
+                                <user>${db.username}</user>
+                                <password>${db.password}</password>
                             </jdbc>
-
                             <generator>
-                                <name>org.jooq.codegen.JavaGenerator</name>
                                 <database>
-                                    <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                                    <inputSchema>public</inputSchema>
                                     <includes>.*</includes>
-                                    <excludes>flyway_schema_history</excludes>
+                                    <inputSchema>public</inputSchema>
                                 </database>
                                 <target>
-                                    <packageName>${jooq-generated-package-name}</packageName>
+                                    <packageName>com.mastercode.fitmaster.service.jooq</packageName>
+                                    <directory>target/generated-sources/</directory>
                                 </target>
                             </generator>
                         </configuration>
                     </plugin>
+
+<!--                        <configuration>-->
+<!--                            <jdbc>-->
+<!--                                <driver>org.postgresql.Driver</driver>-->
+<!--                                <url>jdbc:postgresql://localhost:5432/fitmaster</url>-->
+<!--                                <user>admin</user>-->
+<!--                                <password>admin</password>-->
+<!--                            </jdbc>-->
+
+<!--                            <generator>-->
+<!--                                <name>org.jooq.codegen.JavaGenerator</name>-->
+<!--                                <database>-->
+<!--                                    <name>org.jooq.meta.postgres.PostgresDatabase</name>-->
+<!--                                    <inputSchema>public</inputSchema>-->
+<!--                                    <includes>.*</includes>-->
+<!--                                    <excludes>flyway_schema_history</excludes>-->
+<!--                                </database>-->
+<!--                                <target>-->
+<!--                                    <packageName>${jooq-generated-package-name}</packageName>-->
+<!--                                </target>-->
+<!--                            </generator>-->
+<!--                        </configuration>-->
                 </plugins>
             </build>
         </profile>
