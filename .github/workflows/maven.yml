@@ -20,4 +20,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Maven - Clean Install (with Jooq)
-      run: mvn clean install -P generate-jooq
+      env:
+        DB_URL: ${{secrets.DB_URL}}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: mvn clean install -Pgenerate-jooq -Ddb.url=${DB_URL} -Ddb.username=${DB_USERNAME} -Ddb.password=${DB_PASSWORD}
