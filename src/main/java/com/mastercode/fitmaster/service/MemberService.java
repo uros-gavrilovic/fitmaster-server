@@ -8,7 +8,6 @@ import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.exception.UserException;
 import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.repository.MemberRepository;
-import com.mastercode.fitmaster.service.jooq.tables.Plan;
 import com.mastercode.fitmaster.util.DescriptionUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +78,6 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     }
 
     public MemberEntity login(UserDTO userDTO) {
-        Plan p = null;
         MemberEntity memberEntity = memberRepository.findByUsername(userDTO.getUsername())
                 .orElseThrow(
                         () -> new LoginException(DescriptionUtils.getErrorDescription("WRONG_USERNAME_OR_PASSWORD"),

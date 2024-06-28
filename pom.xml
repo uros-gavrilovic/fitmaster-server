@@ -14,7 +14,8 @@
     <name>FitMaster</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <db.url>jdbc:postgresql://localhost:${db.port}/fitmaster</db.url>
+        <db.url>jdbc:postgresql://localhost:${db.port}/${db.name}</db.url>
+        <db.name>fitmaster-database</db.name>
         <db.port>5432</db.port>
         <db.username>admin</db.username>
         <db.password>admin</db.password>

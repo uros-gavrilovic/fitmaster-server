@@ -1,7 +1,7 @@
 package com.mastercode.fitmaster.specifications;
 
 import com.mastercode.fitmaster.dto.requests.search.MemberSearchRequest;
-import com.mastercode.fitmaster.model.entities.MemberEntity;
+import com.mastercode.fitmaster.model.MemberEntity;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
