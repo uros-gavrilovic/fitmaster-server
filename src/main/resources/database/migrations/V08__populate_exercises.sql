@@ -1,0 +1,20 @@
+INSERT INTO exercise (name, body_part, category, instructions)
+VALUES
+    ('Bench Press', 'CHEST', 'BARBELL', 'Lie on flat bench, grip barbell wide, lower to chest, push up.'),
+    ('Bench Press', 'CHEST', 'DUMBBELL', 'Lie on flat bench, hold dumbbells, lower to chest, push up.'),
+    ('Incline Bench Press', 'CHEST', 'BARBELL', 'Lie on incline bench, grip barbell wide, lower to upper chest, push up.'),
+    ('Incline Bench Press', 'CHEST', 'DUMBBELL', 'Lie on incline bench, hold dumbbells, lower to upper chest, push up.'),
+    ('Chest Press', 'CHEST', 'MACHINE', 'Sit on chest press machine, push handles forward, return.'),
+    ('Squat', 'LEGS', 'BARBELL', 'Stand, feet shoulder-width, hold barbell, squat, stand.'),
+    ('Lunge', 'LEGS', 'BARBELL', 'Stand, feet hip-width, hold barbell, step forward, lunge, return.'),
+    ('Lunge', 'ARMS', 'DUMBBELL', 'Stand, feet hip-width, hold dumbbells, step forward, lunge, return.'),
+    ('Bicep Curl', 'ARMS', 'BARBELL', 'Stand, feet shoulder-width, hold barbell, curl up, lower.'),
+    ('Bicep Curl', 'ARMS', 'DUMBBELL', 'Stand, feet shoulder-width, hold dumbbells, curl up, lower.'),
+    ('Overhead Press', 'SHOULDERS', 'BARBELL', 'Stand, feet shoulder-width, hold barbell, press overhead, lower.'),
+    ('Seated Overhead Press', 'SHOULDERS', 'BARBELL', 'Sit, hold barbell at shoulder, press overhead, lower.'),
+    ('Deadlift', 'BACK', 'BARBELL', 'Stand, feet hip-width, hold barbell, hinge at hips, lift.'),
+    ('Bent-Over Row', 'BACK', 'BARBELL', 'Stand, feet shoulder-width, bend at hips, hold barbell, row up, lower.'),
+    ('Pull Up', 'BACK', 'BODY_WEIGHT', 'Hang from bar, pull body up until chin above bar, lower.'),
+    ('Seated Row', 'BACK', 'MACHINE', 'Sit on row machine, grasp handles, pull towards body, return.'),
+    ('Triceps Extension', 'ARMS', 'MACHINE', 'Sit, hold handles, extend arms downward, return.'),
+    ('Skullcrusher', 'ARMS', 'BARBELL', 'Lie on bench, hold barbell above chest, lower to forehead, extend back up.');
