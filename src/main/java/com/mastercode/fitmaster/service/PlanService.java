@@ -4,17 +4,13 @@ import com.mastercode.fitmaster.adapter.PlanAdapter;
 import com.mastercode.fitmaster.dto.PlanDTO;
 import com.mastercode.fitmaster.model.PlanEntity;
 import com.mastercode.fitmaster.repository.PlanRepository;
-import com.mastercode.fitmaster.service.jooq.tables.Plan;
+import static com.mastercode.fitmaster.service.jooq.tables.Plan.PLAN;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.jooq.impl.DSL.*;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.mastercode.fitmaster.service.jooq.tables.Trainer.TRAINER;
-import static com.mastercode.fitmaster.service.jooq.tables.Plan.PLAN;
 
 
 @Service
