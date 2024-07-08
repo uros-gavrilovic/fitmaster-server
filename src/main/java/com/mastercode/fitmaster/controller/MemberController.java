@@ -1,8 +1,12 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.MemberDTO;
+import com.mastercode.fitmaster.dto.member.MemberFilter;
+import com.mastercode.fitmaster.dto.member.MemberSearchItem;
+import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.model.MemberEntity;
 import com.mastercode.fitmaster.service.MemberService;
+import com.mastercode.fitmaster.util.CustomLogger;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -47,6 +51,12 @@ public class MemberController {
     @GetMapping("/dto")
     public ResponseEntity<List<MemberDTO>> getAllDTOs() {
         return new ResponseEntity<>(memberService.getAllDTOs(), HttpStatus.OK);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<SearchResponse<MemberSearchItem>> search(@RequestBody MemberFilter filter) {
+        CustomLogger.info("Search member with filter: " + filter);
+        return new ResponseEntity<>(memberService.search(filter), HttpStatus.OK);
     }
 
     /**
