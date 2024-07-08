@@ -27,7 +27,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberEntity extends UserEntity{
+public class MemberEntity extends UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +57,9 @@ public class MemberEntity extends UserEntity{
     @JsonManagedReference
     private Set<MembershipEntity> membershipEntities = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
+    private Boolean isBanned;
+
+    @Transient
     private MemberStatus status;
 
     /**
@@ -73,20 +75,23 @@ public class MemberEntity extends UserEntity{
 
     /**
      * Determines the status of the member based on the membershipEntities.
-     * Only banned status will be saved to the database. Everything else will be calculated on the fly.
      *
      * @see MemberStatus
      */
     @PostLoad
     private void determineStatus() {
-        if (status == null) {
-            if (membershipEntities.isEmpty()) {
-                status = MemberStatus.PENDING; // Freshly created member doesn't have any membership.
-            } else {
-                status = membershipEntities.stream()
-                        .anyMatch(MembershipEntity::isActive) ? MemberStatus.ACTIVE : MemberStatus.INACTIVE;
-            }
+        if (isBanned != null && isBanned) {
+            status = MemberStatus.BANNED;
+        } else if (membershipEntities.isEmpty()) {
+            status = MemberStatus.PENDING;
+        } else {
+            membershipEntities.stream()
+                    .filter(MembershipEntity::isActive)
+                    .findFirst()
+                    .ifPresentOrElse(
+                            membershipEntity -> status = MemberStatus.ACTIVE,
+                            () -> status = MemberStatus.INACTIVE
+                    );
         }
     }
-
 }

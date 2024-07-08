@@ -2,6 +2,9 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.ActivityAdapter;
 import com.mastercode.fitmaster.dto.ActivityDTO;
+import com.mastercode.fitmaster.dto.activity.ActivityFilter;
+import com.mastercode.fitmaster.dto.activity.ActivitySearchItem;
+import com.mastercode.fitmaster.dto.activity.ActivitySingleView;
 import com.mastercode.fitmaster.model.ActivityEntity;
 import com.mastercode.fitmaster.repository.ActivityRepository;
 import com.mastercode.fitmaster.repository.MemberRepository;
@@ -11,7 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ActivityService implements AbstractService<ActivityEntity, ActivityDTO> {
+public class ActivityService implements AbstractService<ActivityEntity,
+                                                        ActivityDTO,
+                                                        ActivitySearchItem,
+                                                        ActivityFilter,
+                                                        ActivitySingleView> {
 
     @Autowired
     private ActivityRepository activityRepository;

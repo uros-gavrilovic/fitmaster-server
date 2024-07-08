@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,7 +57,8 @@ public class MembershipEntity {
 
     @Transient
     public boolean isActive() {
-        return endDate.isAfter(LocalDate.now());
+        LocalDate currentDate = LocalDate.now();
+        return startDate != null && endDate != null &&
+                !startDate.isAfter(currentDate) && !endDate.isBefore(currentDate);
     }
-
 }

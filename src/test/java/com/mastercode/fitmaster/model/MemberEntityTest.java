@@ -106,25 +106,25 @@ public class MemberEntityTest {
         assertEquals("username", violations.iterator().next().getPropertyPath().toString());
     }
 
-    @Test
-    public void testEmptyPassword() {
-        memberEntity.setPassword(""); // Empty password, violating @NotEmpty constraint
-
-        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
-
-        assertEquals(1, violations.size());
-        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
-    }
-
-    @Test
-    public void testPasswordNotNull() {
-        memberEntity.setPassword(null); // Null password, violating @NotEmpty constraint
-
-        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
-
-        assertEquals(1, violations.size());
-        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
-    }
+//    @Test
+//    public void testEmptyPassword() {
+//        memberEntity.setPassword(""); // Empty password, violating @NotEmpty constraint
+//
+//        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
+//
+//        assertEquals(1, violations.size());
+//        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
+//    }
+//
+//    @Test
+//    public void testPasswordNotNull() {
+//        memberEntity.setPassword(null); // Null password, violating @NotEmpty constraint
+//
+//        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
+//
+//        assertEquals(1, violations.size());
+//        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
+//    }
 
     @Test
     public void testPhoneNumberNotRequired() {

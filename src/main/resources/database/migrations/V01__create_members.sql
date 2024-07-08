@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS member
     address        VARCHAR(255),
     phone_number   VARCHAR(255),
     birth_date     DATE,
-    status         VARCHAR(32),
+    is_banned      BOOLEAN,
     email          VARCHAR(255),
     email_verified BOOLEAN,
     avatar         BYTEA,

@@ -34,8 +34,9 @@ public abstract class UserEntity {
     protected String username;
 
     @NotNull
-    @Pattern(regexp = PatternUtils.PASSWORD_PATTERN)
-    @Size(min = PatternUtils.PASSWORD_MIN_LENGTH, max = PatternUtils.PASSWORD_MAX_LENGTH)
+    //  Password is hashed in with BCryptPasswordEncoder, so there's no need for validation here
+    //  @Pattern(regexp = PatternUtils.PASSWORD_PATTERN)
+    //  @Size(min = PatternUtils.PASSWORD_MIN_LENGTH, max = PatternUtils.PASSWORD_MAX_LENGTH)
     protected String password;
 
     protected String email;

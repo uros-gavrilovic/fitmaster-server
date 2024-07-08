@@ -3,6 +3,9 @@ package com.mastercode.fitmaster.service;
 import com.mastercode.fitmaster.adapter.TrainerAdapter;
 import com.mastercode.fitmaster.dto.TrainerDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
+import com.mastercode.fitmaster.dto.trainer.TrainerFilter;
+import com.mastercode.fitmaster.dto.trainer.TrainerSearchItem;
+import com.mastercode.fitmaster.dto.trainer.TrainerSingleView;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
 import com.mastercode.fitmaster.model.TrainerEntity;
@@ -21,7 +24,11 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class TrainerService implements AbstractService<TrainerEntity, TrainerDTO> {
+public class TrainerService implements AbstractService <TrainerEntity,
+                                                        TrainerDTO,
+                                                        TrainerSearchItem,
+                                                        TrainerFilter,
+                                                        TrainerSingleView> {
 
     @Autowired
     private TrainerRepository trainerRepository;

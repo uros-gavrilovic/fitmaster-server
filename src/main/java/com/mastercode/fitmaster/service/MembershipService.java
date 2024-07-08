@@ -2,6 +2,10 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.MembershipAdapter;
 import com.mastercode.fitmaster.dto.MembershipDTO;
+import com.mastercode.fitmaster.dto.membership.MembershipFilter;
+import com.mastercode.fitmaster.dto.membership.MembershipSearchItem;
+import com.mastercode.fitmaster.dto.membership.MembershipSingleView;
+import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.model.MembershipEntity;
 import com.mastercode.fitmaster.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class MembershipService implements AbstractService<MembershipEntity, MembershipDTO> {
+public class MembershipService implements AbstractService <MembershipEntity,
+                                                           MembershipDTO,
+                                                           MembershipSearchItem,
+                                                           MembershipFilter,
+                                                           MembershipSingleView> {
 
     @Autowired
     MembershipRepository membershipRepository;

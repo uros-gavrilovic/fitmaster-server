@@ -47,7 +47,6 @@ public class EmailService {
         emailProps.put("spring.mail.properties.mail.smtp.starttls.enable",
                 applicationUtils.getApplicationPropsByKey("spring.mail.properties.mail.smtp.starttls.enable"));
 
-
         return emailProps;
     }
 }

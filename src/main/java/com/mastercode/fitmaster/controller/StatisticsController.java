@@ -1,6 +1,8 @@
 package com.mastercode.fitmaster.controller;
 
-import com.mastercode.fitmaster.service.MemberService;
+import com.mastercode.fitmaster.dto.statistics.MembershipActivityStatistic;
+import com.mastercode.fitmaster.service.StatisticsService;
+import com.mastercode.fitmaster.util.CustomLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatisticsController {
 
     @Autowired
-    private MemberService memberService;
+    private StatisticsService statisticsService;
 
     /**
      * Retrieves statistics related to member activity.
@@ -24,8 +26,8 @@ public class StatisticsController {
      * @return A ResponseEntity containing the member statistics and a status code of OK (200).
      */
     @GetMapping("/members-activity")
-    public ResponseEntity<Object> getTotalMembers() {
-        Object statistics = memberService.getMemberStatistics();
-        return new ResponseEntity<>(statistics, HttpStatus.OK);
+    public ResponseEntity<MembershipActivityStatistic> getTotalMembers() {
+        CustomLogger.info("Retrieving member statistics ...");
+        return new ResponseEntity<>(statisticsService.getMemberStatistics(), HttpStatus.OK);
     }
 }

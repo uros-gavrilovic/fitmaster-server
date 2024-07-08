@@ -2,6 +2,9 @@ package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.PlanAdapter;
 import com.mastercode.fitmaster.dto.PlanDTO;
+import com.mastercode.fitmaster.dto.plan.PlanFilter;
+import com.mastercode.fitmaster.dto.plan.PlanSearchItem;
+import com.mastercode.fitmaster.dto.plan.PlanSingleView;
 import com.mastercode.fitmaster.model.PlanEntity;
 import com.mastercode.fitmaster.repository.PlanRepository;
 import static com.mastercode.fitmaster.service.jooq.tables.Plan.PLAN;
@@ -14,7 +17,11 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class PlanService implements AbstractService<PlanEntity, PlanDTO> {
+public class PlanService implements AbstractService <PlanEntity,
+                                                     PlanDTO,
+                                                     PlanSearchItem,
+                                                     PlanFilter,
+                                                     PlanSingleView> {
     @Autowired
     private JooqService jooqService;
 

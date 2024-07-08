@@ -5,6 +5,7 @@ import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
 import com.mastercode.fitmaster.dto.member.MemberFilter;
 import com.mastercode.fitmaster.dto.member.MemberSearchItem;
+import com.mastercode.fitmaster.dto.member.MemberSingleView;
 import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
@@ -31,16 +32,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
+public class MemberService implements AbstractService <MemberEntity,
+                                                       MemberDTO,
+                                                       MemberSearchItem,
+                                                       MemberFilter,
+                                                       MemberSingleView> {
+
     @Autowired
     JooqService jooqService;
-
     @Autowired
     MemberRepository memberRepository;
-
     @Autowired
     MemberAdapter memberAdapter;
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -59,14 +62,27 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
         return memberAdapter.entitiesToDTOs(memberRepository.findAll());
     }
 
+    @Override
     public SearchResponse<MemberSearchItem> search(MemberFilter filter) {
         List<Condition> conditions = getSearchConditions(filter);
         LocalDate currentDate = LocalDate.now();
 
         Field<String> membershipStatus = DSL.case_()
-                .when(MEMBER.STATUS.eq("PENDING"), "PENDING")
-                .when(MEMBER.STATUS.eq("BANNED"), "BANNED")
-                .when(MEMBERSHIP.START_DATE.le(currentDate).and(MEMBERSHIP.END_DATE.ge(currentDate)), "ACTIVE").otherwise("INACTIVE")
+                .when(MEMBER.IS_BANNED.isTrue(), "BANNED")
+                .when(
+                    notExists(
+                        selectOne()
+                            .from(MEMBERSHIP)
+                            .where(MEMBERSHIP.MEMBER_ID.eq(MEMBER.ID))
+                    ), "PENDING")
+                .when(
+                    exists(
+                        selectOne()
+                            .from(MEMBERSHIP)
+                            .where(MEMBERSHIP.MEMBER_ID.eq(MEMBER.ID)
+                                .and(MEMBERSHIP.START_DATE.le(currentDate))
+                                .and(MEMBERSHIP.END_DATE.ge(currentDate)))
+                    ), "ACTIVE").otherwise("INACTIVE")
                 .as("status");
 
         var query = jooqService.getDslContext()
@@ -108,11 +124,6 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
     @Override
     public void delete(Long id) {
         memberRepository.deleteById(id);
-    }
-
-    public Map<String, Object> getMemberStatistics() {
-        return null;
-        //        return memberRepository.getMemberStatistics();
     }
 
     public MemberEntity login(UserDTO userDTO) {
@@ -201,8 +212,13 @@ public class MemberService implements AbstractService<MemberEntity, MemberDTO> {
         if (filter.getStatus() != null && filter.getStatus().isPresent()) {
             Field<String> membershipStatus = DSL.field(
                     DSL.case_()
-                            .when(MEMBER.STATUS.eq("PENDING"), "PENDING")
-                            .when(MEMBER.STATUS.eq("BANNED"), "BANNED")
+                            .when(MEMBER.IS_BANNED.isTrue(), "BANNED")
+                            .when(
+                                notExists(
+                                    selectOne()
+                                        .from(MEMBERSHIP)
+                                        .where(MEMBERSHIP.MEMBER_ID.eq(MEMBER.ID))
+                                ), "PENDING")
                             .when(MEMBERSHIP.START_DATE.le(LocalDate.now()).and(MEMBERSHIP.END_DATE.ge(LocalDate.now())), "ACTIVE").otherwise("INACTIVE")
             );
 
