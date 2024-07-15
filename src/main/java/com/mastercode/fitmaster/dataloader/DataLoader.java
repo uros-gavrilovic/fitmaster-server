@@ -13,7 +13,9 @@ import com.mastercode.fitmaster.repository.TrainerRepository;
 import com.mastercode.fitmaster.util.CustomLogger;
 import com.mastercode.fitmaster.util.PatternUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
@@ -26,8 +28,10 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
-@ConditionalOnProperty(value = "dataloader.init-test-data", havingValue = "true")
 public class DataLoader {
+
+    @Value("${dataloader.init-test-data:false}")
+    private boolean initTestData;
 
     @Autowired
     protected PackageRepository packageRepository;
@@ -42,11 +46,13 @@ public class DataLoader {
 
     @PostConstruct
     void loadTestData() {
-        CustomLogger.warn("Loading test data ...");
+        if (initTestData) {
+            CustomLogger.warn("Loading test data ...");
 
-        loadPackages(5);
-        loadMembers(25);
-        loadTrainers(5);
+            loadPackages(5);
+            loadMembers(25);
+            loadTrainers(5);
+        }
     }
 
     private void loadPackages(int counter) {
