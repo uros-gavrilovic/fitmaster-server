@@ -3,6 +3,7 @@ package com.mastercode.fitmaster.service;
 import com.mastercode.fitmaster.adapter.MemberAdapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
+import com.mastercode.fitmaster.dto.member.CreateMemberRequest;
 import com.mastercode.fitmaster.dto.member.MemberFilter;
 import com.mastercode.fitmaster.dto.member.MemberSearchItem;
 import com.mastercode.fitmaster.dto.member.MemberSingleView;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Service;
 import static com.mastercode.fitmaster.service.jooq.tables.Member.MEMBER;
 import static com.mastercode.fitmaster.service.jooq.tables.Membership.MEMBERSHIP;
 import static org.jooq.impl.DSL.*;
-
+import java.sql.Date;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -226,5 +227,38 @@ public class MemberService implements AbstractService <MemberEntity,
         }
 
         return conditions;
+    }
+
+    public Long createProcedure(CreateMemberRequest request) {
+        return memberRepository.createProcedure(
+            request.firstName(),
+            request.lastName(),
+            String.valueOf(request.gender()),
+            request.address(),
+            request.phoneNumber(),
+            Date.valueOf(request.birthDate()),
+            request.email(),
+            request.username(),
+            passwordEncoder.encode(CharBuffer.wrap(request.password()))
+        );
+    }
+
+    public Long updateProcedure(CreateMemberRequest request) {
+        return memberRepository.updateProcedure(
+            request.id(),
+            request.firstName(),
+            request.lastName(),
+            String.valueOf(request.gender()),
+            request.address(),
+            request.phoneNumber(),
+            Date.valueOf(request.birthDate()),
+            request.email(),
+            request.username()
+        );
+    }
+
+
+    public void deleteProcedure(Long id) {
+        memberRepository.deleteProcedure(id);
     }
 }

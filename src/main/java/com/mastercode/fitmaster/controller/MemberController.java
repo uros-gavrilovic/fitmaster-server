@@ -1,6 +1,7 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.MemberDTO;
+import com.mastercode.fitmaster.dto.member.CreateMemberRequest;
 import com.mastercode.fitmaster.dto.member.MemberFilter;
 import com.mastercode.fitmaster.dto.member.MemberSearchItem;
 import com.mastercode.fitmaster.dto.response.SearchResponse;
@@ -122,6 +123,22 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public ResponseEntity<MemberEntity> deleteMember(@NotEmpty @PathVariable Long id) {
         memberService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/procedure")
+    public ResponseEntity<Long> create(@Valid @RequestBody CreateMemberRequest request) {
+        return new ResponseEntity<>(memberService.createProcedure(request), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/procedure")
+    public ResponseEntity<Long> update(@Valid @RequestBody CreateMemberRequest request) {
+        return new ResponseEntity<>(memberService.updateProcedure(request), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/procedure/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        memberService.deleteProcedure(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -11,6 +11,8 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record CreateMemberRequest (
+        Long id,
+
         @NotBlank
         String firstName,
 
