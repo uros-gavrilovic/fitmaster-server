@@ -65,68 +65,62 @@ $$;
 ------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION search_members(
-    IN p_page_size INT,
-    IN p_offset INT,
-    IN p_first_name VARCHAR DEFAULT NULL,
-    IN p_last_name VARCHAR DEFAULT NULL,
-    IN p_gender VARCHAR DEFAULT NULL,
-    IN p_status VARCHAR DEFAULT NULL
+    p_page_size INT,
+    p_offset BIGINT,
+    p_full_name VARCHAR DEFAULT NULL,
+    p_gender VARCHAR DEFAULT NULL,
+    p_status VARCHAR DEFAULT NULL,
+    p_sort_field VARCHAR DEFAULT 'id',
+    p_sort_direction VARCHAR DEFAULT 'ASC'
 )
-    RETURNS TABLE
-            (
-                member_id    BIGINT,
-                first_name   VARCHAR(255),
-                last_name    VARCHAR(255),
-                gender       VARCHAR(32),
-                address      VARCHAR(255),
-                phone_number VARCHAR(255),
-                birth_date   DATE,
-                status       VARCHAR(32)
-            )
+    RETURNS TABLE (
+                      member_id BIGINT,
+                      first_name VARCHAR,
+                      last_name VARCHAR,
+                      gender VARCHAR,
+                      address VARCHAR,
+                      phone_number VARCHAR,
+                      birth_date DATE,
+                      status VARCHAR
+                  )
     LANGUAGE plpgsql
-AS
-$$
+AS $$
 DECLARE
     v_query TEXT;
 BEGIN
-    v_query := '
-        SELECT m.id AS member_id,
-               m.first_name,
-               m.last_name,
-               m.gender,
-               m.address,
-               m.phone_number,
-               m.birth_date,
-               CASE
-                   WHEN EXISTS (
-                       SELECT 1
-                       FROM membership ms
-                       WHERE ms.member_id = m.id
-                         AND ms.start_date <= CURRENT_DATE
-                         AND ms.end_date >= CURRENT_DATE
-                   ) THEN ''ACTIVE''::VARCHAR(32)
-                   WHEN NOT EXISTS (
-                       SELECT 1
-                       FROM membership ms
-                       WHERE ms.member_id = m.id
-                   ) THEN ''PENDING''::VARCHAR(32)
-                   WHEN m.is_banned = TRUE THEN ''BANNED''::VARCHAR(32)
-                   ELSE ''INACTIVE''::VARCHAR(32)
-               END AS status
-        FROM member m
-        WHERE 1 = 1';
+    v_query := 'SELECT m.id AS member_id,
+                       m.first_name,
+                       m.last_name,
+                       m.gender,
+                       m.address,
+                       m.phone_number,
+                       m.birth_date,
+                       CASE
+                           WHEN EXISTS (
+                               SELECT 1
+                               FROM membership ms
+                               WHERE ms.member_id = m.id
+                                 AND ms.start_date <= CURRENT_DATE
+                                 AND ms.end_date >= CURRENT_DATE
+                           ) THEN ''ACTIVE''::VARCHAR
+                           WHEN NOT EXISTS (
+                               SELECT 1
+                               FROM membership ms
+                               WHERE ms.member_id = m.id
+                           ) THEN ''PENDING''::VARCHAR
+                           WHEN m.is_banned = TRUE THEN ''BANNED''::VARCHAR
+                           ELSE ''INACTIVE''::VARCHAR
+                       END AS status
+                FROM member m
+                WHERE 1 = 1';
 
 
-    IF p_first_name IS NOT NULL THEN
-        v_query := v_query || ' AND m.first_name ILIKE ' || quote_literal('%' || p_first_name || '%');
-    END IF;
-
-    IF p_last_name IS NOT NULL THEN
-        v_query := v_query || ' AND m.last_name ILIKE ' || quote_literal('%' || p_last_name || '%');
+    IF p_full_name IS NOT NULL THEN
+        v_query := v_query || ' AND (m.first_name || '' '' || m.last_name) ILIKE ' || quote_literal('%' || p_full_name || '%');
     END IF;
 
     IF p_gender IS NOT NULL THEN
-        v_query := v_query || ' AND m.gender = ' || quote_literal(p_gender);
+        v_query := v_query || ' AND m.gender ILIKE ' || quote_literal(p_gender);
     END IF;
 
     IF p_status IS NOT NULL THEN
@@ -138,21 +132,20 @@ BEGIN
                     WHERE ms.member_id = m.id
                       AND ms.start_date <= CURRENT_DATE
                       AND ms.end_date >= CURRENT_DATE
-                ) THEN ''ACTIVE''::VARCHAR(32)
+                ) THEN ''ACTIVE''::VARCHAR
                 WHEN NOT EXISTS (
                     SELECT 1
                     FROM membership ms
                     WHERE ms.member_id = m.id
-                ) THEN ''PENDING''::VARCHAR(32)
-                WHEN m.is_banned = TRUE THEN ''BANNED''::VARCHAR(32)
-                ELSE ''INACTIVE''::VARCHAR(32)
-            END = ' || quote_literal(p_status) || ')';
+                ) THEN ''PENDING''::VARCHAR
+                WHEN m.is_banned = TRUE THEN ''BANNED''::VARCHAR
+                ELSE ''INACTIVE''::VARCHAR
+            END ILIKE ' || quote_literal(p_status) || ')';
     END IF;
 
-    v_query := v_query || '
-        ORDER BY m.id
-        LIMIT ' || p_page_size || '
-        OFFSET ' || p_offset;
+    v_query := v_query || ' ORDER BY ' || quote_ident(p_sort_field) || ' ' || p_sort_direction;
+
+    v_query := v_query || ' LIMIT ' || p_page_size || ' OFFSET ' || p_offset;
 
     RETURN QUERY EXECUTE v_query;
 END;

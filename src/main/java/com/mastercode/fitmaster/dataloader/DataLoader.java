@@ -47,11 +47,16 @@ public class DataLoader {
     @PostConstruct
     void loadTestData() {
         if (initTestData) {
-            CustomLogger.warn("Loading test data ...");
+            if (memberRepository.count() > 1) {
+                // By default, there will always be one test member in the database.
+                CustomLogger.warn("Test data already loaded, skipping ...");
+            } else {
+                CustomLogger.warn("Loading test data ...");
 
-            loadPackages(5);
-            loadMembers(25);
-            loadTrainers(5);
+                loadPackages(5);
+                loadMembers(25);
+                loadTrainers(5);
+            }
         }
     }
 

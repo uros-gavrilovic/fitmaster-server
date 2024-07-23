@@ -3,10 +3,7 @@ package com.mastercode.fitmaster.service;
 import com.mastercode.fitmaster.adapter.MemberAdapter;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.UserDTO;
-import com.mastercode.fitmaster.dto.member.CreateMemberRequest;
-import com.mastercode.fitmaster.dto.member.MemberFilter;
-import com.mastercode.fitmaster.dto.member.MemberSearchItem;
-import com.mastercode.fitmaster.dto.member.MemberSingleView;
+import com.mastercode.fitmaster.dto.member.*;
 import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.exception.LoginException;
 import com.mastercode.fitmaster.exception.RegisterException;
@@ -260,5 +257,30 @@ public class MemberService implements AbstractService <MemberEntity,
 
     public void deleteProcedure(Long id) {
         memberRepository.deleteProcedure(id);
+    }
+
+    public List<MemberProcedureSearchItem> searchProcedure(MemberFilter filter) {
+        return memberRepository.searchProcedure(
+                filter.getLimit().orElse(10), filter.getOffset().orElse(0L),
+                filter.getFullName().orElse(null), filter.getGender().map(Enum::name).orElse(null),
+                filter.getStatus().map(Enum::name).orElse(null),
+                filter.getOrders().stream().findFirst().map(order -> order.get(0).property()).orElse(null),
+                filter.getOrders().stream().findFirst().map(order -> order.get(0).direction().name()).orElse(null))
+            .stream()
+            .map(this::mapToMemberProcedureSearchItem)
+            .toList();
+    }
+
+    private MemberProcedureSearchItem mapToMemberProcedureSearchItem(Object[] result) {
+        return new MemberProcedureSearchItem(
+            (Long) result[0],
+            (String) result[1],
+            (String) result[2],
+            (String) result[3],
+            (String) result[4],
+            (String) result[5],
+            (Date) result[6],
+            (String) result[7]
+        );
     }
 }

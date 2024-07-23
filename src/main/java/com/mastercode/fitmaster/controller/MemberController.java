@@ -3,6 +3,7 @@ package com.mastercode.fitmaster.controller;
 import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.dto.member.CreateMemberRequest;
 import com.mastercode.fitmaster.dto.member.MemberFilter;
+import com.mastercode.fitmaster.dto.member.MemberProcedureSearchItem;
 import com.mastercode.fitmaster.dto.member.MemberSearchItem;
 import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.model.MemberEntity;
@@ -140,5 +141,10 @@ public class MemberController {
     public ResponseEntity delete(@PathVariable Long id) {
         memberService.deleteProcedure(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/procedure/search")
+    public ResponseEntity<List<MemberProcedureSearchItem>> searchProcedure(@RequestBody MemberFilter filter) {
+        return new ResponseEntity<>(memberService.searchProcedure(filter), HttpStatus.OK);
     }
 }
