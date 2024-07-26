@@ -179,6 +179,7 @@ BEGIN
         email        = p_email,
         username     = p_username
     WHERE id = p_member_id;
+    o_member_id := p_member_id;
 END;
 $$;
 

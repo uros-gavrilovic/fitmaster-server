@@ -2,7 +2,7 @@ package com.mastercode.fitmaster.dto.member;
 
 import java.util.Date;
 
-public record MemberProcedureSearchItem(
+public record MemberProcedureSearchItem (
 		Long memberID,
 		String firstName,
 		String lastName,

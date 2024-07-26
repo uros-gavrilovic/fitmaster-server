@@ -1,8 +1,12 @@
 package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.PackageDTO;
+import com.mastercode.fitmaster.dto.membership_package.CreatePackageRequest;
+import com.mastercode.fitmaster.dto.membership_package.PackageFilter;
+import com.mastercode.fitmaster.dto.membership_package.PackageProcedureSearchItem;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.service.PackageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,5 +81,26 @@ public class PackageController {
     public ResponseEntity<PackageEntity> deletePackage(@PathVariable Long id) {
         packageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/procedure")
+    public ResponseEntity<Long> createProcedure(@Valid @RequestBody CreatePackageRequest request) {
+        return new ResponseEntity<>(packageService.createProcedure(request), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/procedure")
+    public ResponseEntity<Long> updateProcedure(@Valid @RequestBody CreatePackageRequest request) {
+        return new ResponseEntity<>(packageService.updateProcedure(request), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/procedure/{id}")
+    public ResponseEntity deleteProcedure(@PathVariable Long id) {
+        packageService.deleteProcedure(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/procedure/search")
+    public ResponseEntity<List<PackageProcedureSearchItem>> searchProcedure(@RequestBody PackageFilter filter) {
+        return new ResponseEntity<>(packageService.searchProcedure(filter), HttpStatus.OK);
     }
 }

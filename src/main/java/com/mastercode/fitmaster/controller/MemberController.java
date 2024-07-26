@@ -128,17 +128,17 @@ public class MemberController {
     }
 
     @PostMapping("/procedure")
-    public ResponseEntity<Long> create(@Valid @RequestBody CreateMemberRequest request) {
+    public ResponseEntity<Long> createProcedure(@Valid @RequestBody CreateMemberRequest request) {
         return new ResponseEntity<>(memberService.createProcedure(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/procedure")
-    public ResponseEntity<Long> update(@Valid @RequestBody CreateMemberRequest request) {
+    public ResponseEntity<Long> updateProcedure(@Valid @RequestBody CreateMemberRequest request) {
         return new ResponseEntity<>(memberService.updateProcedure(request), HttpStatus.OK);
     }
 
     @DeleteMapping("/procedure/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity deleteProcedure(@PathVariable Long id) {
         memberService.deleteProcedure(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

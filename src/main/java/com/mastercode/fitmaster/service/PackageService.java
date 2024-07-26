@@ -1,17 +1,20 @@
 package com.mastercode.fitmaster.service;
 
 import com.mastercode.fitmaster.adapter.PackageAdapter;
+import com.mastercode.fitmaster.adapter.ProcedureDTOAdapter;
 import com.mastercode.fitmaster.dto.PackageDTO;
-import com.mastercode.fitmaster.dto.membership_package.PackageFilter;
-import com.mastercode.fitmaster.dto.membership_package.PackageSearchItem;
-import com.mastercode.fitmaster.dto.membership_package.PackageSingleView;
+import com.mastercode.fitmaster.dto.member.MemberProcedureSearchItem;
+import com.mastercode.fitmaster.dto.membership_package.*;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.repository.PackageRepository;
+import com.mastercode.fitmaster.util.constants.DefaultConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.naming.OperationNotSupportedException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PackageService implements AbstractService <PackageEntity,
@@ -22,7 +25,6 @@ public class PackageService implements AbstractService <PackageEntity,
 
     @Autowired
     PackageRepository packageRepository;
-
     @Autowired
     PackageAdapter packageAdapter;
 
@@ -53,5 +55,50 @@ public class PackageService implements AbstractService <PackageEntity,
     @Override
     public void delete(Long id) {
         packageRepository.deleteById(id);
+    }
+
+    public Long createProcedure(CreatePackageRequest request) {
+        return packageRepository.createProcedure(
+            request.name(),
+            request.duration(),
+            request.price(),
+            Optional.ofNullable(request.currency())
+                .orElse(DefaultConstants.DEFAULT_CURRENCY)
+        );
+    }
+
+    public Long updateProcedure(CreatePackageRequest request) {
+        return packageRepository.updateProcedure(
+            request.id(),
+            request.name(),
+            request.duration(),
+            request.price(),
+            Optional.ofNullable(request.currency())
+                .orElse(DefaultConstants.DEFAULT_CURRENCY)
+        );
+    }
+
+    public void deleteProcedure(Long id) {
+        packageRepository.deleteProcedure(id);
+    }
+
+    public List<PackageProcedureSearchItem> searchProcedure(PackageFilter filter) {
+        return packageRepository.searchProcedure(
+            filter.getLimit().orElse(10),
+            filter.getOffset().orElse(0L),
+            filter.getName().orElse(null),
+            filter.getDuration().orElse(null),
+            filter.getPrice().orElse(null),
+            filter.getCurrency()
+                .orElse(null),
+            filter.getOrders().stream()
+                .findFirst().map(order -> order.get(0).property())
+                .orElse(null),
+            filter.getOrders().stream()
+                .findFirst().map(order -> order.get(0).direction().name())
+                .orElse(null))
+            .stream()
+            .map(result -> ProcedureDTOAdapter.mapToPackageProcedureSearchItem(result))
+            .toList();
     }
 }

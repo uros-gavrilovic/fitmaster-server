@@ -1,8 +1,5 @@
 package com.mastercode.fitmaster.repository;
 
-import com.mastercode.fitmaster.dto.member.MemberProcedureSearchItem;
-import com.mastercode.fitmaster.dto.member.MemberSearchItem;
-import com.mastercode.fitmaster.dto.response.SearchResponse;
 import com.mastercode.fitmaster.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
