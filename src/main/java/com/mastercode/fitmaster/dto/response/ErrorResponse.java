@@ -1,4 +1,4 @@
-package com.mastercode.fitmaster.exception;
+package com.mastercode.fitmaster.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@Setter
 public class ErrorResponse {
     private final String title;
     private final String message;
