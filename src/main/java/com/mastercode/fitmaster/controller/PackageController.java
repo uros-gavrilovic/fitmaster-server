@@ -4,6 +4,7 @@ import com.mastercode.fitmaster.dto.PackageDTO;
 import com.mastercode.fitmaster.dto.membership_package.CreatePackageRequest;
 import com.mastercode.fitmaster.dto.membership_package.PackageFilter;
 import com.mastercode.fitmaster.dto.membership_package.PackageProcedureSearchItem;
+import com.mastercode.fitmaster.exception.PackageHasActiveMembershipsException;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.service.PackageService;
 import jakarta.validation.Valid;
@@ -90,7 +91,11 @@ public class PackageController {
 
     @PutMapping("/procedure")
     public ResponseEntity<Long> updateProcedure(@Valid @RequestBody CreatePackageRequest request) {
-        return new ResponseEntity<>(packageService.updateProcedure(request), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(packageService.updateProcedure(request), HttpStatus.OK);
+        } catch (PackageHasActiveMembershipsException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @DeleteMapping("/procedure/{id}")

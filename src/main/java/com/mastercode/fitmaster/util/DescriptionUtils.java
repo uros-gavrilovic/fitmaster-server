@@ -1,5 +1,7 @@
 package com.mastercode.fitmaster.util;
 
+import com.mastercode.fitmaster.util.constants.ErrorConstants;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -31,6 +33,10 @@ public class DescriptionUtils {
             errorMessage = "An error occurred.";
         }
         return errorMessage;
+    }
+
+    public static String getErrorDescription(ErrorConstants errorConstants) {
+        return getErrorDescription(errorConstants.toString());
     }
 
     public static String getAppName() {

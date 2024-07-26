@@ -5,14 +5,20 @@ import com.mastercode.fitmaster.adapter.ProcedureDTOAdapter;
 import com.mastercode.fitmaster.dto.PackageDTO;
 import com.mastercode.fitmaster.dto.member.MemberProcedureSearchItem;
 import com.mastercode.fitmaster.dto.membership_package.*;
+import com.mastercode.fitmaster.exception.PackageHasActiveMembershipsException;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.repository.PackageRepository;
+import com.mastercode.fitmaster.util.DescriptionUtils;
 import com.mastercode.fitmaster.util.constants.DefaultConstants;
+import com.mastercode.fitmaster.util.constants.ErrorConstants;
+import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.naming.OperationNotSupportedException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,15 +73,22 @@ public class PackageService implements AbstractService <PackageEntity,
         );
     }
 
-    public Long updateProcedure(CreatePackageRequest request) {
-        return packageRepository.updateProcedure(
-            request.id(),
-            request.name(),
-            request.duration(),
-            request.price(),
-            Optional.ofNullable(request.currency())
-                .orElse(DefaultConstants.DEFAULT_CURRENCY)
-        );
+    public Long updateProcedure(CreatePackageRequest request) throws PackageHasActiveMembershipsException {
+        try {
+            return packageRepository.updateProcedure(
+                request.id(),
+                request.name(),
+                request.duration(),
+                request.price(),
+                Optional.ofNullable(request.currency())
+                    .orElse(DefaultConstants.DEFAULT_CURRENCY)
+            );
+        } catch (Exception e) {
+            throw new PackageHasActiveMembershipsException(
+                DescriptionUtils.getErrorDescription(ErrorConstants.PACKAGE_HAS_ACTIVE_MEMBERSHIPS),
+                HttpStatus.FORBIDDEN
+            );
+        }
     }
 
     public void deleteProcedure(Long id) {
