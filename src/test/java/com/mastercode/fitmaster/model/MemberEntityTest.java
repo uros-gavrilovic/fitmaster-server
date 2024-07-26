@@ -116,15 +116,15 @@ public class MemberEntityTest {
 //        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
 //    }
 //
-//    @Test
-//    public void testPasswordNotNull() {
-//        memberEntity.setPassword(null); // Null password, violating @NotEmpty constraint
-//
-//        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
-//
-//        assertEquals(1, violations.size());
-//        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
-//    }
+    @Test
+    public void testPasswordNotNull() {
+        memberEntity.setPassword(null); // Null password, violating @NotEmpty constraint
+
+        Set<ConstraintViolation<UserEntity>> violations = validator.validate(memberEntity);
+
+        assertEquals(1, violations.size());
+        assertEquals("password", violations.iterator().next().getPropertyPath().toString());
+    }
 
     @Test
     public void testPhoneNumberNotRequired() {
@@ -137,8 +137,7 @@ public class MemberEntityTest {
 
     @Test
     public void testInvalidPhoneNumberPattern() {
-        memberEntity.setPhoneNumber(
-                "testInvalidPhoneNumber!/-+"); // Invalid phone number, violating @NotRequiredPhoneNumber constraint
+        memberEntity.setPhoneNumber("testInvalidPhoneNumber!/-+"); // Invalid phone number, violating @PhoneNumber constraint
 
         Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 
@@ -159,7 +158,7 @@ public class MemberEntityTest {
     @Test
     public void testBirthDateInFuture() {
         memberEntity.setBirthDate(
-                LocalDate.now().plusDays(1)); // Birthdate in the future, violating @NotRequiredPast constraint
+                LocalDate.now().plusDays(1)); // Birthdate in the future, violating @Past constraint
 
         Set<ConstraintViolation<MemberEntity>> violations = validator.validate(memberEntity);
 

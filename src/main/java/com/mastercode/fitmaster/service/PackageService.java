@@ -3,22 +3,16 @@ package com.mastercode.fitmaster.service;
 import com.mastercode.fitmaster.adapter.PackageAdapter;
 import com.mastercode.fitmaster.adapter.ProcedureDTOAdapter;
 import com.mastercode.fitmaster.dto.PackageDTO;
-import com.mastercode.fitmaster.dto.member.MemberProcedureSearchItem;
 import com.mastercode.fitmaster.dto.membership_package.*;
 import com.mastercode.fitmaster.exception.PackageHasActiveMembershipsException;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.repository.PackageRepository;
 import com.mastercode.fitmaster.util.DescriptionUtils;
-import com.mastercode.fitmaster.util.constants.DefaultConstants;
+import com.mastercode.fitmaster.util.constants.ApplicationConstants;
 import com.mastercode.fitmaster.util.constants.ErrorConstants;
-import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import javax.naming.OperationNotSupportedException;
-import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +63,7 @@ public class PackageService implements AbstractService <PackageEntity,
             request.duration(),
             request.price(),
             Optional.ofNullable(request.currency())
-                .orElse(DefaultConstants.DEFAULT_CURRENCY)
+                .orElse(ApplicationConstants.DEFAULT_CURRENCY)
         );
     }
 
@@ -81,7 +75,7 @@ public class PackageService implements AbstractService <PackageEntity,
                 request.duration(),
                 request.price(),
                 Optional.ofNullable(request.currency())
-                    .orElse(DefaultConstants.DEFAULT_CURRENCY)
+                    .orElse(ApplicationConstants.DEFAULT_CURRENCY)
             );
         } catch (Exception e) {
             throw new PackageHasActiveMembershipsException(

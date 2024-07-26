@@ -2,9 +2,9 @@ package com.mastercode.fitmaster.dto.member;
 
 import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.util.PatternUtils;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredEmail;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
+import com.mastercode.fitmaster.validator.annotations.Email;
+import com.mastercode.fitmaster.validator.annotations.Past;
+import com.mastercode.fitmaster.validator.annotations.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -23,13 +23,13 @@ public record CreateMemberRequest (
 
         String address,
 
-        @NotRequiredPhoneNumber
+        @PhoneNumber(required = false)
         String phoneNumber,
 
-        @NotRequiredPast
+        @Past(required = false)
         LocalDate birthDate,
 
-        @NotRequiredEmail
+        @Email(required = false)
         String email,
 
         @Pattern(regexp = PatternUtils.USERNAME_PATTERN)

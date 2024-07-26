@@ -1,8 +1,8 @@
 package com.mastercode.fitmaster.model;
 
 import com.mastercode.fitmaster.model.enums.Gender;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
+import com.mastercode.fitmaster.validator.annotations.Past;
+import com.mastercode.fitmaster.validator.annotations.PhoneNumber;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -47,14 +47,14 @@ public class TrainerEntity extends UserEntity {
     private Gender gender;
 
     /** The phone number of the trainer. */
-    @NotRequiredPhoneNumber
+    @PhoneNumber(required = false)
     private String phoneNumber;
 
     /** The address of the trainer. */
     private String address;
 
     /** The date when the trainer was hired. */
-    @NotRequiredPast
+    @Past(required = false)
     private LocalDate hireDate;
 
 }

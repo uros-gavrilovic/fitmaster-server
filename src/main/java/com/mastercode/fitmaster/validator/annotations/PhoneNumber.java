@@ -1,6 +1,7 @@
 package com.mastercode.fitmaster.validator.annotations;
 
-import com.mastercode.fitmaster.validator.NotRequiredPhoneNumberValidator;
+import com.mastercode.fitmaster.util.constants.ErrorConstants;
+import com.mastercode.fitmaster.validator.PhoneNumberValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import jakarta.validation.ReportAsSingleViolation;
@@ -8,12 +9,13 @@ import jakarta.validation.ReportAsSingleViolation;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = NotRequiredPhoneNumberValidator.class)
+@Constraint(validatedBy = PhoneNumberValidator.class)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @ReportAsSingleViolation
-public @interface NotRequiredPhoneNumber {
-    String message() default "Value must follow phone number pattern.";
+public @interface PhoneNumber {
+    String message() default ErrorConstants.INVALID_PHONE_NUMBER_FORMAT;
+    boolean required() default true;
 
     Class<?>[] groups() default {};
 

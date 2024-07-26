@@ -2,11 +2,10 @@ package com.mastercode.fitmaster.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mastercode.fitmaster.dto.MemberDTO;
 import com.mastercode.fitmaster.model.enums.Gender;
 import com.mastercode.fitmaster.model.enums.MemberStatus;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPast;
-import com.mastercode.fitmaster.validator.annotations.NotRequiredPhoneNumber;
+import com.mastercode.fitmaster.validator.annotations.Past;
+import com.mastercode.fitmaster.validator.annotations.PhoneNumber;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -46,10 +45,10 @@ public class MemberEntity extends UserEntity {
 
     private String address;
 
-    @NotRequiredPhoneNumber
+    @PhoneNumber(required = false)
     private String phoneNumber;
 
-    @NotRequiredPast
+    @Past(required = false)
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "memberEntity", fetch = FetchType.EAGER)
