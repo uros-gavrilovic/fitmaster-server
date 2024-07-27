@@ -30,8 +30,8 @@ public interface PackageRepository extends JpaRepository<PackageEntity, Long> {
 			@Param("p_currency") String currency
 	);
 
-	@Procedure(procedureName = "delete_package")
-	void deleteProcedure(
+	@Procedure(procedureName = "delete_package", outputParameterName = "o_package_id")
+	Long deleteProcedure(
 			@Param("p_package_id") Long id
 	);
 

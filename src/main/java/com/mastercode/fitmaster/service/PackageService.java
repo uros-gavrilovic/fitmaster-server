@@ -86,7 +86,14 @@ public class PackageService implements AbstractService <PackageEntity,
     }
 
     public void deleteProcedure(Long id) {
-        packageRepository.deleteProcedure(id);
+        try {
+            packageRepository.deleteProcedure(id);
+        } catch (Exception e) {
+            throw new PackageHasActiveMembershipsException(
+                DescriptionUtils.getErrorDescription(ErrorConstants.PACKAGE_HAS_ACTIVE_MEMBERSHIPS),
+                HttpStatus.FORBIDDEN
+            );
+        }
     }
 
     public List<PackageProcedureSearchItem> searchProcedure(PackageFilter filter) {

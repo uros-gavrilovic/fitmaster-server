@@ -40,13 +40,15 @@ $$;
 ------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE PROCEDURE delete_package(
-    p_package_id BIGINT
+    IN p_package_id BIGINT,
+    OUT o_package_id BIGINT
 )
-LANGUAGE plpgsql
+    LANGUAGE plpgsql
 AS $$
 BEGIN
     DELETE FROM package
-    WHERE id = p_package_id;
+    WHERE id = p_package_id
+    RETURNING id INTO o_package_id;
 END;
 $$;
 
