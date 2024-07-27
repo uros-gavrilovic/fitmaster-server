@@ -32,12 +32,7 @@ $$ LANGUAGE plpgsql;
 
 ------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE TRIGGER before_package_update
-    BEFORE UPDATE ON package
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_check_active_memberships();
-
-CREATE OR REPLACE TRIGGER before_package_delete
-    BEFORE DELETE ON package
+CREATE TRIGGER before_package_update_or_delete
+    BEFORE UPDATE OR DELETE ON package
     FOR EACH ROW
 EXECUTE FUNCTION trigger_check_active_memberships();
