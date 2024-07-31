@@ -6,5 +6,5 @@ public class ApplicationConstants {
 	public static final String DEFAULT_APP_VERSION = "1.0.0";
 	public static final String DEFAULT_APP_THEME = "light";
 
-	public static final String DEFAULT_CURRENCY = "EUR";
+	public static final String DEFAULT_CURRENCY = "RSD";
 }

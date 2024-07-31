@@ -1,5 +1,9 @@
 package com.mastercode.fitmaster.util;
 
+/**
+ * The PatternUtils class contains regular expressions and constants used for validation.
+ * Remember to change Flyway's database migration files to reflect the changes in the constants.
+ */
 public class PatternUtils {
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9._-]*$";
     public static final String PASSWORD_PATTERN = "^[a-zA-Z0-9._-]*$";
