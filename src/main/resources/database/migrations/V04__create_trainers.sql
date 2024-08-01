@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS trainer
     phone_number   VARCHAR(255),
     address        VARCHAR(255),
     hire_date      DATE,
-    email          VARCHAR(255),
+    email          VARCHAR(255) UNIQUE,
     email_verified BOOLEAN,
     avatar         BYTEA,
-    username       VARCHAR(255) NOT NULL,
+    username       VARCHAR(255) NOT NULL UNIQUE,
     password       VARCHAR(255) NOT NULL,
 
     CONSTRAINT pk_trainer PRIMARY KEY (id),

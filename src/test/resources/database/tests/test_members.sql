@@ -1,10 +1,7 @@
--- Start by planning the number of tests
-SELECT plan(16);
+SELECT plan(19);
 
--- Check that the member table exists
 SELECT has_table('member', 'Table "member" should exist');
 
--- Check that all expected columns exist
 SELECT has_column('member', 'id', 'Column "id" should exist');
 SELECT has_column('member', 'first_name', 'Column "first_name" should exist');
 SELECT has_column('member', 'last_name', 'Column "last_name" should exist');
@@ -19,10 +16,12 @@ SELECT has_column('member', 'avatar', 'Column "avatar" should exist');
 SELECT has_column('member', 'username', 'Column "username" should exist');
 SELECT has_column('member', 'password', 'Column "password" should exist');
 
--- Check the primary key constraint on the id column
 SELECT col_is_pk('member', 'id', 'Column "id" should be a primary key');
--- Check that the id column is not nullable
+
 SELECT col_not_null('member', 'id', 'Column "id" should not allow NULL values');
 
--- Finish the test plan
+SELECT has_unique('member', 'Table "member" should have a unique constraint(s)');
+SELECT * FROM col_is_unique('member', 'email');
+SELECT * FROM col_is_unique('member', 'username');
+
 SELECT finish();

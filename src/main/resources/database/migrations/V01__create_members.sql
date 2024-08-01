@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS member
     phone_number   VARCHAR(255),
     birth_date     DATE,
     is_banned      BOOLEAN,
-    email          VARCHAR(255),
+    email          VARCHAR(255) UNIQUE,
     email_verified BOOLEAN,
     avatar         BYTEA,
-    username       VARCHAR(255) NOT NULL,
+    username       VARCHAR(255) NOT NULL UNIQUE,
     password       VARCHAR(255) NOT NULL,
 
     CONSTRAINT pk_member PRIMARY KEY (id),
