@@ -1,4 +1,4 @@
-SELECT plan(12);
+SELECT plan(14);
 
 SELECT has_table('membership', 'Table "membership" should exist');
 
@@ -15,5 +15,7 @@ SELECT col_is_fk('membership', 'package_id', 'Column "package_id" should be a fo
 SELECT col_not_null('membership', 'id', 'Column "id" should not allow NULL values');
 SELECT col_not_null('membership', 'member_id', 'Column "member_id" should not allow NULL values');
 SELECT col_not_null('membership', 'package_id', 'Column "package_id" should not allow NULL values');
+SELECT col_not_null('membership', 'start_date', 'Column "start_date" should not allow NULL values');
+SELECT col_not_null('membership', 'end_date', 'Column "end_date" should not allow NULL values');
 
 SELECT finish();

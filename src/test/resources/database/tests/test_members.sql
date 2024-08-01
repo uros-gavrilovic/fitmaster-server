@@ -1,4 +1,4 @@
-SELECT plan(19);
+SELECT plan(21);
 
 SELECT has_table('member', 'Table "member" should exist');
 
@@ -19,6 +19,8 @@ SELECT has_column('member', 'password', 'Column "password" should exist');
 SELECT col_is_pk('member', 'id', 'Column "id" should be a primary key');
 
 SELECT col_not_null('member', 'id', 'Column "id" should not allow NULL values');
+SELECT col_not_null('member', 'is_banned', 'Column "is_banned" should not allow NULL values');
+SELECT col_not_null('member', 'email_verified', 'Column "email_verified" should not allow NULL values');
 
 SELECT has_unique('member', 'Table "member" should have a unique constraint(s)');
 SELECT * FROM col_is_unique('member', 'email');
