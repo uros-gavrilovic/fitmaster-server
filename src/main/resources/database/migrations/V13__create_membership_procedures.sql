@@ -36,3 +36,18 @@ DROP TRIGGER IF EXISTS before_package_update_or_delete ON package;
 CREATE TRIGGER before_package_update_or_delete
     BEFORE UPDATE OR DELETE ON package
     FOR EACH ROW EXECUTE FUNCTION trigger_check_active_memberships();
+
+------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION update_membership_end_date()
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.end_date := NEW.start_date + (SELECT duration FROM package WHERE id = NEW.package_id);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS set_membership_end_date ON membership;
+CREATE TRIGGER set_membership_end_date
+    BEFORE INSERT OR UPDATE ON membership
+    FOR EACH ROW EXECUTE FUNCTION update_membership_end_date();
