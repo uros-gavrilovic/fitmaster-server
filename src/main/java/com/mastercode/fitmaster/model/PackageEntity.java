@@ -1,17 +1,14 @@
 package com.mastercode.fitmaster.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "package")
 public class PackageEntity {
 

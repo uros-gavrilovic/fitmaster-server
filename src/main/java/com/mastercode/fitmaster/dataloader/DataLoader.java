@@ -12,6 +12,7 @@ import com.mastercode.fitmaster.repository.PackageRepository;
 import com.mastercode.fitmaster.repository.TrainerRepository;
 import com.mastercode.fitmaster.util.CustomLogger;
 import com.mastercode.fitmaster.util.PatternUtils;
+import com.mastercode.fitmaster.util.constants.ApplicationConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -65,10 +66,11 @@ public class DataLoader {
             PackageEntity p = new PackageEntity();
 
             p.setName(faker.lorem().word() + " #" + (i + 1));
-            p.setDuration(30);
-            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(20, 100).replace(',', '.'))));
-            p.setCurrency(Currency.getInstance("EUR"));
+            p.setDuration(faker.number().numberBetween(7, 90));
+            p.setPrice(BigDecimal.valueOf(Double.valueOf(faker.commerce().price(1000, 5000).replace(',', '.'))));
+            p.setCurrency(Currency.getInstance(ApplicationConstants.DEFAULT_CURRENCY));
 
+            CustomLogger.info("Importing 'PACKAGE' entity: " + p);
             packageRepository.saveAndFlush(p);
         }
     }
@@ -91,26 +93,24 @@ public class DataLoader {
 
             if (i % 9 != 0) {
                 MembershipEntity ms = new MembershipEntity();
+
                 ms.setMemberEntity(m);
                 m.getMembershipEntities().add(ms);
-                ms.setMembershipPackageEntity(
-                        packageRepository.findAll().get(new Random().nextInt((int) packageRepository.count()))
+
+                PackageEntity p = packageRepository.findAll().get(new Random().nextInt((int) packageRepository.count()));
+
+                ms.setMembershipPackageEntity(p);
+                LocalDate pStartDate = LocalDate.ofInstant(
+                        faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
+                        ZoneId.systemDefault()
                 );
-                ms.setStartDate(
-                        LocalDate.ofInstant(
-                                faker.date().past(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
-                                ZoneId.systemDefault()
-                        )
-                );
-                ms.setEndDate(
-                        LocalDate.ofInstant(
-                            faker.date().future(30, TimeUnit.DAYS, Date.valueOf(LocalDate.now())).toInstant(),
-                            ZoneId.systemDefault()
-                        )
-                );
+                ms.setStartDate(pStartDate);
+                ms.setEndDate(pStartDate.plusDays(p.getDuration()));
+                CustomLogger.info("Importing 'MEMBERSHIP' entity: " + ms);
                 membershipRepository.saveAndFlush(ms);
             }
 
+            CustomLogger.info("Importing 'MEMBER' entity: " + m);
             memberRepository.saveAndFlush(m);
         }
     }
@@ -132,6 +132,7 @@ public class DataLoader {
                     .between(Date.valueOf(LocalDate.of(2000, 1, 1)), Date.valueOf(LocalDate.now()))
                     .toInstant(), ZoneId.systemDefault()));
 
+            CustomLogger.info("Importing 'TRAINER' entity: " + t);
             trainerRepository.saveAndFlush(t);
         }
     }

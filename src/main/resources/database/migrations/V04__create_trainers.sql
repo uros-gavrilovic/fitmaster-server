@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS trainer
     CONSTRAINT pk_trainer PRIMARY KEY (id),
 
     CONSTRAINT password_check CHECK (password ~ '^\$2a\$10\$[./A-Za-z0-9]{22}[./A-Za-z0-9]{31}$'),
-    CONSTRAINT phone_number_check CHECK (phone_number ~ '^\\+\\(\\d{3}\\) \\d{2}-\\d{3}-\\d{4}$')
+    CONSTRAINT phone_number_check CHECK (phone_number ~ '\+\(\d{3}\)\s\d{2}-\d{3}-\d{4}$')
 );
