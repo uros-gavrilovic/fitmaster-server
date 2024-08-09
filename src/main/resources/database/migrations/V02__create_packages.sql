@@ -8,3 +8,11 @@ CREATE TABLE IF NOT EXISTS package
 
     CONSTRAINT pk_package PRIMARY KEY (id)
 );
+
+CREATE TYPE package_dto AS (
+    id BIGINT,
+    name VARCHAR(255),
+    duration INTEGER,
+    price DECIMAL,
+    currency VARCHAR(3)
+);

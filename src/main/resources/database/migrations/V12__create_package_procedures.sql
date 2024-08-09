@@ -3,14 +3,15 @@ CREATE OR REPLACE PROCEDURE create_package(
     p_duration INT,
     p_price NUMERIC,
     p_currency VARCHAR(32),
-    OUT p_package_id BIGINT
+    OUT o_package package_dto
 )
-LANGUAGE plpgsql
+    LANGUAGE plpgsql
 AS $$
 BEGIN
     INSERT INTO package (name, duration, price, currency)
-    VALUES (p_name, p_duration, p_price, p_currency) RETURNING id
-    INTO p_package_id;
+        VALUES (p_name, p_duration, p_price, p_currency)
+    RETURNING id, name, duration, price, currency
+        INTO o_package.id, o_package.name, o_package.duration, o_package.price, o_package.currency;
 END;
 $$;
 
@@ -22,18 +23,23 @@ CREATE OR REPLACE PROCEDURE update_package(
     p_duration INT,
     p_price NUMERIC,
     p_currency VARCHAR(32),
-    OUT o_package_id BIGINT
+    OUT o_package package_dto
 )
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM package WHERE id = p_package_id) THEN
+        RAISE EXCEPTION 'Package not found with ID: %', p_package_id USING ERRCODE = 'P0002';
+    END IF;
+
     UPDATE package
     SET name     = p_name,
         duration = p_duration,
         price    = p_price,
         currency = p_currency
-    WHERE id = p_package_id;
-    o_package_id := p_package_id;
+    WHERE id = p_package_id
+    RETURNING id, name, duration, price, currency
+        INTO o_package.id, o_package.name, o_package.duration, o_package.price, o_package.currency;
 END;
 $$;
 
@@ -46,6 +52,10 @@ CREATE OR REPLACE PROCEDURE delete_package(
     LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM package WHERE id = p_package_id) THEN
+        RAISE EXCEPTION 'Package not found with ID: %', p_package_id USING ERRCODE = 'P0002';
+    END IF;
+
     DELETE FROM package
     WHERE id = p_package_id
     RETURNING id INTO o_package_id;

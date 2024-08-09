@@ -7,12 +7,16 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class PackageHasActiveMembershipsException extends RuntimeException {
-	private final String title;
-	private final HttpStatus httpStatus;
+	private String title = DescriptionUtils.getErrorDescription(ErrorConstants.UNABLE_TO_EDIT_OR_DELETE_ENTITY);
+	private HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+
+	public PackageHasActiveMembershipsException(String message) {
+		super(message);
+	}
 
 	public PackageHasActiveMembershipsException(String message, HttpStatus httpStatus) {
 		super(message);
-		this.title = DescriptionUtils.getErrorDescription(ErrorConstants.UPDATE_PACKAGE_ERROR);
+		this.title = DescriptionUtils.getErrorDescription(ErrorConstants.UNABLE_TO_EDIT_OR_DELETE_ENTITY);
 		this.httpStatus = httpStatus;
 	}
 }

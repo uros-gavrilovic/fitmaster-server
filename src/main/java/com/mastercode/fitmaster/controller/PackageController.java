@@ -2,10 +2,9 @@ package com.mastercode.fitmaster.controller;
 
 import com.mastercode.fitmaster.dto.PackageDTO;
 import com.mastercode.fitmaster.dto.membership_package.CreatePackageRequest;
+import com.mastercode.fitmaster.dto.membership_package.PackageDto;
 import com.mastercode.fitmaster.dto.membership_package.PackageFilter;
 import com.mastercode.fitmaster.dto.membership_package.PackageProcedureSearchItem;
-import com.mastercode.fitmaster.dto.response.CustomResponseEntity;
-import com.mastercode.fitmaster.exception.PackageHasActiveMembershipsException;
 import com.mastercode.fitmaster.model.PackageEntity;
 import com.mastercode.fitmaster.service.PackageService;
 import jakarta.validation.Valid;
@@ -39,9 +38,9 @@ public class PackageController {
     }
 
     /**
-     * Retrieves a list of PackageDTO objects.
+     * Retrieves a list of PackageDto objects.
      *
-     * @return A ResponseEntity containing a list of PackageDTO objects.
+     * @return A ResponseEntity containing a list of PackageDto objects.
      */
     @GetMapping("/dto")
     public ResponseEntity<List<PackageDTO>> getDTOs() {
@@ -86,29 +85,14 @@ public class PackageController {
     }
 
     @PostMapping("/procedure")
-    public ResponseEntity<Long> createProcedure(@Valid @RequestBody CreatePackageRequest request) {
+    public ResponseEntity<PackageDto> createProcedure(@Valid @RequestBody CreatePackageRequest request) {
         return new ResponseEntity<>(packageService.createProcedure(request), HttpStatus.CREATED);
     }
 
     @PutMapping("/procedure")
-    public ResponseEntity<Long> updateProcedure(@Valid @RequestBody CreatePackageRequest request) {
+    public ResponseEntity<PackageDto> updateProcedure(@Valid @RequestBody CreatePackageRequest request) {
         return new ResponseEntity<>(packageService.updateProcedure(request), HttpStatus.OK);
     }
-
-//    @PutMapping("/procedure")
-//    public ResponseEntity<CustomResponseEntity> updateProcedure(@Valid @RequestBody CreatePackageRequest request) {
-//        try {
-//            return new ResponseEntity<>(
-//                CustomResponseEntity.ofData(packageService.updateProcedure(request)),
-//                HttpStatus.OK
-//            );
-//        } catch (PackageHasActiveMembershipsException e) {
-//            return new ResponseEntity<>(
-//                CustomResponseEntity.ofError(e.getTitle(), e.getMessage()),
-//                HttpStatus.FORBIDDEN
-//            );
-//        }
-//    }
 
     @DeleteMapping("/procedure/{id}")
     public ResponseEntity deleteProcedure(@PathVariable Long id) {

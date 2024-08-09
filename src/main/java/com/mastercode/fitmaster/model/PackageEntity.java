@@ -1,8 +1,8 @@
 package com.mastercode.fitmaster.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Currency;
 

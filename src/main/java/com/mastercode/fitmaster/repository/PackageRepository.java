@@ -1,6 +1,7 @@
 package com.mastercode.fitmaster.repository;
 
 import com.mastercode.fitmaster.model.PackageEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -13,28 +14,38 @@ import java.util.List;
 public interface PackageRepository extends JpaRepository<PackageEntity, Long> {
 	PackageEntity getByPackageID(Long id);
 
-	@Procedure(procedureName = "create_package", outputParameterName = "p_package_id")
-	Long createProcedure(
-			@Param("p_name") String name,
-			@Param("p_duration") Integer duration,
-			@Param("p_price") BigDecimal price,
-			@Param("p_currency") String currency
+	@Transactional
+	@Query(
+			value = "CALL create_package(:name, :duration, :price, :currency, null)",
+			nativeQuery = true
+	)
+	Object createProcedure(
+			@Param("name") String name,
+			@Param("duration") Integer duration,
+			@Param("price") BigDecimal price,
+			@Param("currency") String currency
 	);
 
-	@Procedure(procedureName = "update_package", outputParameterName = "o_package_id")
-	Long updateProcedure(
-			@Param("p_package_id") Long id,
-			@Param("p_name") String name,
-			@Param("p_duration") Integer duration,
-			@Param("p_price") BigDecimal price,
-			@Param("p_currency") String currency
+	@Transactional
+	@Query(
+			value = "CALL update_package(:package_id, :name, :duration, :price, :currency, null)",
+			nativeQuery = true
+	)
+	Object updateProcedure(
+			@Param("package_id") Long id,
+			@Param("name") String name,
+			@Param("duration") Integer duration,
+			@Param("price") BigDecimal price,
+			@Param("currency") String currency
 	);
 
+	@Transactional
 	@Procedure(procedureName = "delete_package", outputParameterName = "o_package_id")
 	Long deleteProcedure(
 			@Param("p_package_id") Long id
 	);
 
+	@Transactional
 	@Query(
 			value = "SELECT * FROM search_packages(:pageSize, :offset, :name, CAST(:duration AS INTEGER[]), CAST(:price AS NUMERIC[]), :currency, :sortField, :sortDirection)",
 			nativeQuery = true

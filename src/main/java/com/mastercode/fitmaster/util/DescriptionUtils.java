@@ -33,7 +33,7 @@ public class DescriptionUtils {
     }
 
     public static String getInterpolatedErrorDescription(String field, String message) {
-        return getErrorDescription(message).replace("{fieldName}", ('\'' + field + '\''));
+        return getErrorDescription(message).replace("{placeholder}", ('\'' + field + '\''));
     }
 
     public static String getErrorDescription(ErrorConstants errorConstants) {
